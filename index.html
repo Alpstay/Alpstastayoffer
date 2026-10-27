@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Alpstay Angebot</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Belleza&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: stile AlpStay. Bianco, carbone e oro del logo; Belleza per i titoli, Lato per testo. Testata con foto, opzioni come "concetti", confronto. */
+:root{
+  --white:#ffffff; --panel:#f7f6f3; --ink:#2e2f2d; --muted:#6b6b67; --gold:#a68962; --gold-ink:#8a6f4b; --gold-light:#d9c1a0; --line:#e6e2db;
+  --f-title:"Belleza","Century Gothic","Avenir Next",Arial,sans-serif; --f-body:"Lato","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+body{background:var(--white);color:var(--ink);font:16px/1.65 var(--f-body);margin:0}
+.inner{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ribbon{margin:0;background:var(--panel);color:var(--muted);text-align:center;font-size:13px;padding-block:6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{background:var(--white);border-bottom:1px solid var(--line)}
+.bar .inner{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:12px}
+.brand{height:64px;width:auto;display:block}
+.bar-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ref{font-size:12px;color:var(--muted);letter-spacing:.06em}
+.langs{display:flex;gap:2px}
+.langs button{font:400 12px var(--f-body);letter-spacing:.08em;background:none;border:1px solid transparent;border-radius:3px;padding:4px 8px;color:var(--muted);cursor:pointer}
+.langs button[aria-pressed="true"]{border-color:var(--gold);color:var(--ink)}
+.hero{background-size:cover;background-position:68% center;background-color:#8a9497;position:relative;min-height:clamp(440px,72vh,800px);display:flex;align-items:flex-end}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,27,25,.74) 0%,rgba(26,27,25,.36) 36%,rgba(26,27,25,0) 62%),linear-gradient(90deg,rgba(26,27,25,.38) 0%,rgba(26,27,25,0) 58%)}
+.hero .inner{position:relative;width:100%;box-sizing:border-box;padding-block:40px 46px;color:#fff}
+.eyebrow{margin:0 0 14px;font:400 12px var(--f-body);letter-spacing:.34em;text-transform:uppercase;color:var(--gold-light)}
+.hero h1{margin:0 0 14px;font:400 clamp(34px,5vw,54px)/1.1 var(--f-title);letter-spacing:.01em;max-width:17ch;text-wrap:balance}
+.facts-line{margin:0;font:300 16px var(--f-body);opacity:.95}
+main.inner{padding-block:44px 24px;display:flex;flex-direction:column;gap:48px}
+.intro{margin:0;font:300 clamp(18px,2vw,21px)/1.6 var(--f-body);max-width:62ch}
+.intro-wrap{display:flex;flex-direction:column;gap:14px}
+.personal{margin:0;max-width:62ch;padding-left:16px;border-left:1px solid var(--gold);font:300 17px/1.6 var(--f-body);color:var(--ink)}
+.opts{display:grid;gap:48px 56px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));align-items:stretch}
+.opt{background:var(--white);display:flex;flex-direction:column;min-width:0}
+.opt.rec{}
+.badge{margin:0 0 14px;display:flex;align-items:center;gap:14px;font:400 11px var(--f-body);letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+.badge::after{content:"";flex:1;height:1px;background:var(--line)}
+.opt.rec .badge{color:var(--gold-ink)}
+.opt.rec .badge::after{background:var(--gold)}
+/* Segnaposto finché mancano le foto: doghe di larice, vetrata e fascia in metallo scuro */
+.opt-media{aspect-ratio:3/2;max-width:100%;position:relative;display:flex;align-items:flex-end;overflow:hidden;
+  background:linear-gradient(to top,#2f302e 0 16%,transparent 16%),
+  repeating-linear-gradient(90deg,#c9a77c 0 22px,#a98760 22px 24px,#d6b88f 24px 46px,#9f7d55 46px 48px,#c4a074 48px 70px,#a98760 70px 72px)}
+.opt-media::after{content:"";position:absolute;left:12%;right:38%;top:16%;bottom:16%;border:5px solid #2f302e;border-bottom:0;
+  background:linear-gradient(120deg,rgba(214,226,230,.55) 0%,rgba(120,140,148,.55) 45%,rgba(60,72,78,.7) 100%)}
+.opt-media img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.opt-media span{position:relative;z-index:1;padding:7px 22px;font:400 17px var(--f-title);letter-spacing:.14em;text-transform:uppercase;color:#efe3cf}
+@media (min-width:900px){.opts.n2{grid-template-columns:minmax(0,1.18fr) minmax(0,1fr)}}
+.opt-body{padding:26px 0 10px;flex:1}
+.concept{margin:0 0 8px;font:400 11px var(--f-body);letter-spacing:.32em;text-transform:uppercase;color:var(--gold-ink)}
+.opt h2{margin:0;font:400 30px/1.2 var(--f-title);letter-spacing:.02em;text-wrap:balance}
+.where{margin:4px 0 16px;color:var(--muted);font:300 14px var(--f-body);letter-spacing:.04em}
+.tagline{margin:0 0 18px;font-weight:300}
+.facts{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:9px}
+.facts li{padding-left:24px;position:relative;font:300 15px var(--f-body)}
+.facts li::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:var(--gold)}
+.stay{margin:0;font:300 14px var(--f-body);color:var(--muted);letter-spacing:.03em}
+.opt-price{padding:22px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.lbl{margin:0;font:400 11px var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.amount{margin:2px 0 0;font:400 36px/1.15 var(--f-title);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.amount.small{font-size:22px}
+.pp{margin:0;font-size:14px}
+.tax{margin:0;font-size:13px;color:var(--muted)}
+.btn{margin-top:18px;align-self:flex-start;display:inline-block;text-align:center;background:transparent;color:var(--ink);border:1px solid var(--ink);text-decoration:none;font:400 12px var(--f-body);letter-spacing:.28em;text-transform:uppercase;padding:15px 30px;border-radius:0;transition:background .25s ease,color .25s ease}
+.opt.rec .btn,.opts.n1 .opt .btn{background:var(--ink);color:#fff}
+.opt:not(.rec) .btn:hover{background:var(--ink);color:#fff}
+.opt.rec .btn:hover{background:#000}
+.btn:focus-visible,.langs button:focus-visible,.copy:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.note{margin:6px 0 0;font-size:12.5px;color:var(--muted)}
+.gallery h3{margin:0 0 16px;font:400 26px var(--f-title)}
+.g-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
+.g-item{margin:0;position:relative;min-width:0}
+.g-open{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;border-radius:3px;overflow:hidden}
+.g-open img{display:block;width:100%;aspect-ratio:3/2;max-width:100%;object-fit:cover;transition:transform .4s ease}
+.g-open:hover img{transform:scale(1.03)}
+.g-open:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.g-item figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 8px;font:400 10px var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:#fff;background:linear-gradient(to top,rgba(30,31,29,.72),rgba(30,31,29,0));pointer-events:none;border-radius:0 0 3px 3px}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(24,25,23,.92);display:flex;align-items:center;justify-content:center;
+  padding:calc(56px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lightbox figure{margin:0;max-width:1100px;width:100%;display:flex;flex-direction:column;gap:10px}
+.lightbox img{width:100%;max-height:78vh;object-fit:contain}
+.lightbox figcaption{color:#e9dcc6;font:400 13px var(--f-body);letter-spacing:.06em}
+.lb-close{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));font:400 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;background:none;color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:2px;padding:7px 12px;cursor:pointer}
+.compare h3,.help h3{margin:0 0 16px;font:400 26px var(--f-title)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font:400 20px var(--f-title);border-bottom:1px solid var(--gold)}
+thead th span{display:block;font:400 13px var(--f-body);color:var(--muted)}
+tbody th{font:400 12px var(--f-body);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;width:22%}
+.help{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;border-top:1px solid var(--gold);border-bottom:1px solid var(--line);padding-block:28px}
+.help p{margin:0}
+.contact{display:flex;flex-direction:column;gap:8px}
+.who{font:400 21px var(--f-title)}
+.who span{display:block;font:400 13px var(--f-body);color:var(--muted)}
+.line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.val{font-variant-numeric:tabular-nums;user-select:all;overflow-wrap:anywhere}
+.copy{font:400 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--white);border-radius:2px;padding:4px 9px;cursor:pointer;color:var(--ink)}
+.foot{margin-top:20px}
+.foot .inner{padding-block:26px;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.foot .tag{font:400 13px var(--f-title);letter-spacing:.18em;color:var(--gold-ink)}
+.foot a{color:var(--muted)}
+@media (max-width:640px){.help{grid-template-columns:minmax(0,1fr)}.hero .inner{padding-block:44px 40px}.brand{height:52px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.g-open:hover img{transform:none}}
+</style>
+<style>*,*::before,*::after{box-sizing:border-box}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* Pagina personale dell'offerta AlpStay.
+ * Legge l'offerta dal parametro ?o= (JSON in base64url) prodotto dall'Offerta Studio.
+ * Nessun dato personale dell'ospite nel link: solo date, persone, camere, prezzi e codice richiesta. */
+const PHOTO = { hero: "img/testata.jpg", acadia: "img/acadia.jpg", hartmann: "img/hartmann.jpg", saslong: "img/saslong.jpg", logo: "img/logo.png" };
+/* Solo fatti verificati */
+const HOUSES = {
+    saslong: {
+        name: "Smart Hotel Saslong",
+        place: { de: "St. Christina", it: "Santa Cristina", en: "Santa Cristina" },
+        concept: { de: "Das Basecamp", it: "Il campo base", en: "The basecamp" },
+        tagline: {
+            de: "Unkompliziert, modern und ideal, um jeden Tag ein anderes Stück Gröden zu entdecken.",
+            it: "Semplice, moderno e ideale per scoprire ogni giorno un angolo diverso della Val Gardena.",
+            en: "Easy-going, modern and ideal for exploring a different corner of Val Gardena every day.",
+        },
+        facts: {
+            winter: {
+                de: ["Skibus-Haltestelle direkt vor dem Hotel", "Garage und Ski-Depot im Haus", "Blue Restaurant im Haus für den Abend"],
+                it: ["Fermata dello skibus davanti all'hotel", "Garage e deposito sci in hotel", "Blue Restaurant in hotel per la sera"],
+                en: ["Ski bus stop right outside the hotel", "Garage and ski storage on site", "Blue Restaurant in the hotel for the evening"],
+            },
+            summer: {
+                de: ["Bushaltestelle direkt vor dem Hotel", "Garage und Bike-Depot im Haus", "Blue Restaurant im Haus für den Abend"],
+                it: ["Fermata dell'autobus davanti all'hotel", "Garage e deposito bici in hotel", "Blue Restaurant in hotel per la sera"],
+                en: ["Bus stop right outside the hotel", "Garage and bike storage on site", "Blue Restaurant in the hotel for the evening"],
+            },
+        },
+        compare: {
+            slope: { de: "Skibus vor der Tür, ca. 1 km zum nächsten Lift", it: "Skibus davanti alla porta, circa 1 km al primo impianto", en: "Ski bus at the door, about 1 km to the nearest lift" },
+            mood: { de: "Modern und unkompliziert, 49 Zimmer", it: "Moderno e informale, 49 camere", en: "Modern and easy-going, 49 rooms" },
+            ideal: { de: "Aktive Familien, die viel unterwegs sind", it: "Famiglie attive, sempre in movimento", en: "Active families who are out all day" },
+        },
+        booking: "https://booking.slope.it/7ca10a66-df13-4e99-86c6-6db74047238a",
+        photo: PHOTO.saslong,
+    },
+    hartmann: {
+        name: "Chalet Hotel Hartmann",
+        place: { de: "St. Ulrich", it: "Ortisei", en: "Ortisei" },
+        concept: { de: "Das Chalet", it: "Lo chalet", en: "The chalet" },
+        tagline: {
+            de: "Nur neun Zimmer, ruhige Panoramalage und ein Haus, das sich wie ein Zuhause anfühlt.",
+            it: "Solo nove camere, posizione panoramica e tranquilla, e una casa che si vive come la propria.",
+            en: "Only nine rooms, a quiet panoramic setting and a house that feels like home.",
+        },
+        facts: {
+            winter: {
+                de: ["Privater Hotel-Shuttle zu den Pisten", "Sauna zum Aufwärmen nach dem Skitag", "Adults only ab 14 Jahren: ruhig und entspannt"],
+                it: ["Shuttle privato dell'hotel per le piste", "Sauna per scaldarsi dopo la giornata sugli sci", "Adults only dai 14 anni: calma e relax"],
+                en: ["Private hotel shuttle to the slopes", "Sauna to warm up after a day on the slopes", "Adults only from 14: calm and relaxed"],
+            },
+            summer: {
+                de: ["Ruhige Panoramalage in St. Ulrich", "Sauna zum Entspannen nach der Wanderung", "Adults only ab 14 Jahren: ruhig und entspannt"],
+                it: ["Posizione panoramica e tranquilla a Ortisei", "Sauna per rilassarsi dopo l'escursione", "Adults only dai 14 anni: calma e relax"],
+                en: ["Quiet panoramic setting in Ortisei", "Sauna to unwind after a hike", "Adults only from 14: calm and relaxed"],
+            },
+        },
+        compare: {
+            slope: { de: "Privater Hotel-Shuttle zu den Pisten", it: "Shuttle privato dell'hotel per le piste", en: "Private hotel shuttle to the slopes" },
+            mood: { de: "Persönlich und ruhig, nur 9 Zimmer", it: "Personale e tranquillo, solo 9 camere", en: "Personal and quiet, only 9 rooms" },
+            ideal: { de: "Wer Ruhe und persönliche Atmosphäre sucht", it: "Chi cerca calma e un'atmosfera personale", en: "Guests looking for calm and a personal touch" },
+        },
+        booking: "https://booking.slope.it/c6055fa5-edaa-4b8f-a518-541322f3ac1e",
+        photo: PHOTO.hartmann,
+    },
+    acadia: {
+        name: "Hotel Acadia",
+        place: { de: "Wolkenstein", it: "Selva", en: "Selva" },
+        concept: { de: "Das Sellaronda-Haus", it: "La casa sul Sellaronda", en: "The Sellaronda house" },
+        tagline: {
+            de: "Mitten in Wolkenstein, mit dem Lift direkt auf die Sellaronda.",
+            it: "Nel cuore di Selva, con l'impianto subito sul Sellaronda.",
+            en: "In the heart of Selva, with the lift straight onto the Sellaronda.",
+        },
+        facts: {
+            winter: {
+                de: ["Skilift Nives: direkt auf die Sellaronda, in beide Richtungen", "Zentrale Lage in Wolkenstein", "Nur 22 Zimmer, Adults only"],
+                it: ["Skilift Nives: subito sul Sellaronda, in entrambe le direzioni", "Posizione centrale a Selva", "Solo 22 camere, adults only"],
+                en: ["Nives ski lift: straight onto the Sellaronda, both directions", "Central location in Selva", "Only 22 rooms, adults only"],
+            },
+            summer: {
+                de: ["Zentrale Lage in Wolkenstein", "Ausgangspunkt für Wanderungen in den Dolomiten", "Nur 22 Zimmer, Adults only"],
+                it: ["Posizione centrale a Selva", "Punto di partenza per escursioni nelle Dolomiti", "Solo 22 camere, adults only"],
+                en: ["Central location in Selva", "A base for hiking in the Dolomites", "Only 22 rooms, adults only"],
+            },
+        },
+        compare: {
+            slope: { de: "Skilift Nives direkt zur Sellaronda", it: "Skilift Nives subito sul Sellaronda", en: "Nives lift straight to the Sellaronda" },
+            mood: { de: "Zentral und elegant, 22 Zimmer", it: "Centrale ed elegante, 22 camere", en: "Central and elegant, 22 rooms" },
+            ideal: { de: "Paare, die mitten im Ort wohnen möchten", it: "Coppie che vogliono stare in centro", en: "Couples who want to stay in the centre" },
+        },
+        booking: "https://booking.slope.it/4cb5989a-8788-46f6-a726-f31abc67f697",
+        photo: PHOTO.acadia,
+    },
+};
+/* Galleria: si mostrano le foto delle case proposte più quelle del gruppo */
+const GALLERY = [
+    { src: "img/galleria-acadia.jpg", house: "acadia", alt: { de: "Lounge mit Blick auf die verschneite Terrasse", it: "Lounge con vista sulla terrazza innevata", en: "Lounge overlooking the snowy terrace" } },
+    { src: "img/galleria-saslong.jpg", house: "saslong", alt: { de: "Blue Restaurant mit Service-Roboter", it: "Blue Restaurant con robot di servizio", en: "Blue Restaurant with service robot" } },
+    { src: "img/galleria-hartmann.jpg", house: "hartmann", alt: { de: "Frühstücksecke", it: "Angolo colazione", en: "Breakfast corner" } },
+    { src: "img/galleria-alpstay.jpg", house: "alpstay", alt: { de: "Kuchenbuffet", it: "Buffet di dolci", en: "Cake buffet" } },
+];
+const ROOMS = {
+    d1: { de: "1 Doppelzimmer", it: "1 camera doppia", en: "1 double room" },
+    d2: { de: "2 Doppelzimmer", it: "2 camere doppie", en: "2 double rooms" },
+    d3: { de: "3 Doppelzimmer", it: "3 camere doppie", en: "3 double rooms" },
+    t1: { de: "1 Dreibettzimmer", it: "1 camera tripla", en: "1 triple room" },
+    q1: { de: "1 Vierbettzimmer", it: "1 camera quadrupla", en: "1 quadruple room" },
+};
+const S = {
+    de: {
+        eyebrow: "Ihr persönliches Angebot", offerNo: c => `Anfrage Nr. ${c}`,
+        title: n => n > 1 ? "Zwei Wege, Gröden zu erleben." : "Ihr Zuhause in Gröden.",
+        nights: n => `${n} ${n === 1 ? "Nacht" : "Nächte"}`,
+        guests: (a, k) => `${a} Erwachsene${k.length ? `, ${k.length} ${k.every(x => x >= 12) ? "Jugendliche" : (k.length === 1 ? "Kind" : "Kinder")} (${k.join(" und ")} Jahre)` : ""}`,
+        introTeen: "Mit Jugendlichen ist ein gemeinsames Familienzimmer oft ein Kompromiss. Deshalb planen wir getrennte Zimmer: Ruhe für die Eltern und ein eigener Raum für die Jugend. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
+        introFamily: "Wir haben Unterkünfte ausgewählt, in denen sich die ganze Familie wohlfühlt. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
+        introAdults: "Wir haben Unterkünfte ausgewählt, die zu Ihren Wünschen passen. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
+        rec: "Unsere Empfehlung", alt: "Alternative", total: "Gesamtpreis", pp: v => `ca. ${v} € pro Person und Nacht`, tax: "zzgl. Ortstaxe", forDates: "Preis und Verfügbarkeit für Ihre Daten",
+        board: { ro: "Übernachtung", bb: "Übernachtung mit Frühstück", hb: "Halbpension" },
+        book: "Verfügbarkeit prüfen & buchen", bookNote: "Sie buchen direkt beim Hotel, ohne Vermittler.",
+        compareTitle: "Die Häuser im Vergleich", rows: { place: "Ort", rooms: "Zimmer", slope: "Weg zur Piste", mood: "Atmosphäre", ideal: "Ideal für" },
+        galleryTitle: "Einblicke", close: "Schließen",
+        helpTitle: "Lieber persönlich?", helpText: "Antworten Sie einfach auf unsere E-Mail oder rufen Sie uns an. Wir passen das Angebot gern für Sie an.",
+        copy: "Kopieren", copied: "Kopiert", sample: "Beispielangebot", invalid: "Dieser Link ist unvollständig. Wir zeigen ein Beispielangebot.",
+    },
+    it: {
+        eyebrow: "La tua proposta personale", offerNo: c => `Richiesta n. ${c}`,
+        title: n => n > 1 ? "Due modi di vivere la Val Gardena." : "La tua casa in Val Gardena.",
+        nights: n => `${n} ${n === 1 ? "notte" : "notti"}`,
+        guests: (a, k) => `${a} adulti${k.length ? `, ${k.length} ${k.every(x => x >= 12) ? "ragazzi" : (k.length === 1 ? "bambino" : "bambini")} (${k.join(" e ")} anni)` : ""}`,
+        introTeen: "Con dei ragazzi, una sola camera familiare è spesso un compromesso. Per questo proponiamo camere separate: tranquillità per i genitori e uno spazio tutto loro per i ragazzi. Qui vedi come si differenziano le case e trovi prezzo e disponibilità per le tue date.",
+        introFamily: "Abbiamo scelto strutture in cui tutta la famiglia si sente a casa. Qui vedi come si differenziano e trovi prezzo e disponibilità per le tue date.",
+        introAdults: "Abbiamo scelto strutture adatte ai tuoi desideri. Qui vedi come si differenziano e trovi prezzo e disponibilità per le tue date.",
+        rec: "La nostra proposta", alt: "Alternativa", total: "Prezzo totale", pp: v => `circa ${v} € a persona per notte`, tax: "più imposta di soggiorno", forDates: "Prezzo e disponibilità per le tue date",
+        board: { ro: "Solo pernottamento", bb: "Pernottamento e colazione", hb: "Mezza pensione" },
+        book: "Verifica disponibilità e prenota", bookNote: "Prenoti direttamente con l'hotel, senza intermediari.",
+        compareTitle: "Le case a confronto", rows: { place: "Località", rooms: "Camere", slope: "Verso le piste", mood: "Atmosfera", ideal: "Ideale per" },
+        galleryTitle: "Uno sguardo dentro", close: "Chiudi",
+        helpTitle: "Preferisci parlarne?", helpText: "Rispondi alla nostra email o chiamaci: adattiamo volentieri la proposta per te.",
+        copy: "Copia", copied: "Copiato", sample: "Proposta d'esempio", invalid: "Questo link è incompleto. Mostriamo una proposta d'esempio.",
+    },
+    en: {
+        eyebrow: "Your personal offer", offerNo: c => `Request no. ${c}`,
+        title: n => n > 1 ? "Two ways to experience Val Gardena." : "Your home in Val Gardena.",
+        nights: n => `${n} ${n === 1 ? "night" : "nights"}`,
+        guests: (a, k) => `${a} adults${k.length ? `, ${k.length} ${k.every(x => x >= 12) ? "teenagers" : (k.length === 1 ? "child" : "children")} (${k.join(" and ")})` : ""}`,
+        introTeen: "With teenagers, one shared family room is often a compromise. That is why we plan separate rooms: peace for the parents and a space of their own for the teens. Here you can see how the houses differ and find price and availability for your dates.",
+        introFamily: "We have chosen places where the whole family will feel at home. Here you can see how they differ and find price and availability for your dates.",
+        introAdults: "We have chosen places that fit your wishes. Here you can see how they differ and find price and availability for your dates.",
+        rec: "Our recommendation", alt: "Alternative", total: "Total price", pp: v => `about €${v} per person per night`, tax: "plus local tourist tax", forDates: "Price and availability for your dates",
+        board: { ro: "Room only", bb: "Bed & breakfast", hb: "Half board" },
+        book: "Check availability & book", bookNote: "You book directly with the hotel, no middlemen.",
+        compareTitle: "The houses compared", rows: { place: "Location", rooms: "Rooms", slope: "Getting to the slopes", mood: "Atmosphere", ideal: "Ideal for" },
+        galleryTitle: "A look inside", close: "Close",
+        helpTitle: "Prefer to talk?", helpText: "Simply reply to our email or call us. We will gladly adjust the offer for you.",
+        copy: "Copy", copied: "Copied", sample: "Sample offer", invalid: "This link is incomplete. We are showing a sample offer.",
+    },
+};
+const LOCALE = { de: "de-DE", it: "it-IT", en: "en-GB" };
+const SAMPLE = {
+    v: 1, l: "de", c: "315070", a: "2027-01-05", d: "2027-01-10", ad: 2, k: [14, 16], b: "ro",
+    o: [{ h: "hartmann", r: "d2" }, { h: "saslong", r: "d2" }],
+    sn: "Isabel F.", sp: "+39 0471 774444", se: "info@alpstay.eu",
+};
+/* ---------- Decodifica e validazione ---------- */
+function decodePayload(raw) {
+    try {
+        const b64 = raw.replace(/-/g, "+").replace(/_/g, "/");
+        const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+        const bytes = Uint8Array.from(bin, ch => ch.charCodeAt(0));
+        const data = JSON.parse(new TextDecoder().decode(bytes));
+        return isPayload(data) ? data : null;
+    }
+    catch {
+        return null;
+    }
+}
+function isPayload(x) {
+    const date = /^\d{4}-\d{2}-\d{2}$/;
+    return x.v === 1 && (x.l === "de" || x.l === "it" || x.l === "en")
+        && typeof x.a === "string" && date.test(x.a) && typeof x.d === "string" && date.test(x.d)
+        && typeof x.ad === "number" && Array.isArray(x.k) && Array.isArray(x.o) && x.o.length > 0
+        && x.o.every(o => o && o.h in HOUSES);
+}
+/* Il pulsante prenota porta solo al booking engine Slope: niente redirect verso altri siti */
+function safeBooking(o) {
+    var _a;
+    try {
+        const u = new URL((_a = o.u) !== null && _a !== void 0 ? _a : "");
+        if (u.protocol === "https:" && u.hostname === "booking.slope.it")
+            return u.toString();
+    }
+    catch { /* link mancante o non valido */ }
+    return HOUSES[o.h].booking;
+}
+/* ---------- Formattazione ---------- */
+const esc = (s) => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function nightsOf(p) {
+    return Math.max(0, Math.round((Date.parse(p.d) - Date.parse(p.a)) / 864e5));
+}
+function isWinter(p) {
+    const m = Number(p.a.slice(5, 7));
+    return m >= 11 || m <= 4;
+}
+function dateRange(p, l) {
+    const a = new Date(p.a + "T12:00:00"), d = new Date(p.d + "T12:00:00");
+    const loc = LOCALE[l];
+    const same = a.getMonth() === d.getMonth() && a.getFullYear() === d.getFullYear();
+    const day = (x) => x.getDate();
+    const mon = (x) => x.toLocaleDateString(loc, { month: "long" });
+    if (l === "de")
+        return same ? `${day(a)}.–${day(d)}. ${mon(d)} ${d.getFullYear()}` : `${day(a)}. ${mon(a)} – ${day(d)}. ${mon(d)} ${d.getFullYear()}`;
+    if (l === "it")
+        return same ? `${day(a)}–${day(d)} ${mon(d)} ${d.getFullYear()}` : `${day(a)} ${mon(a)} – ${day(d)} ${mon(d)} ${d.getFullYear()}`;
+    return same ? `${day(a)}–${day(d)} ${mon(d)} ${d.getFullYear()}` : `${day(a)} ${mon(a)} – ${day(d)} ${mon(d)} ${d.getFullYear()}`;
+}
+function roomName(o, l) {
+    var _a;
+    return o.r === "custom" ? ((_a = o.rc) !== null && _a !== void 0 ? _a : "") : ROOMS[o.r][l];
+}
+function money(n, l, dec) {
+    return n.toLocaleString(LOCALE[l], { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+/* ---------- Render ---------- */
+function render(p, l, isSample, invalid) {
+    const kn = Math.max(typeof p.kn === "number" ? p.kn : 0, p.k.length), agesOk = p.k.length >= kn;
+    const t = S[l], n = nightsOf(p), winter = isWinter(p), persons = p.ad + kn;
+    const teen = kn > 0 && agesOk && p.k.every(x => x >= 12);
+    const intro = teen ? t.introTeen : kn ? t.introFamily : t.introAdults;
+    const guestsLine = agesOk ? t.guests(p.ad, p.k) : `${t.guests(p.ad, [])}, ${kn} ${{ de: "Kinder", it: "bambini", en: "children" }[l]}`;
+    const opts = p.o.slice(0, 3);
+    document.documentElement.lang = l;
+    document.title = `Alpstay · ${t.eyebrow}`;
+    const card = (o, i) => {
+        const H = HOUSES[o.h], isRec = i === 0 && opts.length > 1;
+        const facts = (winter ? H.facts.winter : H.facts.summer)[l];
+        const price = typeof o.p === "number" && o.p > 0 ? o.p : null;
+        const pp = price && n && persons ? price / (n * persons) : null;
+        return `
+    <article class="opt${isRec ? " rec" : ""}">
+      ${opts.length > 1 ? `<p class="badge">${isRec ? t.rec : t.alt}</p>` : ""}
+      <div class="opt-media">${H.photo ? `<img src="${H.photo}" alt="${esc(H.name)}">` : `<span>${esc(H.place[l])}</span>`}</div>
+      <div class="opt-body">
+        <p class="concept">${esc(H.concept[l])}</p>
+        <h2>${esc(H.name)}</h2>
+        <p class="where">${esc(H.place[l])} · Val Gardena</p>
+        <p class="tagline">${esc(H.tagline[l])}</p>
+        <ul class="facts">${facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+        <p class="stay">${esc(roomName(o, l))} · ${esc(t.board[p.b])}</p>
+      </div>
+      <div class="opt-price">
+        ${price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
+          ${pp ? `<p class="pp">${esc(t.pp(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p>`
+            : `<p class="lbl">${t.forDates}</p>`}
+        <a class="btn" href="${esc(safeBooking(o))}" target="_blank" rel="noopener">${t.book} →</a>
+        <p class="note">${t.bookNote}</p>
+      </div>
+    </article>`;
+    };
+    const rows = [
+        [t.rows.place, o => HOUSES[o.h].place[l]],
+        [t.rows.rooms, o => roomName(o, l)],
+        [t.rows.slope, o => HOUSES[o.h].compare.slope[l]],
+        [t.rows.mood, o => HOUSES[o.h].compare.mood[l]],
+        [t.rows.ideal, o => HOUSES[o.h].compare.ideal[l]],
+    ];
+    const inOffer = new Set(opts.map(o => o.h));
+    const gallery = GALLERY.filter(g => g.house === "alpstay" || inOffer.has(g.house))
+        .sort((a, b) => order(a.house) - order(b.house));
+    function order(h) { return h === "alpstay" ? 99 : opts.findIndex(o => o.h === h); }
+    const app = document.getElementById("app");
+    app.innerHTML = `
+  ${isSample ? `<p class="ribbon">${invalid ? t.invalid : t.sample}</p>` : ""}
+  <header class="bar"><div class="inner">
+    <img class="brand" src="${PHOTO.logo}" alt="Alpstay · Be free. Stay true">
+    <div class="bar-right">
+      ${p.c ? `<span class="ref">${esc(t.offerNo(p.c))}</span>` : ""}
+      <div class="langs">${["de", "it", "en"].map(x => `<button type="button" data-lang="${x}" aria-pressed="${x === l}">${x.toUpperCase()}</button>`).join("")}</div>
+    </div>
+  </div></header>
+
+  <section class="hero" style="background-image:url('${PHOTO.hero}')"><div class="inner">
+    <p class="eyebrow">${t.eyebrow}</p>
+    <h1>${esc(t.title(opts.length))}</h1>
+    <p class="facts-line">${esc(dateRange(p, l))} · ${esc(t.nights(n))} · ${esc(guestsLine)}</p>
+  </div></section>
+
+  <main class="inner">
+    <div class="intro-wrap"><p class="intro">${esc(intro)}</p>
+    ${typeof p.n === "string" && p.n.trim() ? `<p class="personal">${esc(p.n.trim().slice(0, 600))}</p>` : ""}</div>
+    <section class="opts n${opts.length}">${opts.map(card).join("")}</section>
+
+    ${gallery.length ? `
+    <section class="gallery">
+      <h3>${t.galleryTitle}</h3>
+      <div class="g-grid">${gallery.map((g, i) => `
+        <figure class="g-item"><button type="button" class="g-open" data-g="${i}" aria-label="${esc(g.alt[l])}">
+          <img src="${g.src}" alt="${esc(g.alt[l])}" loading="lazy"></button>
+          <figcaption>${esc(g.house === "alpstay" ? "Alpstay" : HOUSES[g.house].name)}</figcaption>
+        </figure>`).join("")}
+      </div>
+    </section>` : ""}
+
+    ${opts.length > 1 ? `
+    <section class="compare">
+      <h3>${t.compareTitle}</h3>
+      <div class="scroll"><table>
+        <thead><tr><th></th>${opts.map(o => `<th>${esc(HOUSES[o.h].concept[l])}<span>${esc(HOUSES[o.h].name)}</span></th>`).join("")}</tr></thead>
+        <tbody>${rows.map(([label, f]) => `<tr><th scope="row">${esc(label)}</th>${opts.map(o => `<td>${esc(f(o))}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>
+    </section>` : ""}
+
+    <section class="help">
+      <div><h3>${t.helpTitle}</h3><p>${t.helpText}</p></div>
+      <div class="contact">
+        ${p.sn ? `<p class="who">${esc(p.sn)}<span>Reservation Office · Alpstay Hotels</span></p>` : ""}
+        ${p.sp ? `<p class="line"><span class="val">${esc(p.sp)}</span><button type="button" class="copy" data-copy="${esc(p.sp)}">${t.copy}</button></p>` : ""}
+        ${p.se ? `<p class="line"><span class="val">${esc(p.se)}</span><button type="button" class="copy" data-copy="${esc(p.se)}">${t.copy}</button></p>` : ""}
+      </div>
+    </section>
+  </main>
+  <footer class="foot"><div class="inner"><span class="tag">BE FREE. STAY TRUE</span><span>Alpstay Hotels · Val Gardena · Dolomites</span><a href="https://www.alpstay.eu" target="_blank" rel="noopener">www.alpstay.eu</a></div></footer>`;
+    app.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => render(p, b.dataset.lang, isSample, invalid)));
+    app.querySelectorAll(".g-open").forEach(b => b.addEventListener("click", () => openLightbox(gallery[Number(b.dataset.g)], l)));
+    app.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+        var _a;
+        navigator.clipboard.writeText((_a = b.dataset.copy) !== null && _a !== void 0 ? _a : "")
+            .then(() => { b.textContent = t.copied; setTimeout(() => (b.textContent = t.copy), 1500); })
+            .catch(() => {
+            const val = b.previousElementSibling;
+            if (val) {
+                const r = document.createRange();
+                r.selectNodeContents(val);
+                const s = getSelection();
+                s === null || s === void 0 ? void 0 : s.removeAllRanges();
+                s === null || s === void 0 ? void 0 : s.addRange(r);
+            }
+        });
+    }));
+}
+/* ---------- Ingrandimento foto ---------- */
+function openLightbox(g, l) {
+    const box = document.createElement("div");
+    box.className = "lightbox";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-modal", "true");
+    box.innerHTML = `<figure><img src="${g.src}" alt="${esc(g.alt[l])}"><figcaption>${esc(g.house === "alpstay" ? "Alpstay" : HOUSES[g.house].name)} · ${esc(g.alt[l])}</figcaption></figure>
+    <button type="button" class="lb-close">${S[l].close}</button>`;
+    const close = () => { box.remove(); document.removeEventListener("keydown", onKey); };
+    const onKey = (e) => { if (e.key === "Escape")
+        close(); };
+    box.addEventListener("click", e => { if (e.target === box || e.target.classList.contains("lb-close"))
+        close(); });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(box);
+    box.querySelector(".lb-close").focus();
+}
+/* ---------- Avvio ---------- */
+(function boot() {
+    const raw = new URLSearchParams(location.search).get("o");
+    const decoded = raw ? decodePayload(raw) : null;
+    const payload = decoded !== null && decoded !== void 0 ? decoded : SAMPLE;
+    render(payload, payload.l, !decoded, !!raw && !decoded);
+})();
+
+</script>
+</body>
+</html>
