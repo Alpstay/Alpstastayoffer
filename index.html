@@ -231,7 +231,7 @@ const S = {
         introTeen: "Mit Jugendlichen ist ein gemeinsames Familienzimmer oft ein Kompromiss. Deshalb planen wir getrennte Zimmer: Ruhe für die Eltern und ein eigener Raum für die Jugend. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
         introFamily: "Wir haben Unterkünfte ausgewählt, in denen sich die ganze Familie wohlfühlt. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
         introAdults: "Wir haben Unterkünfte ausgewählt, die zu Ihren Wünschen passen. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
-        rec: "Unsere Empfehlung", alt: "Alternative", total: "Gesamtpreis", pp: v => `ca. ${v} € pro Person und Nacht`, tax: "zzgl. Ortstaxe", forDates: "Preis und Verfügbarkeit für Ihre Daten",
+        rec: "Unsere Empfehlung", alt: "Alternative", total: "Gesamtpreis", pp: v => `ca. ${v} € pro Person und Nacht`, pn: v => `ca. ${v} € pro Nacht`, tax: "zzgl. Ortstaxe", forDates: "Preis und Verfügbarkeit für Ihre Daten",
         board: { ro: "Übernachtung", bb: "Übernachtung mit Frühstück", hb: "Halbpension" },
         book: "Verfügbarkeit prüfen & buchen", bookNote: "Sie buchen direkt beim Hotel, ohne Vermittler.",
         compareTitle: "Die Häuser im Vergleich", rows: { place: "Ort", rooms: "Zimmer", slope: "Weg zur Piste", mood: "Atmosphäre", ideal: "Ideal für" },
@@ -247,7 +247,7 @@ const S = {
         introTeen: "Con dei ragazzi, una sola camera familiare è spesso un compromesso. Per questo proponiamo camere separate: tranquillità per i genitori e uno spazio tutto loro per i ragazzi. Qui vedi come si differenziano le case e trovi prezzo e disponibilità per le tue date.",
         introFamily: "Abbiamo scelto strutture in cui tutta la famiglia si sente a casa. Qui vedi come si differenziano e trovi prezzo e disponibilità per le tue date.",
         introAdults: "Abbiamo scelto strutture adatte ai tuoi desideri. Qui vedi come si differenziano e trovi prezzo e disponibilità per le tue date.",
-        rec: "La nostra proposta", alt: "Alternativa", total: "Prezzo totale", pp: v => `circa ${v} € a persona per notte`, tax: "più imposta di soggiorno", forDates: "Prezzo e disponibilità per le tue date",
+        rec: "La nostra proposta", alt: "Alternativa", total: "Prezzo totale", pp: v => `circa ${v} € a persona per notte`, pn: v => `circa ${v} € a notte`, tax: "più imposta di soggiorno", forDates: "Prezzo e disponibilità per le tue date",
         board: { ro: "Solo pernottamento", bb: "Pernottamento e colazione", hb: "Mezza pensione" },
         book: "Verifica disponibilità e prenota", bookNote: "Prenoti direttamente con l'hotel, senza intermediari.",
         compareTitle: "Le case a confronto", rows: { place: "Località", rooms: "Camere", slope: "Verso le piste", mood: "Atmosfera", ideal: "Ideale per" },
@@ -263,7 +263,7 @@ const S = {
         introTeen: "With teenagers, one shared family room is often a compromise. That is why we plan separate rooms: peace for the parents and a space of their own for the teens. Here you can see how the houses differ and find price and availability for your dates.",
         introFamily: "We have chosen places where the whole family will feel at home. Here you can see how they differ and find price and availability for your dates.",
         introAdults: "We have chosen places that fit your wishes. Here you can see how they differ and find price and availability for your dates.",
-        rec: "Our recommendation", alt: "Alternative", total: "Total price", pp: v => `about €${v} per person per night`, tax: "plus local tourist tax", forDates: "Price and availability for your dates",
+        rec: "Our recommendation", alt: "Alternative", total: "Total price", pp: v => `about €${v} per person per night`, pn: v => `about €${v} per night`, tax: "plus local tourist tax", forDates: "Price and availability for your dates",
         board: { ro: "Room only", bb: "Bed & breakfast", hb: "Half board" },
         book: "Check availability & book", bookNote: "You book directly with the hotel, no middlemen.",
         compareTitle: "The houses compared", rows: { place: "Location", rooms: "Rooms", slope: "Getting to the slopes", mood: "Atmosphere", ideal: "Ideal for" },
@@ -351,7 +351,7 @@ function render(p, l, isSample, invalid) {
         const H = HOUSES[o.h], isRec = i === 0 && opts.length > 1;
         const facts = (winter ? H.facts.winter : H.facts.summer)[l];
         const price = typeof o.p === "number" && o.p > 0 ? o.p : null;
-        const pp = price && n && persons ? price / (n * persons) : null;
+        const pp = price && n ? (kn ? price / n : persons ? price / (n * persons) : null) : null; /* famiglie: prezzo a notte; solo adulti: a persona */
         return `
     <article class="opt${isRec ? " rec" : ""}">
       ${opts.length > 1 ? `<p class="badge">${isRec ? t.rec : t.alt}</p>` : ""}
@@ -366,7 +366,7 @@ function render(p, l, isSample, invalid) {
       </div>
       <div class="opt-price">
         ${price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
-          ${pp ? `<p class="pp">${esc(t.pp(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p>`
+          ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p>`
             : `<p class="lbl">${t.forDates}</p>`}
         <a class="btn" href="${esc(safeBooking(o))}" target="_blank" rel="noopener">${t.book} →</a>
         <p class="note">${t.bookNote}</p>
