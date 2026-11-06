@@ -84,6 +84,24 @@ button.btn{cursor:pointer}
 .alt-dates{margin:6px 0 4px;font-size:16px}
 .alt-card .opt-price{margin-top:14px}
 .sp-badge{margin:0 0 12px;padding:8px 12px;background:var(--panel);border-left:2px solid var(--gold);color:var(--gold-ink);font-size:13.5px;line-height:1.45}
+.week h3{margin:0 0 6px;font:400 26px var(--f-title)}
+.week-intro{margin:0 0 20px;font-weight:300;max-width:62ch}
+.week-grid{display:grid;gap:26px 40px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.wk{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:300}
+.wk p{margin:0}
+.wk.ski{border-top-color:var(--gold)}
+.wk-t{font:400 11px var(--f-body)!important;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink)}
+.wk a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;margin-right:16px}
+.wk .small{font-size:13px;color:var(--muted)}
+.lvl{display:flex;flex-wrap:wrap;gap:6px}
+.lvl button{font:400 13px var(--f-body);border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 12px;cursor:pointer;border-radius:0}
+.lvl button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.ski-rec{min-height:1.4em;font-weight:400}
+.extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
+.extras legend{font:400 11px var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink);padding:0 8px 0 0}
+.extras label.check{flex-wrap:wrap}
+.extras i{display:block;flex-basis:100%;padding-left:26px;font-style:normal;font-size:12.5px;color:var(--muted)}
+.sel-total{margin:4px 0 0;font-size:16px}
 .request{border-top:1px solid var(--gold);padding-top:26px;scroll-margin-top:16px}
 .req-sum{display:flex;flex-direction:column;gap:3px;margin:0 0 12px;font-size:15px}
 .req-sum strong{font:400 21px var(--f-title)}
@@ -95,10 +113,10 @@ button.btn{cursor:pointer}
 .req-form label i{font-style:normal;font-size:12px}
 .req-sent .copy{align-self:flex-start}
 .req-form .wide{grid-column:1/-1}
-.req-form input:not([type=checkbox]),.req-form textarea{font:400 16px var(--f-body);color:var(--ink);border:1px solid var(--line);border-radius:0;padding:11px 12px;background:#fff;width:100%;box-sizing:border-box}
+.req-form input:not([type=checkbox]):not([type=radio]),.req-form textarea{font:400 16px var(--f-body);color:var(--ink);border:1px solid var(--line);border-radius:0;padding:11px 12px;background:#fff;width:100%;box-sizing:border-box}
 .req-form input:focus,.req-form textarea:focus{outline:2px solid var(--gold);outline-offset:0;border-color:var(--gold)}
 .req-form label.check{flex-direction:row;align-items:flex-start;gap:10px;color:var(--ink);font-size:14px}
-.req-form label.check input{margin-top:3px;accent-color:var(--ink)}
+.req-form label.check input{margin-top:3px;accent-color:var(--ink);flex:none}
 .req-form .btn{justify-self:start;margin-top:4px}
 .req-err{margin:0;color:#8a2f26;font-size:13px}
 .req-sent{margin-top:22px;padding:18px;background:var(--panel);display:flex;flex-direction:column;gap:10px;max-width:720px}
@@ -338,6 +356,49 @@ const S = {
         noAddr: "To book, please reply to our email.", change: "Choose another option",
     },
 };
+const W = {
+    de: {
+        title: "Ihre Woche in Gröden", intro: "Damit Sie schon jetzt planen können: das Wichtigste für Ihre Reisedaten, aus offiziellen Quellen.",
+        skiTitle: "Der richtige Skipass", skiQ: "Wie fahren Sie Ski?", lvl: ["Anfänger oder nicht jeden Tag", "Ich bleibe in Gröden", "Sellaronda und mehr"],
+        skiRec: ["Die Punktekarte: übertragbar, Sie zahlen nur die Fahrten, die Sie machen.", "Der Skipass Val Gardena / Seiser Alm: 175 km Pisten bis zum Sella- und Grödner Joch.", "Der Dolomiti Superski: 1.200 km in 12 Tälern, mit der Sellaronda."],
+        skiShop: "Zum offiziellen Skipass-Shop", skiNote: "Online bis 2 Tage vorher 5 % günstiger, Abholung an den Pick-up-Boxen im Tal.", skiKids: "Ermäßigte Skipässe für Kinder und Jugendliche gibt es nicht online, sondern an der Skipass-Kasse.",
+        liveTitle: "Schnee & Wetter live", weather: "Wetter", webcams: "Webcams", slopes: "Offene Pisten",
+        eventsTitle: "Veranstaltungen", eventsText: "Was in Gröden während Ihres Aufenthalts los ist:", eventsLink: "Zum Veranstaltungskalender",
+        arrivalTitle: "Ihre Ankunft", arrival: { hartmann: "Chalet Hartmann: Check-in an der Rezeption von 14 bis 18 Uhr; später Self-Check-in, den PIN erhalten Sie am Anreisetag per WhatsApp.", saslong: "Smart Hotel Saslong: Self-Check-in am Kiosk." },
+        expTitle: "Erlebnisse", expText: "Ausgewählte Erlebnisse in den Dolomiten, für Sie zusammengestellt.", expLink: "Erlebnisse entdecken",
+        extrasTitle: "Ihr Aufenthalt nach Maß", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Zimmer wie im Angebot", breakfast: v => `Frühstück dazubuchen (${v} € pro Person und Nacht)`,
+        transfer: "Transfer mit Limousine Service Dolomiti", transferNote: "Preis auf Anfrage: der Fahrer bestätigt Ihnen den Endpreis.", totalSel: "Gesamt mit Ihrer Auswahl", extrasMail: "Extras", totalMail: "Gesamtpreis mit Extras", onRequest: "Preis auf Anfrage",
+    },
+    it: {
+        title: "La vostra settimana in Val Gardena", intro: "Per iniziare a organizzarvi: l'essenziale per le vostre date, da fonti ufficiali.",
+        skiTitle: "Lo skipass giusto", skiQ: "Come sciate?", lvl: ["Principiante o non tutti i giorni", "Resto in Val Gardena", "Sellaronda e oltre"],
+        skiRec: ["La carta a punti: cedibile, pagate solo le risalite che fate.", "Lo skipass Val Gardena / Alpe di Siusi: 175 km di piste fino a Passo Sella e Passo Gardena.", "Il Dolomiti Superski: 1.200 km in 12 valli, Sellaronda compreso."],
+        skiShop: "Allo shop ufficiale degli skipass", skiNote: "Online fino a 2 giorni prima costa il 5% in meno; ritiro ai Pick-up Box in valle.", skiKids: "Gli skipass ridotti per bambini e ragazzi non si comprano online ma alla cassa skipass.",
+        liveTitle: "Neve e meteo in diretta", weather: "Meteo", webcams: "Webcam", slopes: "Piste aperte",
+        eventsTitle: "Eventi", eventsText: "Cosa succede in Val Gardena durante il vostro soggiorno:", eventsLink: "Al calendario degli eventi",
+        arrivalTitle: "Il vostro arrivo", arrival: { hartmann: "Chalet Hartmann: check-in in reception dalle 14 alle 18; più tardi self check-in, il PIN arriva su WhatsApp il giorno dell'arrivo.", saslong: "Smart Hotel Saslong: self check-in al chiosco." },
+        expTitle: "Esperienze", expText: "Esperienze nelle Dolomiti selezionate per voi.", expLink: "Scopri le esperienze",
+        extrasTitle: "Il vostro soggiorno su misura", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Camera come da offerta", breakfast: v => `Aggiungi la colazione (${v} € a persona e notte)`,
+        transfer: "Transfer con Limousine Service Dolomiti", transferNote: "Prezzo su richiesta: l'autista vi conferma il prezzo finale.", totalSel: "Totale con la vostra scelta", extrasMail: "Extra", totalMail: "Prezzo totale con extra", onRequest: "prezzo su richiesta",
+    },
+    en: {
+        title: "Your week in Val Gardena", intro: "So you can start planning now: the essentials for your dates, from official sources.",
+        skiTitle: "The right ski pass", skiQ: "How do you ski?", lvl: ["Beginner or not every day", "Staying in Val Gardena", "Sellaronda and beyond"],
+        skiRec: ["The points card: transferable, you only pay for the rides you take.", "The Val Gardena / Seiser Alm pass: 175 km of slopes up to Sella Pass and Gardena Pass.", "The Dolomiti Superski: 1,200 km in 12 valleys, including the Sellaronda."],
+        skiShop: "Go to the official ski pass shop", skiNote: "Online up to 2 days ahead it costs 5% less; pick-up at the Pick-up Boxes in the valley.", skiKids: "Reduced passes for children and teenagers are not sold online but at the ski pass office.",
+        liveTitle: "Snow & weather live", weather: "Weather", webcams: "Webcams", slopes: "Open slopes",
+        eventsTitle: "Events", eventsText: "What's on in Val Gardena during your stay:", eventsLink: "Go to the events calendar",
+        arrivalTitle: "Your arrival", arrival: { hartmann: "Chalet Hartmann: check-in at reception from 2 to 6 pm; later self check-in, your PIN arrives by WhatsApp on the day of arrival.", saslong: "Smart Hotel Saslong: self check-in at the kiosk." },
+        expTitle: "Experiences", expText: "Experiences in the Dolomites, selected for you.", expLink: "Discover experiences",
+        extrasTitle: "Your stay, your way", upgrade: (n, v) => `Upgrade: ${n} (+ €${v})`, keepRoom: "Room as offered", breakfast: v => `Add breakfast (€${v} per person per night)`,
+        transfer: "Transfer with Limousine Service Dolomiti", transferNote: "Price on request: the driver confirms the final price.", totalSel: "Total with your selection", extrasMail: "Extras", totalMail: "Total price with extras", onRequest: "price on request",
+    },
+};
+const LINKS = {
+    weather: "https://www.valgardena.it/en/weather/", webcams: "https://www.valgardena.it/en/webcams/", slopes: "https://www.valgardena.it/en/winter-holidays-dolomites/slopes-ski-lifts/open-slopes/",
+    events: { de: "https://www.valgardena.it/de/veranstaltungskalender/", it: "https://www.valgardena.it/it/calendario-delle-manifestazioni/", en: "https://www.valgardena.it/en/calendar-of-events/" },
+    shop: "https://shop.dolomitisuperski.com/", experiences: "https://www.alpstay.eu/it/concierge.asp",
+};
 const LOCALE = { de: "de-DE", it: "it-IT", en: "en-GB" };
 const SAMPLE = {
     v: 1, l: "de", c: "315070", a: "2027-01-05", d: "2027-01-10", ad: 2, k: [14, 16], b: "ro",
@@ -470,6 +531,26 @@ function render(p, l, isSample, invalid) {
     const gallery = GALLERY.filter(g => g.house === "alpstay" || inOffer.has(g.house))
         .sort((a, b) => order(a.house) - order(b.house));
     function order(h) { return h === "alpstay" ? 99 : [...opts, ...alts].findIndex(o => o.h === h); }
+    const w = W[l];
+    function weekSection() {
+        const houses = [...new Set([...opts, ...alts].map(o => o.h))];
+        const arr = houses.map(h => w.arrival[h]).filter(Boolean);
+        const link = (href, txt) => `<a href="${href}" target="_blank" rel="noopener">${esc(txt)} ↗</a>`;
+        return `<section class="week">
+      <h3>${esc(w.title)}</h3><p class="week-intro">${esc(w.intro)}</p>
+      <div class="week-grid">
+        ${winter ? `<div class="wk ski"><p class="wk-t">${esc(w.skiTitle)}</p><p>${esc(w.skiQ)}</p>
+          <div class="lvl" role="group">${w.lvl.map((x, i) => `<button type="button" data-lvl="${i}" aria-pressed="false">${esc(x)}</button>`).join("")}</div>
+          <p class="ski-rec" aria-live="polite"></p>
+          <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
+          <p>${link(LINKS.shop, w.skiShop)}</p></div>` : ""}
+        <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
+        <div class="wk"><p class="wk-t">${esc(w.eventsTitle)}</p><p>${esc(w.eventsText)} <b>${esc(dateRange(p, l))}</b></p><p>${link(LINKS.events[l], w.eventsLink)}</p></div>
+        ${arr.length ? `<div class="wk"><p class="wk-t">${esc(w.arrivalTitle)}</p>${arr.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
+        <div class="wk"><p class="wk-t">${esc(w.expTitle)}</p><p>${esc(w.expText)}</p><p>${link(LINKS.experiences, w.expLink)}</p></div>
+      </div>
+    </section>`;
+    }
     const app = document.getElementById("app");
     app.innerHTML = `
   ${isSample ? `<p class="ribbon">${invalid ? t.invalid : t.sample}</p>` : ""}
@@ -497,6 +578,7 @@ function render(p, l, isSample, invalid) {
     </section>` : ""}
     <section class="request" id="anfrage" hidden></section>
 
+    ${weekSection()}
     ${gallery.length ? `
     <section class="gallery">
       <h3>${t.galleryTitle}</h3>
@@ -545,8 +627,15 @@ function render(p, l, isSample, invalid) {
       <div class="req-sum"><strong>${esc(H.name)}</strong><span>${esc(dateRange({ ...p, a: c.a, d: c.d }, l))} · ${esc(t.nights(nn))} · ${esc(roomName(c.o, l))} · ${esc(t.board[p.b])}</span>
         ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span>` : ""}
         ${choices.length > 1 ? `<button type="button" class="linkbtn" data-change>${t.change}</button>` : ""}</div>
-      <p class="req-intro">${esc(t.formIntro)}</p>
       <form class="req-form" novalidate>
+        <fieldset class="extras wide"><legend>${esc(w.extrasTitle)}</legend>
+          ${c.o.up && c.o.up.p > 0 && c.o.up.n ? `<label class="check"><input type="radio" name="up" value="0" checked> ${esc(w.keepRoom)}</label>
+            <label class="check"><input type="radio" name="up" value="1"> ${esc(w.upgrade(c.o.up.n, money(c.o.up.p, l, 0)))}</label>` : ""}
+          ${p.b === "ro" && typeof p.bf === "number" && p.bf > 0 ? `<label class="check"><input type="checkbox" name="bf"> ${esc(w.breakfast(money(p.bf, l, 0)))}</label>` : ""}
+          <label class="check"><input type="checkbox" name="tr"> ${esc(w.transfer)} <i>${esc(w.transferNote)}</i></label>
+          ${c.price ? `<p class="sel-total">${esc(w.totalSel)}: <b data-total>${money(c.price, l, 2)} €</b></p>` : ""}
+        </fieldset>
+        <p class="req-intro wide">${esc(t.formIntro)}</p>
         <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
         <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
         <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
@@ -561,6 +650,16 @@ function render(p, l, isSample, invalid) {
         reqBox.scrollIntoView({ behavior: "smooth", block: "start" });
         (_a = reqBox.querySelector("[data-change]")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => { var _a; reqBox.hidden = true; (_a = app.querySelector(opts.length ? ".opts" : ".alts")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" }); });
         const form = reqBox.querySelector("form");
+        /* Extra scelti e totale aggiornato (solo voci con prezzo; il transfer resta su richiesta) */
+        const persons2 = p.ad + kn;
+        const sel = () => {
+            const f = new FormData(form), up = f.get("up") === "1" && c.o.up ? c.o.up : null, bf = !!f.get("bf") && p.b === "ro" && typeof p.bf === "number" ? p.bf * persons2 * nn : 0;
+            const codes = [up ? "up" : "", bf ? "bf" : "", f.get("tr") ? "tr" : ""].filter(Boolean);
+            const total = c.price != null ? c.price + (up ? up.p : 0) + bf : null;
+            return { up, bf, tr: !!f.get("tr"), codes, total };
+        };
+        form.addEventListener("change", () => { const x = sel(), el = form.querySelector("[data-total]"); if (el && x.total != null)
+            el.textContent = `${money(x.total, l, 2)} €`; });
         form.addEventListener("submit", e => {
             var _a, _b;
             e.preventDefault();
@@ -575,13 +674,21 @@ function render(p, l, isSample, invalid) {
             /* Testo naturale per l'ospite; in fondo un solo riferimento compatto che l'Offerta Studio sa leggere */
             const nn2 = Math.max(0, Math.round((Date.parse(c.d) - Date.parse(c.a)) / 864e5));
             const ref = [p.c || "-", c.o.h, c.o.r, c.a, c.d, p.ad, kn, p.k.length ? p.k.join(",") : "-", p.b, c.price != null ? c.price.toFixed(2) : "-", c.special ? 1 : 0, l]
-                .join("/") + (c.o.r === "custom" && c.o.rc ? `/rc=${encodeURIComponent(c.o.rc)}` : "");
+                .join("/") + (c.o.r === "custom" && c.o.rc ? `/rc=${encodeURIComponent(c.o.rc)}` : "")
+                + (sel().codes.length ? `/x=${sel().codes.join(".")}` : "") + (sel().codes.length && sel().total != null ? `/t=${sel().total.toFixed(2)}` : "");
+            const xs = sel();
+            const extraLines = [
+                ...(xs.up ? [w.upgrade(xs.up.n, money(xs.up.p, l, 0))] : []),
+                ...(xs.bf ? [w.breakfast(money(p.bf, l, 0))] : []),
+                ...(xs.tr ? [`${w.transfer} (${w.onRequest})`] : []),
+            ];
             const wish = String((_a = f.get("wish")) !== null && _a !== void 0 ? _a : "").replace(/\r/g, "").replace(/\n\s*\n+/g, "\n").trim().slice(0, 800);
             const full = `${v("first")} ${v("last")}`;
             const body = [
                 t.mailHello, "", t.mailIntro, "",
                 H.name, `${dateRange({ ...p, a: c.a, d: c.d }, l)} · ${t.nights(nn2)}`, `${roomName(c.o, l)} · ${t.board[p.b]}`, guestsLine,
-                ...(c.price ? [`${t.mailPrice}: ${money(c.price, l, 2)} €${c.special ? " (Special)" : ""}`] : []), "",
+                ...(c.price ? [`${t.mailPrice}: ${money(c.price, l, 2)} €${c.special ? " (Special)" : ""}`] : []),
+                ...(extraLines.length ? ["", `${w.extrasMail}:`, ...extraLines.map(x => `– ${x}`), ...(xs.total != null && xs.total !== c.price ? [`${w.totalMail}: ${money(xs.total, l, 2)} €`] : [])] : []), "",
                 `${t.mailMine}:`, `${t.lName}: ${full}`, `${t.email}: ${v("email")}`, ...(v("phone") ? [`${t.phone}: ${v("phone")}`] : []), ...(v("eta") ? [`${t.lEta}: ${v("eta")}`] : []),
                 ...(wish ? ["", `${t.wish}:`, wish] : []), "",
                 t.mailClose, "", t.mailBye, full, "", `Ref. ${REQ_TAG} ${ref}`,
@@ -610,6 +717,10 @@ function render(p, l, isSample, invalid) {
     app.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => render(p, b.dataset.lang, isSample, invalid)));
     app.querySelectorAll(".g-open").forEach(b => b.addEventListener("click", () => openLightbox(gallery[Number(b.dataset.g)], l)));
     bindCopy(app);
+    app.querySelectorAll("[data-lvl]").forEach(b => b.addEventListener("click", () => {
+        app.querySelectorAll("[data-lvl]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        app.querySelector(".ski-rec").textContent = w.skiRec[Number(b.dataset.lvl)];
+    }));
     function bindCopy(root) {
         root.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
             var _a;
