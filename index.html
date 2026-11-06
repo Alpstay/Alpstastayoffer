@@ -26,6 +26,7 @@ body{background:var(--white);color:var(--ink);font:16px/1.65 var(--f-body);margi
 .langs button{font:400 12px var(--f-body);letter-spacing:.08em;background:none;border:1px solid transparent;border-radius:3px;padding:4px 8px;color:var(--muted);cursor:pointer}
 .langs button[aria-pressed="true"]{border-color:var(--gold);color:var(--ink)}
 .hero{background-size:cover;background-position:68% center;background-color:#8a9497;position:relative;min-height:clamp(440px,72vh,800px);display:flex;align-items:flex-end}
+.hero.summer{background-position:46% 0}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,27,25,.74) 0%,rgba(26,27,25,.36) 36%,rgba(26,27,25,0) 62%),linear-gradient(90deg,rgba(26,27,25,.38) 0%,rgba(26,27,25,0) 58%)}
 .hero .inner{position:relative;width:100%;box-sizing:border-box;padding-block:40px 46px;color:#fff}
 .eyebrow{margin:0 0 14px;font:400 12px var(--f-body);letter-spacing:.34em;text-transform:uppercase;color:var(--gold-light)}
@@ -151,7 +152,7 @@ tbody th{font:400 12px var(--f-body);color:var(--muted);letter-spacing:.1em;text
  * Legge l'offerta dal parametro ?o= (JSON in base64url) prodotto dall'Offerta Studio.
  * Nessun dato personale dell'ospite nel link: solo date, persone, camere, prezzi e codice richiesta. */
 const REQ_TAG = "AS-REQ";
-const PHOTO = { hero: "img/testata.jpg", acadia: "img/acadia.jpg", hartmann: "img/hartmann.jpg", saslong: "img/saslong.jpg", logo: "img/logo.png" };
+const PHOTO = { hero: "img/testata.jpg", heroSummer: "img/testata-estate.jpg", acadia: "img/acadia.jpg", hartmann: "img/hartmann.jpg", saslong: "img/saslong.jpg", logo: "img/logo.png" };
 /* Solo fatti verificati */
 const HOUSES = {
     saslong: {
@@ -470,7 +471,7 @@ function render(p, l, isSample, invalid) {
     </div>
   </div></header>
 
-  <section class="hero" style="background-image:url('${PHOTO.hero}')"><div class="inner">
+  <section class="hero${winter ? "" : " summer"}" style="background-image:url('${winter ? PHOTO.hero : PHOTO.heroSummer}')"><div class="inner">
     <p class="eyebrow">${t.eyebrow}</p>
     <h1>${esc(t.title(opts.length))}</h1>
     <p class="facts-line">${esc(dateRange(p, l))} · ${esc(t.nights(n))} · ${esc(guestsLine)}</p>
