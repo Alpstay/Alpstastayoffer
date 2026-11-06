@@ -157,6 +157,8 @@ tbody th{font:400 12px var(--f-body);color:var(--muted);letter-spacing:.1em;text
  * Legge l'offerta dal parametro ?o= (JSON in base64url) prodotto dall'Offerta Studio.
  * Nessun dato personale dell'ospite nel link: solo date, persone, camere, prezzi e codice richiesta. */
 const REQ_TAG = "AS-REQ";
+/* Foto delle case in estate (le invernali sono in PHOTO) */
+const PHOTO_S = { hartmann: "img/hartmann-estate.jpg", saslong: "img/saslong-estate.jpg", acadia: "img/acadia-estate.jpg" };
 const PHOTO = { hero: "img/testata.jpg", heroSummer: "img/testata-estate.jpg", acadia: "img/acadia.jpg", hartmann: "img/hartmann.jpg", saslong: "img/saslong.jpg", logo: "img/logo.png" };
 /* Solo fatti verificati */
 const HOUSES = {
@@ -427,7 +429,7 @@ function render(p, l, isSample, invalid) {
         return `
     <article class="opt${isRec ? " rec" : ""}" id="opt-${i}">
       ${opts.length > 1 ? `<p class="badge">${isRec ? t.rec : t.alt}</p>` : ""}
-      <div class="opt-media">${H.photo ? `<img src="${H.photo}" alt="${esc(H.name)}">` : `<span>${esc(H.place[l])}</span>`}</div>
+      <div class="opt-media">${H.photo ? `<img src="${winter ? H.photo : PHOTO_S[o.h]}" alt="${esc(H.name)}">` : `<span>${esc(H.place[l])}</span>`}</div>
       <div class="opt-body">
         <p class="concept">${esc(H.concept[l])}</p>
         <h2>${esc(H.name)}</h2>
