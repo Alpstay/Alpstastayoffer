@@ -72,6 +72,39 @@ main.inner{padding-block:44px 24px;display:flex;flex-direction:column;gap:48px}
 .opt.rec .btn:hover{background:#000}
 .btn:focus-visible,.langs button:focus-visible,.copy:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .note{margin:6px 0 0;font-size:12.5px;color:var(--muted)}
+button.btn{cursor:pointer}
+.was{margin:0;font-size:13px;color:var(--muted);text-decoration:line-through}
+.alts h3,.request h3{margin:0 0 10px;font:400 26px var(--f-title)}
+.alt-intro{margin:0 0 18px;font-weight:300;max-width:62ch}
+.alt-grid{display:grid;gap:28px 40px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.alt-card{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:18px;min-width:0}
+.alt-card.special{border-top-color:var(--gold)}
+.alt-card h4{margin:0;font:400 24px/1.2 var(--f-title)}
+.alt-dates{margin:6px 0 4px;font-size:16px}
+.alt-card .opt-price{margin-top:14px}
+.sp-badge{margin:0 0 12px;padding:8px 12px;background:var(--panel);border-left:2px solid var(--gold);color:var(--gold-ink);font-size:13.5px;line-height:1.45}
+.request{border-top:1px solid var(--gold);padding-top:26px;scroll-margin-top:16px}
+.req-sum{display:flex;flex-direction:column;gap:3px;margin:0 0 12px;font-size:15px}
+.req-sum strong{font:400 21px var(--f-title)}
+.req-price{color:var(--gold-ink)}
+.linkbtn{all:unset;cursor:pointer;align-self:flex-start;margin-top:4px;font-size:13px;color:var(--gold-ink);text-decoration:underline;text-underline-offset:3px}
+.req-intro{margin:0 0 18px;max-width:62ch;font-weight:300}
+.req-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;max-width:720px}
+.req-form label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--muted);letter-spacing:.03em}
+.req-form label i{font-style:normal;font-size:12px}
+.req-sent .copy{align-self:flex-start}
+.req-form .wide{grid-column:1/-1}
+.req-form input:not([type=checkbox]),.req-form textarea{font:400 16px var(--f-body);color:var(--ink);border:1px solid var(--line);border-radius:0;padding:11px 12px;background:#fff;width:100%;box-sizing:border-box}
+.req-form input:focus,.req-form textarea:focus{outline:2px solid var(--gold);outline-offset:0;border-color:var(--gold)}
+.req-form label.check{flex-direction:row;align-items:flex-start;gap:10px;color:var(--ink);font-size:14px}
+.req-form label.check input{margin-top:3px;accent-color:var(--ink)}
+.req-form .btn{justify-self:start;margin-top:4px}
+.req-err{margin:0;color:#8a2f26;font-size:13px}
+.req-sent{margin-top:22px;padding:18px;background:var(--panel);display:flex;flex-direction:column;gap:10px;max-width:720px}
+.req-sent h4{margin:0;font:400 22px var(--f-title)}
+.req-sent p{margin:0}
+.req-text{margin:0;white-space:pre-wrap;font:400 12.5px/1.5 ui-monospace,Menlo,monospace;background:#fff;border:1px solid var(--line);padding:12px;max-height:260px;overflow:auto}
+@media (max-width:640px){.req-form{grid-template-columns:minmax(0,1fr)}}
 .gallery h3{margin:0 0 16px;font:400 26px var(--f-title)}
 .g-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
 .g-item{margin:0;position:relative;min-width:0}
@@ -117,6 +150,7 @@ tbody th{font:400 12px var(--f-body);color:var(--muted);letter-spacing:.1em;text
 /* Pagina personale dell'offerta AlpStay.
  * Legge l'offerta dal parametro ?o= (JSON in base64url) prodotto dall'Offerta Studio.
  * Nessun dato personale dell'ospite nel link: solo date, persone, camere, prezzi e codice richiesta. */
+const REQ_TAG = "AS-REQ";
 const PHOTO = { hero: "img/testata.jpg", acadia: "img/acadia.jpg", hartmann: "img/hartmann.jpg", saslong: "img/saslong.jpg", logo: "img/logo.png" };
 /* Solo fatti verificati */
 const HOUSES = {
@@ -146,7 +180,6 @@ const HOUSES = {
             mood: { de: "Modern und unkompliziert, 49 Zimmer", it: "Moderno e informale, 49 camere", en: "Modern and easy-going, 49 rooms" },
             ideal: { de: "Aktive Familien, die viel unterwegs sind", it: "Famiglie attive, sempre in movimento", en: "Active families who are out all day" },
         },
-        booking: "https://booking.slope.it/7ca10a66-df13-4e99-86c6-6db74047238a",
         photo: PHOTO.saslong,
     },
     hartmann: {
@@ -175,7 +208,6 @@ const HOUSES = {
             mood: { de: "Persönlich und ruhig, nur 9 Zimmer", it: "Personale e tranquillo, solo 9 camere", en: "Personal and quiet, only 9 rooms" },
             ideal: { de: "Wer Ruhe und persönliche Atmosphäre sucht", it: "Chi cerca calma e un'atmosfera personale", en: "Guests looking for calm and a personal touch" },
         },
-        booking: "https://booking.slope.it/c6055fa5-edaa-4b8f-a518-541322f3ac1e",
         photo: PHOTO.hartmann,
     },
     acadia: {
@@ -204,7 +236,6 @@ const HOUSES = {
             mood: { de: "Zentral und elegant, 22 Zimmer", it: "Centrale ed elegante, 22 camere", en: "Central and elegant, 22 rooms" },
             ideal: { de: "Paare, die mitten im Ort wohnen möchten", it: "Coppie che vogliono stare in centro", en: "Couples who want to stay in the centre" },
         },
-        booking: "https://booking.slope.it/4cb5989a-8788-46f6-a726-f31abc67f697",
         photo: PHOTO.acadia,
     },
 };
@@ -233,11 +264,19 @@ const S = {
         introAdults: "Wir haben Unterkünfte ausgewählt, die zu Ihren Wünschen passen. Hier sehen Sie, wie sich die Häuser unterscheiden, und finden Preis und Verfügbarkeit für Ihre Daten.",
         rec: "Unsere Empfehlung", alt: "Alternative", total: "Gesamtpreis", pp: v => `ca. ${v} € pro Person und Nacht`, pn: v => `ca. ${v} € pro Nacht`, tax: "zzgl. Ortstaxe", forDates: "Preis und Verfügbarkeit für Ihre Daten",
         board: { ro: "Übernachtung", bb: "Übernachtung mit Frühstück", hb: "Halbpension" },
-        book: "Verfügbarkeit prüfen & buchen", bookNote: "Sie buchen direkt beim Hotel, ohne Vermittler.",
+        book: "Unverbindlich anfragen", bookNote: "Wir prüfen die Verfügbarkeit und bestätigen Ihnen persönlich. Direkt beim Hotel, ohne Vermittler.",
         compareTitle: "Die Häuser im Vergleich", rows: { place: "Ort", rooms: "Zimmer", slope: "Weg zur Piste", mood: "Atmosphäre", ideal: "Ideal für" },
         galleryTitle: "Einblicke", close: "Schließen",
         helpTitle: "Lieber persönlich?", helpText: "Antworten Sie einfach auf unsere E-Mail oder rufen Sie uns an. Wir passen das Angebot gern für Sie an.",
         copy: "Kopieren", copied: "Kopiert", sample: "Beispielangebot", invalid: "Dieser Link ist unvollständig. Wir zeigen ein Beispielangebot.",
+        altTitle: "Alternative Zeiträume", altNone: "Für Ihre Wunschdaten sind wir leider ausgebucht. Zu diesen Zeiträumen haben wir Zimmer für Sie frei:", altSome: "Für ein Haus sind Ihre Wunschdaten ausgebucht. Dort haben wir zu diesen Zeiträumen Zimmer frei:",
+        special: (pct, until) => `Special Sonntag bis Donnerstag: weitere ${pct} % Rabatt bei Anfrage bis ${until}`, was: v => `statt ${v} €`,
+        formTitle: "Ihre Buchungsanfrage", formIntro: "Die Anfrage ist unverbindlich. Wir prüfen die Verfügbarkeit und antworten Ihnen persönlich mit der Bestätigung und den Zahlungsdetails.",
+        first: "Vorname", last: "Nachname", email: "E-Mail", phone: "Telefon", eta: "Voraussichtliche Ankunftszeit", wish: "Wünsche", optional: "optional",
+        consent: "Ich habe verstanden: Die Buchung gilt erst, wenn Alpstay sie bestätigt.", send: "Anfrage per E-Mail senden", required: "Bitte füllen Sie die markierten Felder aus.",
+        sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit der fertigen Anfrage geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
+        mailSubject: (c, h) => `Buchungsanfrage ${c} – ${h}`, mailIntro: "Guten Tag, ich möchte folgenden Aufenthalt anfragen:",
+        noAddr: "Bitte antworten Sie auf unsere E-Mail, um zu buchen.", change: "Andere Option wählen",
     },
     it: {
         eyebrow: "La tua proposta personale", offerNo: c => `Richiesta n. ${c}`,
@@ -249,11 +288,19 @@ const S = {
         introAdults: "Abbiamo scelto strutture adatte ai tuoi desideri. Qui vedi come si differenziano e trovi prezzo e disponibilità per le tue date.",
         rec: "La nostra proposta", alt: "Alternativa", total: "Prezzo totale", pp: v => `circa ${v} € a persona per notte`, pn: v => `circa ${v} € a notte`, tax: "più imposta di soggiorno", forDates: "Prezzo e disponibilità per le tue date",
         board: { ro: "Solo pernottamento", bb: "Pernottamento e colazione", hb: "Mezza pensione" },
-        book: "Verifica disponibilità e prenota", bookNote: "Prenoti direttamente con l'hotel, senza intermediari.",
+        book: "Richiedi la prenotazione", bookNote: "Verifichiamo la disponibilità e ti confermiamo di persona. Direttamente con l'hotel, senza intermediari.",
         compareTitle: "Le case a confronto", rows: { place: "Località", rooms: "Camere", slope: "Verso le piste", mood: "Atmosfera", ideal: "Ideale per" },
         galleryTitle: "Uno sguardo dentro", close: "Chiudi",
         helpTitle: "Preferisci parlarne?", helpText: "Rispondi alla nostra email o chiamaci: adattiamo volentieri la proposta per te.",
         copy: "Copia", copied: "Copiato", sample: "Proposta d'esempio", invalid: "Questo link è incompleto. Mostriamo una proposta d'esempio.",
+        altTitle: "Periodi alternativi", altNone: "Per le date richieste siamo purtroppo al completo. In questi periodi abbiamo camere libere per te:", altSome: "Per una delle case le date richieste sono al completo. Lì abbiamo camere libere in questi periodi:",
+        special: (pct, until) => `Special domenica–giovedì: un ulteriore ${pct}% di sconto se richiedi entro ${until}`, was: v => `invece di ${v} €`,
+        formTitle: "La tua richiesta di prenotazione", formIntro: "La richiesta non è vincolante. Verifichiamo la disponibilità e ti rispondiamo di persona con la conferma e i dettagli per il pagamento.",
+        first: "Nome", last: "Cognome", email: "Email", phone: "Telefono", eta: "Orario di arrivo previsto", wish: "Desideri", optional: "facoltativo",
+        consent: "Ho capito: la prenotazione vale solo dopo la conferma di Alpstay.", send: "Invia la richiesta via email", required: "Compila i campi segnati.",
+        sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la richiesta pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
+        mailSubject: (c, h) => `Richiesta di prenotazione ${c} – ${h}`, mailIntro: "Buongiorno, vorrei richiedere il seguente soggiorno:",
+        noAddr: "Per prenotare rispondi alla nostra email.", change: "Scegli un'altra opzione",
     },
     en: {
         eyebrow: "Your personal offer", offerNo: c => `Request no. ${c}`,
@@ -265,11 +312,19 @@ const S = {
         introAdults: "We have chosen places that fit your wishes. Here you can see how they differ and find price and availability for your dates.",
         rec: "Our recommendation", alt: "Alternative", total: "Total price", pp: v => `about €${v} per person per night`, pn: v => `about €${v} per night`, tax: "plus local tourist tax", forDates: "Price and availability for your dates",
         board: { ro: "Room only", bb: "Bed & breakfast", hb: "Half board" },
-        book: "Check availability & book", bookNote: "You book directly with the hotel, no middlemen.",
+        book: "Request booking", bookNote: "We check availability and confirm personally. Directly with the hotel, no middlemen.",
         compareTitle: "The houses compared", rows: { place: "Location", rooms: "Rooms", slope: "Getting to the slopes", mood: "Atmosphere", ideal: "Ideal for" },
         galleryTitle: "A look inside", close: "Close",
         helpTitle: "Prefer to talk?", helpText: "Simply reply to our email or call us. We will gladly adjust the offer for you.",
         copy: "Copy", copied: "Copied", sample: "Sample offer", invalid: "This link is incomplete. We are showing a sample offer.",
+        altTitle: "Alternative dates", altNone: "Unfortunately we are fully booked for your dates. We have rooms available for you in these periods:", altSome: "One of the houses is fully booked for your dates. There we have rooms available in these periods:",
+        special: (pct, until) => `Sunday–Thursday special: a further ${pct}% off if you request by ${until}`, was: v => `instead of €${v}`,
+        formTitle: "Your booking request", formIntro: "The request is not binding. We check availability and reply personally with the confirmation and payment details.",
+        first: "First name", last: "Last name", email: "Email", phone: "Phone", eta: "Expected arrival time", wish: "Wishes", optional: "optional",
+        consent: "I understand: the booking only applies once Alpstay confirms it.", send: "Send request by email", required: "Please fill in the marked fields.",
+        sentTitle: "Almost done", sentText: "Your email program has opened with the request ready. Please send the message from there. If nothing opened, copy the text and send it to:",
+        mailSubject: (c, h) => `Booking request ${c} – ${h}`, mailIntro: "Hello, I would like to request the following stay:",
+        noAddr: "To book, please reply to our email.", change: "Choose another option",
     },
 };
 const LOCALE = { de: "de-DE", it: "it-IT", en: "en-GB" };
@@ -295,20 +350,17 @@ function isPayload(x) {
     const date = /^\d{4}-\d{2}-\d{2}$/;
     return x.v === 1 && (x.l === "de" || x.l === "it" || x.l === "en")
         && typeof x.a === "string" && date.test(x.a) && typeof x.d === "string" && date.test(x.d)
-        && typeof x.ad === "number" && Array.isArray(x.k) && Array.isArray(x.o) && x.o.length > 0
-        && x.o.every(o => o && o.h in HOUSES);
+        && typeof x.ad === "number" && Array.isArray(x.k) && Array.isArray(x.o)
+        && (x.o.length > 0 || (Array.isArray(x.x) && x.x.length > 0))
+        && x.o.every(o => o && o.h in HOUSES)
+        && (x.x === undefined || (Array.isArray(x.x) && x.x.every(o => o && o.h in HOUSES && date.test(o.a) && date.test(o.d))));
 }
-/* Il pulsante prenota porta solo al booking engine Slope: niente redirect verso altri siti */
-function safeBooking(o) {
-    var _a;
-    try {
-        const u = new URL((_a = o.u) !== null && _a !== void 0 ? _a : "");
-        if (u.protocol === "https:" && u.hostname === "booking.slope.it")
-            return u.toString();
-    }
-    catch { /* link mancante o non valido */ }
-    return HOUSES[o.h].booking;
+/* Indirizzo per la richiesta: solo un indirizzo email semplice */
+function requestAddr(p) {
+    const e = (p.re || p.se || "").trim();
+    return /^[^\s@<>?&]+@[^\s@<>?&]+\.[a-z]{2,}$/i.test(e) ? e : "";
 }
+function specialValid(x) { return !!x.sp && !!x.dl && Date.parse(x.dl) > Date.now(); }
 /* ---------- Formattazione ---------- */
 const esc = (s) => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function nightsOf(p) {
@@ -339,6 +391,7 @@ function money(n, l, dec) {
 }
 /* ---------- Render ---------- */
 function render(p, l, isSample, invalid) {
+    var _a, _b;
     const kn = Math.max(typeof p.kn === "number" ? p.kn : 0, p.k.length), agesOk = p.k.length >= kn;
     const t = S[l], n = nightsOf(p), winter = isWinter(p), persons = p.ad + kn;
     const teen = kn > 0 && agesOk && p.k.every(x => x >= 12);
@@ -347,13 +400,23 @@ function render(p, l, isSample, invalid) {
     const opts = p.o.slice(0, 3);
     document.documentElement.lang = l;
     document.title = `Alpstay · ${t.eyebrow}`;
+    const alts = ((_a = p.x) !== null && _a !== void 0 ? _a : []).slice(0, 6);
+    const choices = [
+        ...opts.map(o => ({ o, a: p.a, d: p.d, price: typeof o.p === "number" && o.p > 0 ? o.p : null, special: false })),
+        ...alts.map(x => { var _a, _b, _c; const sp = specialValid(x); return { o: x, a: x.a, d: x.d, price: sp ? ((_a = x.p) !== null && _a !== void 0 ? _a : null) : ((_c = (_b = x.p0) !== null && _b !== void 0 ? _b : x.p) !== null && _c !== void 0 ? _c : null), special: sp }; }),
+    ];
+    const fmtUntil = (iso) => new Date(iso).toLocaleString(LOCALE[l], { weekday: "short", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+    const priceBlock = (c, nn, alt) => {
+        const price = c.price, pp = price && nn ? (kn ? price / nn : persons ? price / (nn * persons) : null) : null; /* famiglie: prezzo a notte; solo adulti: a persona */
+        return price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
+      ${c.special && (alt === null || alt === void 0 ? void 0 : alt.p0) ? `<p class="was">${esc(t.was(money(alt.p0, l, 2)))}</p>` : ""}
+      ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p>` : `<p class="lbl">${t.forDates}</p>`;
+    };
     const card = (o, i) => {
         const H = HOUSES[o.h], isRec = i === 0 && opts.length > 1;
         const facts = (winter ? H.facts.winter : H.facts.summer)[l];
-        const price = typeof o.p === "number" && o.p > 0 ? o.p : null;
-        const pp = price && n ? (kn ? price / n : persons ? price / (n * persons) : null) : null; /* famiglie: prezzo a notte; solo adulti: a persona */
         return `
-    <article class="opt${isRec ? " rec" : ""}">
+    <article class="opt${isRec ? " rec" : ""}" id="opt-${i}">
       ${opts.length > 1 ? `<p class="badge">${isRec ? t.rec : t.alt}</p>` : ""}
       <div class="opt-media">${H.photo ? `<img src="${H.photo}" alt="${esc(H.name)}">` : `<span>${esc(H.place[l])}</span>`}</div>
       <div class="opt-body">
@@ -365,12 +428,24 @@ function render(p, l, isSample, invalid) {
         <p class="stay">${esc(roomName(o, l))} · ${esc(t.board[p.b])}</p>
       </div>
       <div class="opt-price">
-        ${price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
-          ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p>`
-            : `<p class="lbl">${t.forDates}</p>`}
-        <a class="btn" href="${esc(safeBooking(o))}" target="_blank" rel="noopener">${t.book} →</a>
+        ${priceBlock(choices[i], n)}
+        <button type="button" class="btn" data-choose="${i}">${t.book} →</button>
         <p class="note">${t.bookNote}</p>
       </div>
+    </article>`;
+    };
+    const altCard = (x, j) => {
+        const H = HOUSES[x.h], c = choices[opts.length + j], nn = Math.max(0, Math.round((Date.parse(x.d) - Date.parse(x.a)) / 864e5));
+        const range = dateRange({ ...p, a: x.a, d: x.d }, l);
+        return `
+    <article class="alt-card${c.special ? " special" : ""}" id="alt-${j}">
+      ${c.special && x.dl ? `<p class="sp-badge">${esc(t.special(10, fmtUntil(x.dl)))}</p>` : ""}
+      <p class="concept">${esc(H.place[l])} · Val Gardena</p>
+      <h4>${esc(H.name)}</h4>
+      <p class="alt-dates">${esc(range)} · ${esc(t.nights(nn))}</p>
+      <p class="stay">${esc(roomName(x, l))} · ${esc(t.board[p.b])}</p>
+      <div class="opt-price">${priceBlock(c, nn, x)}
+        <button type="button" class="btn" data-choose="${opts.length + j}">${t.book} →</button></div>
     </article>`;
     };
     const rows = [
@@ -380,10 +455,10 @@ function render(p, l, isSample, invalid) {
         [t.rows.mood, o => HOUSES[o.h].compare.mood[l]],
         [t.rows.ideal, o => HOUSES[o.h].compare.ideal[l]],
     ];
-    const inOffer = new Set(opts.map(o => o.h));
+    const inOffer = new Set([...opts, ...alts].map(o => o.h));
     const gallery = GALLERY.filter(g => g.house === "alpstay" || inOffer.has(g.house))
         .sort((a, b) => order(a.house) - order(b.house));
-    function order(h) { return h === "alpstay" ? 99 : opts.findIndex(o => o.h === h); }
+    function order(h) { return h === "alpstay" ? 99 : [...opts, ...alts].findIndex(o => o.h === h); }
     const app = document.getElementById("app");
     app.innerHTML = `
   ${isSample ? `<p class="ribbon">${invalid ? t.invalid : t.sample}</p>` : ""}
@@ -402,9 +477,14 @@ function render(p, l, isSample, invalid) {
   </div></section>
 
   <main class="inner">
-    <div class="intro-wrap"><p class="intro">${esc(intro)}</p>
+    <div class="intro-wrap"><p class="intro">${esc(opts.length ? intro : t.altNone)}</p>
     ${typeof p.n === "string" && p.n.trim() ? `<p class="personal">${esc(p.n.trim().slice(0, 600))}</p>` : ""}</div>
-    <section class="opts n${opts.length}">${opts.map(card).join("")}</section>
+    ${opts.length ? `<section class="opts n${opts.length}">${opts.map(card).join("")}</section>` : ""}
+    ${alts.length ? `<section class="alts" id="alternativen">
+      ${opts.length ? `<h3>${t.altTitle}</h3><p class="alt-intro">${esc(t.altSome)}</p>` : ""}
+      <div class="alt-grid">${alts.map(altCard).join("")}</div>
+    </section>` : ""}
+    <section class="request" id="anfrage" hidden></section>
 
     ${gallery.length ? `
     <section class="gallery">
@@ -436,23 +516,100 @@ function render(p, l, isSample, invalid) {
     </section>
   </main>
   <footer class="foot"><div class="inner"><span class="tag">BE FREE. STAY TRUE</span><span>Alpstay Hotels · Val Gardena · Dolomites</span><a href="https://www.alpstay.eu" target="_blank" rel="noopener">www.alpstay.eu</a></div></footer>`;
+    const reqBox = app.querySelector("#anfrage");
+    const openForm = (idx) => {
+        var _a;
+        const c = choices[idx];
+        if (!c)
+            return;
+        const addr = requestAddr(p), H = HOUSES[c.o.h], nn = Math.max(0, Math.round((Date.parse(c.d) - Date.parse(c.a)) / 864e5));
+        reqBox.hidden = false;
+        if (!addr) {
+            reqBox.innerHTML = `<h3>${t.formTitle}</h3><p>${esc(t.noAddr)}</p>`;
+            reqBox.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
+        reqBox.innerHTML = `
+      <h3>${t.formTitle}</h3>
+      <div class="req-sum"><strong>${esc(H.name)}</strong><span>${esc(dateRange({ ...p, a: c.a, d: c.d }, l))} · ${esc(t.nights(nn))} · ${esc(roomName(c.o, l))} · ${esc(t.board[p.b])}</span>
+        ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span>` : ""}
+        ${choices.length > 1 ? `<button type="button" class="linkbtn" data-change>${t.change}</button>` : ""}</div>
+      <p class="req-intro">${esc(t.formIntro)}</p>
+      <form class="req-form" novalidate>
+        <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
+        <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
+        <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
+        <label><span class="lt">${t.phone} <i>(${t.optional})</i></span><input name="phone" type="tel" autocomplete="tel"></label>
+        <label><span class="lt">${t.eta} <i>(${t.optional})</i></span><input name="eta"></label>
+        <label class="wide"><span class="lt">${t.wish} <i>(${t.optional})</i></span><textarea name="wish" rows="3" maxlength="800"></textarea></label>
+        <label class="check wide"><input type="checkbox" name="consent" required> ${esc(t.consent)}</label>
+        <p class="req-err wide" hidden>${esc(t.required)}</p>
+        <button type="submit" class="btn wide">${t.send} →</button>
+      </form>
+      <div class="req-sent" hidden></div>`;
+        reqBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        (_a = reqBox.querySelector("[data-change]")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => { var _a; reqBox.hidden = true; (_a = app.querySelector(opts.length ? ".opts" : ".alts")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" }); });
+        const form = reqBox.querySelector("form");
+        form.addEventListener("submit", e => {
+            var _a, _b, _c;
+            e.preventDefault();
+            const f = new FormData(form), v = (k) => { var _a; return String((_a = f.get(k)) !== null && _a !== void 0 ? _a : "").replace(/[\r\n]+/g, " ").trim(); };
+            const okMail = /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v("email"));
+            const err = reqBox.querySelector(".req-err");
+            if (!v("first") || !v("last") || !okMail || !f.get("consent")) {
+                err.hidden = false;
+                return;
+            }
+            err.hidden = true;
+            const lines = [
+                `[${REQ_TAG}]`, `code: ${(_a = p.c) !== null && _a !== void 0 ? _a : ""}`, `house: ${c.o.h}`, `room: ${c.o.r}`, ...(c.o.r === "custom" && c.o.rc ? [`roomname: ${c.o.rc}`] : []),
+                `arr: ${c.a}`, `dep: ${c.d}`, `adults: ${p.ad}`, `kids: ${kn}`, `ages: ${p.k.join(", ")}`, `board: ${p.b}`,
+                `price: ${c.price != null ? c.price.toFixed(2) : ""}`, `special: ${c.special ? "1" : "0"}`, `lang: ${l}`,
+                `first: ${v("first")}`, `last: ${v("last")}`, `email: ${v("email")}`, `phone: ${v("phone")}`, `eta: ${v("eta")}`, `[/${REQ_TAG}]`,
+            ];
+            const wish = String((_b = f.get("wish")) !== null && _b !== void 0 ? _b : "").trim().slice(0, 800);
+            const body = `${t.mailIntro}\n\n${H.name}\n${dateRange({ ...p, a: c.a, d: c.d }, l)} · ${roomName(c.o, l)}${c.price ? ` · ${money(c.price, l, 2)} €` : ""}\n\n${lines.join("\n")}${wish ? `\n\n${t.wish}:\n${wish}` : ""}\n`;
+            const subject = `${t.mailSubject((_c = p.c) !== null && _c !== void 0 ? _c : "", H.name)} [${REQ_TAG}]`;
+            const href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            const sent = reqBox.querySelector(".req-sent");
+            sent.hidden = false;
+            sent.innerHTML = `<h4>${t.sentTitle}</h4><p>${esc(t.sentText)}</p>
+        <p class="line"><span class="val">${esc(addr)}</span><button type="button" class="copy" data-copy="${esc(addr)}">${t.copy}</button></p>
+        <p class="lbl">${esc(subject)}</p><pre class="req-text">${esc(body)}</pre>
+        <button type="button" class="copy" data-copy="${esc(subject + "\n\n" + body)}">${t.copy}</button>`;
+            bindCopy(sent);
+            location.href = href;
+        });
+    };
+    app.querySelectorAll("[data-choose]").forEach(b => b.addEventListener("click", () => openForm(Number(b.dataset.choose))));
+    const hash = location.hash.slice(1);
+    if (hash.startsWith("prenota-")) {
+        const i = opts.findIndex(o => o.h === hash.slice(8));
+        if (i >= 0)
+            openForm(i);
+    }
+    else if (hash === "alternativen")
+        (_b = app.querySelector("#alternativen")) === null || _b === void 0 ? void 0 : _b.scrollIntoView();
     app.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => render(p, b.dataset.lang, isSample, invalid)));
     app.querySelectorAll(".g-open").forEach(b => b.addEventListener("click", () => openLightbox(gallery[Number(b.dataset.g)], l)));
-    app.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
-        var _a;
-        navigator.clipboard.writeText((_a = b.dataset.copy) !== null && _a !== void 0 ? _a : "")
-            .then(() => { b.textContent = t.copied; setTimeout(() => (b.textContent = t.copy), 1500); })
-            .catch(() => {
-            const val = b.previousElementSibling;
-            if (val) {
-                const r = document.createRange();
-                r.selectNodeContents(val);
-                const s = getSelection();
-                s === null || s === void 0 ? void 0 : s.removeAllRanges();
-                s === null || s === void 0 ? void 0 : s.addRange(r);
-            }
-        });
-    }));
+    bindCopy(app);
+    function bindCopy(root) {
+        root.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+            var _a;
+            navigator.clipboard.writeText((_a = b.dataset.copy) !== null && _a !== void 0 ? _a : "")
+                .then(() => { b.textContent = t.copied; setTimeout(() => (b.textContent = t.copy), 1500); })
+                .catch(() => {
+                const val = b.previousElementSibling;
+                if (val) {
+                    const r = document.createRange();
+                    r.selectNodeContents(val);
+                    const s = getSelection();
+                    s === null || s === void 0 ? void 0 : s.removeAllRanges();
+                    s === null || s === void 0 ? void 0 : s.addRange(r);
+                }
+            });
+        }));
+    }
 }
 /* ---------- Ingrandimento foto ---------- */
 function openLightbox(g, l) {
