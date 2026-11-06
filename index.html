@@ -360,8 +360,8 @@ const S = {
 const W = {
     de: {
         title: "Ihre Woche in Gröden", intro: "Damit Sie schon jetzt planen können: das Wichtigste für Ihre Reisedaten, aus offiziellen Quellen.",
-        skiTitle: "Der richtige Skipass", skiQ: "Wie fahren Sie Ski?", lvl: ["Anfänger oder nicht jeden Tag", "Ich bleibe in Gröden", "Sellaronda und mehr"],
-        skiRec: ["Die Punktekarte: übertragbar, Sie zahlen nur die Fahrten, die Sie machen.", "Der Skipass Val Gardena / Seiser Alm: 175 km Pisten bis zum Sella- und Grödner Joch.", "Der Dolomiti Superski: 1.200 km in 12 Tälern, mit der Sellaronda."],
+        skiTitle: "Der richtige Skipass", skiQ: "Wie fahren Sie Ski?", lvl: ["Anfänger · in Gröden bleiben", "Fortgeschritten · Sellaronda und mehr"],
+        skiRec: ["Der Skipass Val Gardena / Seiser Alm: 175 km Pisten bis zum Sella- und Grödner Joch. Gilt nicht für die Sellaronda.", "Der Dolomiti Superski: 1.200 km in 12 Tälern, mit der Sellaronda."],
         skiShop: "Zum offiziellen Skipass-Shop", skiNote: "Online bis 2 Tage vorher 5 % günstiger, Abholung an den Pick-up-Boxen im Tal.", skiKids: "Ermäßigte Skipässe für Kinder und Jugendliche gibt es nicht online, sondern an der Skipass-Kasse.",
         liveTitle: "Schnee & Wetter live", weather: "Wetter", webcams: "Webcams", slopes: "Offene Pisten",
         eventsTitle: "Veranstaltungen", eventsText: "Was in Gröden während Ihres Aufenthalts los ist:", eventsLink: "Zum Veranstaltungskalender",
@@ -372,8 +372,8 @@ const W = {
     },
     it: {
         title: "La vostra settimana in Val Gardena", intro: "Per iniziare a organizzarvi: l'essenziale per le vostre date, da fonti ufficiali.",
-        skiTitle: "Lo skipass giusto", skiQ: "Come sciate?", lvl: ["Principiante o non tutti i giorni", "Resto in Val Gardena", "Sellaronda e oltre"],
-        skiRec: ["La carta a punti: cedibile, pagate solo le risalite che fate.", "Lo skipass Val Gardena / Alpe di Siusi: 175 km di piste fino a Passo Sella e Passo Gardena.", "Il Dolomiti Superski: 1.200 km in 12 valli, Sellaronda compreso."],
+        skiTitle: "Lo skipass giusto", skiQ: "Come sciate?", lvl: ["Principiante · resto in Val Gardena", "Esperto · Sellaronda e oltre"],
+        skiRec: ["Lo skipass Val Gardena / Alpe di Siusi: 175 km di piste fino a Passo Sella e Passo Gardena. Non vale per il Sellaronda.", "Il Dolomiti Superski: 1.200 km in 12 valli, Sellaronda compreso."],
         skiShop: "Allo shop ufficiale degli skipass", skiNote: "Online fino a 2 giorni prima costa il 5% in meno; ritiro ai Pick-up Box in valle.", skiKids: "Gli skipass ridotti per bambini e ragazzi non si comprano online ma alla cassa skipass.",
         liveTitle: "Neve e meteo in diretta", weather: "Meteo", webcams: "Webcam", slopes: "Piste aperte",
         eventsTitle: "Eventi", eventsText: "Cosa succede in Val Gardena durante il vostro soggiorno:", eventsLink: "Al calendario degli eventi",
@@ -384,8 +384,8 @@ const W = {
     },
     en: {
         title: "Your week in Val Gardena", intro: "So you can start planning now: the essentials for your dates, from official sources.",
-        skiTitle: "The right ski pass", skiQ: "How do you ski?", lvl: ["Beginner or not every day", "Staying in Val Gardena", "Sellaronda and beyond"],
-        skiRec: ["The points card: transferable, you only pay for the rides you take.", "The Val Gardena / Seiser Alm pass: 175 km of slopes up to Sella Pass and Gardena Pass.", "The Dolomiti Superski: 1,200 km in 12 valleys, including the Sellaronda."],
+        skiTitle: "The right ski pass", skiQ: "How do you ski?", lvl: ["Beginner · staying in Val Gardena", "Advanced · Sellaronda and beyond"],
+        skiRec: ["The Val Gardena / Seiser Alm pass: 175 km of slopes up to Sella Pass and Gardena Pass. Not valid for the Sellaronda.", "The Dolomiti Superski: 1,200 km in 12 valleys, including the Sellaronda."],
         skiShop: "Go to the official ski pass shop", skiNote: "Online up to 2 days ahead it costs 5% less; pick-up at the Pick-up Boxes in the valley.", skiKids: "Reduced passes for children and teenagers are not sold online but at the ski pass office.",
         liveTitle: "Snow & weather live", weather: "Weather", webcams: "Webcams", slopes: "Open slopes",
         eventsTitle: "Events", eventsText: "What's on in Val Gardena during your stay:", eventsLink: "Go to the events calendar",
@@ -395,29 +395,30 @@ const W = {
         transfer: "Transfer with Limousine Service Dolomiti", transferNote: "Price on request: the driver confirms the final price.", totalSel: "Total with your selection", extrasMail: "Extras", totalMail: "Total price with extras", onRequest: "price on request",
     },
 };
-/* Dolomiti Superski, giornaliero adulti, stagione 2026/27 (fonte: shop.dolomitisuperski.com, rilevato il 06/11/2026).
-   Alta stagione 89 €: 20/12–9/1 e 31/1–20/3; resto della stagione 80 €; stagione dal 20/11/2026 al 21/04/2027. */
-const DS_SEASON = { from: "2026-11-20", to: "2027-04-21" };
-const DS_HIGH = [["2026-12-20", "2027-01-09"], ["2027-01-31", "2027-03-20"]];
-function dsDayPrice(iso) {
-    if (iso < DS_SEASON.from || iso > DS_SEASON.to)
-        return null;
-    return DS_HIGH.some(([a, b]) => iso >= a && iso <= b) ? 89 : 80;
-}
-function dsRange(a, d) {
+const PASSES = [
+    { name: "Val Gardena / Alpe di Siusi", from: "2026-12-04", to: "2027-04-04", high: 83, base: 75 },
+    { name: "Dolomiti Superski", from: "2026-11-20", to: "2027-04-21", high: 89, base: 80 },
+];
+const PASS_HIGH = [["2026-12-20", "2027-01-09"], ["2027-01-31", "2027-03-20"]];
+function passRange(ps, a, d) {
     const vals = [];
     for (let t = Date.parse(a + "T12:00:00Z"); t <= Date.parse(d + "T12:00:00Z"); t += 864e5) {
-        const v = dsDayPrice(new Date(t).toISOString().slice(0, 10));
-        if (v)
-            vals.push(v);
+        const iso = new Date(t).toISOString().slice(0, 10);
+        if (iso < ps.from || iso > ps.to)
+            continue;
+        vals.push(PASS_HIGH.some(([x, y]) => iso >= x && iso <= y) ? ps.high : ps.base);
     }
     return vals.length ? { min: Math.min(...vals), max: Math.max(...vals) } : null;
 }
 const DS_TXT = {
-    de: p => `Dolomiti Superski, Tageskarte für Erwachsene an Ihren Tagen: ${p}. Den Preis für mehrere Tage berechnet der offizielle Shop.`,
-    it: p => `Dolomiti Superski, giornaliero adulti nei vostri giorni: ${p}. Il prezzo per più giorni lo calcola lo shop ufficiale.`,
-    en: p => `Dolomiti Superski, adult day pass on your dates: ${p}. The official shop calculates the price for several days.`,
+    de: (n, p) => `${n}, Tageskarte für Erwachsene an Ihren Tagen: ${p}. Den Preis für mehrere Tage berechnet der offizielle Shop.`,
+    it: (n, p) => `${n}, giornaliero adulti nei vostri giorni: ${p}. Il prezzo per più giorni lo calcola lo shop ufficiale.`,
+    en: (n, p) => `${n}, adult day pass on your dates: ${p}. The official shop calculates the price for several days.`,
 };
+function passLine(i, a, d, l) {
+    const ps = PASSES[i], r = passRange(ps, a, d);
+    return r ? DS_TXT[l](ps.name, r.min === r.max ? `${r.min} €` : `${r.min}–${r.max} €`) : "";
+}
 const LINKS = {
     weather: "https://www.valgardena.it/en/weather/", webcams: "https://www.valgardena.it/en/webcams/", slopes: "https://www.valgardena.it/en/winter-holidays-dolomites/slopes-ski-lifts/open-slopes/",
     events: { de: "https://www.valgardena.it/de/veranstaltungskalender/", it: "https://www.valgardena.it/it/calendario-delle-manifestazioni/", en: "https://www.valgardena.it/en/calendar-of-events/" },
@@ -566,7 +567,7 @@ function render(p, l, isSample, invalid) {
         ${winter ? `<div class="wk ski"><p class="wk-t">${esc(w.skiTitle)}</p><p>${esc(w.skiQ)}</p>
           <div class="lvl" role="group">${w.lvl.map((x, i) => `<button type="button" data-lvl="${i}" aria-pressed="false">${esc(x)}</button>`).join("")}</div>
           <p class="ski-rec" aria-live="polite"></p>
-          ${(() => { const r = dsRange(p.a, p.d); return r ? `<p class="ds-price">${esc(DS_TXT[l](r.min === r.max ? `${r.min} €` : `${r.min}–${r.max} €`))}</p>` : ""; })()}
+          <p class="ds-price" hidden></p>
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
           <p>${link(LINKS.shop, w.skiShop)}</p></div>` : ""}
         <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
@@ -744,7 +745,10 @@ function render(p, l, isSample, invalid) {
     bindCopy(app);
     app.querySelectorAll("[data-lvl]").forEach(b => b.addEventListener("click", () => {
         app.querySelectorAll("[data-lvl]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-        app.querySelector(".ski-rec").textContent = w.skiRec[Number(b.dataset.lvl)];
+        const i = Number(b.dataset.lvl), line = passLine(i, p.a, p.d, l), el = app.querySelector(".ds-price");
+        app.querySelector(".ski-rec").textContent = w.skiRec[i];
+        el.textContent = line;
+        el.hidden = !line;
     }));
     function bindCopy(root) {
         root.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
