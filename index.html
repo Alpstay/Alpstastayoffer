@@ -96,6 +96,7 @@ button.btn{cursor:pointer}
 .lvl{display:flex;flex-wrap:wrap;gap:6px}
 .lvl button{font:400 13px var(--f-body);border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 12px;cursor:pointer;border-radius:0}
 .lvl button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.ds-price{font-size:14px;padding:8px 10px;background:var(--panel);border-left:2px solid var(--gold)}
 .ski-rec{min-height:1.4em;font-weight:400}
 .extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
 .extras legend{font:400 11px var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink);padding:0 8px 0 0}
@@ -394,6 +395,29 @@ const W = {
         transfer: "Transfer with Limousine Service Dolomiti", transferNote: "Price on request: the driver confirms the final price.", totalSel: "Total with your selection", extrasMail: "Extras", totalMail: "Total price with extras", onRequest: "price on request",
     },
 };
+/* Dolomiti Superski, giornaliero adulti, stagione 2026/27 (fonte: shop.dolomitisuperski.com, rilevato il 06/11/2026).
+   Alta stagione 89 €: 20/12–9/1 e 31/1–20/3; resto della stagione 80 €; stagione dal 20/11/2026 al 21/04/2027. */
+const DS_SEASON = { from: "2026-11-20", to: "2027-04-21" };
+const DS_HIGH = [["2026-12-20", "2027-01-09"], ["2027-01-31", "2027-03-20"]];
+function dsDayPrice(iso) {
+    if (iso < DS_SEASON.from || iso > DS_SEASON.to)
+        return null;
+    return DS_HIGH.some(([a, b]) => iso >= a && iso <= b) ? 89 : 80;
+}
+function dsRange(a, d) {
+    const vals = [];
+    for (let t = Date.parse(a + "T12:00:00Z"); t <= Date.parse(d + "T12:00:00Z"); t += 864e5) {
+        const v = dsDayPrice(new Date(t).toISOString().slice(0, 10));
+        if (v)
+            vals.push(v);
+    }
+    return vals.length ? { min: Math.min(...vals), max: Math.max(...vals) } : null;
+}
+const DS_TXT = {
+    de: p => `Dolomiti Superski, Tageskarte für Erwachsene an Ihren Tagen: ${p}. Den Preis für mehrere Tage berechnet der offizielle Shop.`,
+    it: p => `Dolomiti Superski, giornaliero adulti nei vostri giorni: ${p}. Il prezzo per più giorni lo calcola lo shop ufficiale.`,
+    en: p => `Dolomiti Superski, adult day pass on your dates: ${p}. The official shop calculates the price for several days.`,
+};
 const LINKS = {
     weather: "https://www.valgardena.it/en/weather/", webcams: "https://www.valgardena.it/en/webcams/", slopes: "https://www.valgardena.it/en/winter-holidays-dolomites/slopes-ski-lifts/open-slopes/",
     events: { de: "https://www.valgardena.it/de/veranstaltungskalender/", it: "https://www.valgardena.it/it/calendario-delle-manifestazioni/", en: "https://www.valgardena.it/en/calendar-of-events/" },
@@ -542,6 +566,7 @@ function render(p, l, isSample, invalid) {
         ${winter ? `<div class="wk ski"><p class="wk-t">${esc(w.skiTitle)}</p><p>${esc(w.skiQ)}</p>
           <div class="lvl" role="group">${w.lvl.map((x, i) => `<button type="button" data-lvl="${i}" aria-pressed="false">${esc(x)}</button>`).join("")}</div>
           <p class="ski-rec" aria-live="polite"></p>
+          ${(() => { const r = dsRange(p.a, p.d); return r ? `<p class="ds-price">${esc(DS_TXT[l](r.min === r.max ? `${r.min} €` : `${r.min}–${r.max} €`))}</p>` : ""; })()}
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
           <p>${link(LINKS.shop, w.skiShop)}</p></div>` : ""}
         <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
