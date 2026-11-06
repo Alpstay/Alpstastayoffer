@@ -100,6 +100,8 @@ button.btn{cursor:pointer}
 .ev li{padding-left:18px;position:relative;font-weight:400}
 .ev li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:1px;background:var(--gold)}
 .wk.hot{border-top-color:var(--gold)}
+.exp .ev li{font-weight:300}
+.exp .from{color:var(--gold-ink);white-space:nowrap}
 .ds-price{font-size:14px;padding:8px 10px;background:var(--panel);border-left:2px solid var(--gold)}
 .ski-rec{min-height:1.4em;font-weight:400}
 .extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
@@ -431,6 +433,17 @@ const EVENTS = [
     { from: "2027-03-19", to: "2027-03-19", t: { de: "Sellaronda Skimarathon, Skitouren-Rennen bei Nacht (19.3.)", it: "Sellaronda Skimarathon, gara notturna di scialpinismo (19/3)", en: "Sellaronda Skimarathon, night ski-touring race (19 Mar)" } },
 ];
 const EV_DURING = { de: "Während Ihres Aufenthalts:", it: "Durante il vostro soggiorno:", en: "During your stay:" };
+const EXPS = [
+    { summer: true, name: "Vespa Piaggio", t: { de: "Mit der Vespa durch Bergstraßen, Bergpicknick auf Wunsch", it: "In Vespa tra le stradine di montagna, picnic alpino su richiesta", en: "By Vespa through mountain lanes, alpine picnic on request" }, from: 40 },
+    { summer: true, name: "Fiat Topolino", t: { de: "Elektrisch und lautlos durchs Tal (max. 70 km Reichweite)", it: "Elettrica e silenziosa per la valle (autonomia max 70 km)", en: "Electric and silent through the valley (max range 70 km)" }, from: 60 },
+    { summer: false, name: "Jaguar MKII 1960", t: { de: "Mit Privatfahrer zu den schönsten Orten der Dolomiten", it: "Con autista privato nei luoghi più belli delle Dolomiti", en: "With a private driver to the finest spots in the Dolomites" }, from: 320 },
+    { summer: false, name: "Besonderer Anlass", t: { de: "Champagner im Zimmer, Blumen, Überraschungstorte", it: "Champagne in camera, fiori, torta a sorpresa", en: "Champagne in the room, flowers, surprise cake" }, from: null },
+];
+const EXP_NAME_SPECIAL = { de: "Besonderer Anlass", it: "Occasione speciale", en: "Special occasion" };
+const EXP_FROM = { de: v => `ab ${v} € (2 Std.)`, it: v => `da ${v} € (2 ore)`, en: v => `from €${v} (2 hrs)` };
+const EXP_BOOK = { de: "Erlebnis buchen", it: "Prenota un'esperienza", en: "Book an experience" };
+const EXP_TITLE = { de: "Alpstay Experiences", it: "Alpstay Experiences", en: "Alpstay Experiences" };
+const EXP_URL = "https://alpstay.github.io/Experiences/";
 const LINKS = {
     weather: "https://www.valgardena.it/en/weather/", webcams: "https://www.valgardena.it/en/webcams/", slopes: "https://www.valgardena.it/en/winter-holidays-dolomites/slopes-ski-lifts/open-slopes/",
     events: { de: "https://www.valgardena.it/de/veranstaltungskalender/", it: "https://www.valgardena.it/it/calendario-delle-manifestazioni/", en: "https://www.valgardena.it/en/calendar-of-events/" },
@@ -590,7 +603,9 @@ function render(p, l, isSample, invalid) {
           <p>${link(LINKS.events[l], w.eventsLink)}</p></div>`;
         })()}
         ${arr.length ? `<div class="wk"><p class="wk-t">${esc(w.arrivalTitle)}</p>${arr.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
-        <div class="wk"><p class="wk-t">${esc(w.expTitle)}</p><p>${esc(w.expText)}</p><p>${link(LINKS.experiences, w.expLink)}</p></div>
+        <div class="wk exp"><p class="wk-t">${esc(EXP_TITLE[l])}</p>
+          <ul class="ev">${EXPS.filter(x => !x.summer || !winter).map(x => `<li><b>${esc(x.name === "Besonderer Anlass" ? EXP_NAME_SPECIAL[l] : x.name)}</b> · ${esc(x.t[l])}${x.from ? ` <span class="from">${esc(EXP_FROM[l](x.from))}</span>` : ""}</li>`).join("")}</ul>
+          <p>${link(EXP_URL, EXP_BOOK[l])}</p></div>
       </div>
     </section>`;
     }
