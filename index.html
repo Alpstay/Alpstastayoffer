@@ -417,9 +417,27 @@ function passRange(ps, a, d) {
     return vals.length ? { min: Math.min(...vals), max: Math.max(...vals) } : null;
 }
 const DS_TXT = {
-    de: (n, p) => `${n}, Tageskarte für Erwachsene an Ihren Tagen: ${p}. Den Preis für mehrere Tage berechnet der offizielle Shop.`,
-    it: (n, p) => `${n}, giornaliero adulti nei vostri giorni: ${p}. Il prezzo per più giorni lo calcola lo shop ufficiale.`,
-    en: (n, p) => `${n}, adult day pass on your dates: ${p}. The official shop calculates the price for several days.`,
+    de: (n, p) => `${n}, Tageskarte für Erwachsene an Ihren Tagen: ${p}.`,
+    it: (n, p) => `${n}, giornaliero adulti nei vostri giorni: ${p}.`,
+    en: (n, p) => `${n}, adult day pass on your dates: ${p}.`,
+};
+/* Prezzo indicativo: somma dei giornalieri adulti per i giorni sci (dal giorno dopo l'arrivo al giorno della partenza) × adulti */
+function passEstimate(i, a, d, adults) {
+    const ps = PASSES[i];
+    let days = 0, sum = 0;
+    for (let t = Date.parse(a + "T12:00:00Z") + 864e5; t <= Date.parse(d + "T12:00:00Z"); t += 864e5) {
+        const iso = new Date(t).toISOString().slice(0, 10);
+        if (iso < ps.from || iso > ps.to)
+            continue;
+        days++;
+        sum += PASS_HIGH.some(([x, y]) => iso >= x && iso <= y) ? ps.high : ps.base;
+    }
+    return days ? { days, total: sum * adults } : null;
+}
+const EST_TXT = {
+    de: (ad, days, tot, kids) => `Richtwert für Ihren Aufenthalt: ${ad} Erwachsene × ${days} Skitage = ca. ${tot}${kids ? " (Kinder und Jugendliche ermäßigt, an der Kasse)" : ""}. Berechnet aus den Tageskarten; den genauen Preis für mehrere Tage nennt der offizielle Shop.`,
+    it: (ad, days, tot, kids) => `Prezzo indicativo per il vostro soggiorno: ${ad} adulti × ${days} giorni di sci = circa ${tot}${kids ? " (bambini e ragazzi ridotti, alla cassa)" : ""}. Calcolato dai giornalieri; il prezzo esatto per più giorni lo dà lo shop ufficiale.`,
+    en: (ad, days, tot, kids) => `Indicative price for your stay: ${ad} adults × ${days} ski days = about ${tot}${kids ? " (reduced for children and teenagers, at the ticket office)" : ""}. Calculated from day passes; the official shop gives the exact multi-day price.`,
 };
 function passLine(i, a, d, l) {
     const ps = PASSES[i], r = passRange(ps, a, d);
@@ -513,7 +531,7 @@ function money(n, l, dec) {
 }
 /* ---------- Render ---------- */
 function render(p, l, isSample, invalid) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const kn = Math.max(typeof p.kn === "number" ? p.kn : 0, p.k.length), agesOk = p.k.length >= kn;
     const t = S[l], n = nightsOf(p), winter = isWinter(p), persons = p.ad + kn;
     const teen = kn > 0 && agesOk && p.k.every(x => x >= 12);
@@ -777,11 +795,13 @@ function render(p, l, isSample, invalid) {
     bindCopy(app);
     app.querySelectorAll("[data-lvl]").forEach(b => b.addEventListener("click", () => {
         app.querySelectorAll("[data-lvl]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-        const i = Number(b.dataset.lvl), line = passLine(i, p.a, p.d, l), el = app.querySelector(".ds-price");
+        const i = Number(b.dataset.lvl), est = passEstimate(i, p.a, p.d, p.ad), el = app.querySelector(".ds-price");
+        const line = [passLine(i, p.a, p.d, l), est ? EST_TXT[l](p.ad, est.days, `${money(est.total, l, 0)} €`, kn > 0) : ""].filter(Boolean).join(" ");
         app.querySelector(".ski-rec").textContent = w.skiRec[i];
         el.textContent = line;
         el.hidden = !line;
     }));
+    (_d = app.querySelector('[data-lvl="0"]')) === null || _d === void 0 ? void 0 : _d.click();
     function bindCopy(root) {
         root.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
             var _a;
