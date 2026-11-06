@@ -96,6 +96,10 @@ button.btn{cursor:pointer}
 .lvl{display:flex;flex-wrap:wrap;gap:6px}
 .lvl button{font:400 13px var(--f-body);border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 12px;cursor:pointer;border-radius:0}
 .lvl button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.ev{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.ev li{padding-left:18px;position:relative;font-weight:400}
+.ev li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:1px;background:var(--gold)}
+.wk.hot{border-top-color:var(--gold)}
 .ds-price{font-size:14px;padding:8px 10px;background:var(--panel);border-left:2px solid var(--gold)}
 .ski-rec{min-height:1.4em;font-weight:400}
 .extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
@@ -419,6 +423,14 @@ function passLine(i, a, d, l) {
     const ps = PASSES[i], r = passRange(ps, a, d);
     return r ? DS_TXT[l](ps.name, r.min === r.max ? `${r.min} €` : `${r.min}–${r.max} €`) : "";
 }
+const EVENTS = [
+    { from: "2026-11-28", to: "2027-01-06", t: { de: "Weihnachtsmarkt in St. Ulrich (28.11.–6.1.)", it: "Mercatino di Natale a Ortisei (28/11–6/1)", en: "Christmas market in Ortisei (28 Nov – 6 Jan)" } },
+    { from: "2026-11-29", to: "2027-01-03", t: { de: "Weihnachtsmarkt in Wolkenstein (29.11.–3.1.)", it: "Mercatino di Natale a Selva (29/11–3/1)", en: "Christmas market in Selva (29 Nov – 3 Jan)" } },
+    { from: "2026-12-18", to: "2026-12-18", t: { de: "FIS Ski-Weltcup auf der Saslong: Super-G der Herren (Fr. 18.12.)", it: "Coppa del Mondo FIS sulla Saslong: super-G maschile (ven 18/12)", en: "FIS Ski World Cup on the Saslong: men's super-G (Fri 18 Dec)" } },
+    { from: "2026-12-19", to: "2026-12-19", t: { de: "FIS Ski-Weltcup auf der Saslong: Abfahrt der Herren (Sa. 19.12.)", it: "Coppa del Mondo FIS sulla Saslong: discesa libera maschile (sab 19/12)", en: "FIS Ski World Cup on the Saslong: men's downhill (Sat 19 Dec)" } },
+    { from: "2027-03-19", to: "2027-03-19", t: { de: "Sellaronda Skimarathon, Skitouren-Rennen bei Nacht (19.3.)", it: "Sellaronda Skimarathon, gara notturna di scialpinismo (19/3)", en: "Sellaronda Skimarathon, night ski-touring race (19 Mar)" } },
+];
+const EV_DURING = { de: "Während Ihres Aufenthalts:", it: "Durante il vostro soggiorno:", en: "During your stay:" };
 const LINKS = {
     weather: "https://www.valgardena.it/en/weather/", webcams: "https://www.valgardena.it/en/webcams/", slopes: "https://www.valgardena.it/en/winter-holidays-dolomites/slopes-ski-lifts/open-slopes/",
     events: { de: "https://www.valgardena.it/de/veranstaltungskalender/", it: "https://www.valgardena.it/it/calendario-delle-manifestazioni/", en: "https://www.valgardena.it/en/calendar-of-events/" },
@@ -571,7 +583,12 @@ function render(p, l, isSample, invalid) {
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
           <p>${link(LINKS.shop, w.skiShop)}</p></div>` : ""}
         <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
-        <div class="wk"><p class="wk-t">${esc(w.eventsTitle)}</p><p>${esc(w.eventsText)} <b>${esc(dateRange(p, l))}</b></p><p>${link(LINKS.events[l], w.eventsLink)}</p></div>
+        ${(() => {
+            const ev = EVENTS.filter(e => e.from <= p.d && e.to >= p.a);
+            return `<div class="wk${ev.length ? " hot" : ""}"><p class="wk-t">${esc(w.eventsTitle)}</p>
+          ${ev.length ? `<p>${esc(EV_DURING[l])}</p><ul class="ev">${ev.map(e => `<li>${esc(e.t[l])}</li>`).join("")}</ul>` : `<p>${esc(w.eventsText)} <b>${esc(dateRange(p, l))}</b></p>`}
+          <p>${link(LINKS.events[l], w.eventsLink)}</p></div>`;
+        })()}
         ${arr.length ? `<div class="wk"><p class="wk-t">${esc(w.arrivalTitle)}</p>${arr.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
         <div class="wk"><p class="wk-t">${esc(w.expTitle)}</p><p>${esc(w.expText)}</p><p>${link(LINKS.experiences, w.expLink)}</p></div>
       </div>
