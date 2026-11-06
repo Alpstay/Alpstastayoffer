@@ -435,9 +435,9 @@ function passEstimate(i, a, d, adults) {
     return days ? { days, total: sum * adults } : null;
 }
 const EST_TXT = {
-    de: (ad, days, tot, kids) => `Richtwert für Ihren Aufenthalt: ${ad} Erwachsene × ${days} Skitage = ca. ${tot}${kids ? " (Kinder und Jugendliche ermäßigt, an der Kasse)" : ""}. Berechnet aus den Tageskarten; den genauen Preis für mehrere Tage nennt der offizielle Shop.`,
-    it: (ad, days, tot, kids) => `Prezzo indicativo per il vostro soggiorno: ${ad} adulti × ${days} giorni di sci = circa ${tot}${kids ? " (bambini e ragazzi ridotti, alla cassa)" : ""}. Calcolato dai giornalieri; il prezzo esatto per più giorni lo dà lo shop ufficiale.`,
-    en: (ad, days, tot, kids) => `Indicative price for your stay: ${ad} adults × ${days} ski days = about ${tot}${kids ? " (reduced for children and teenagers, at the ticket office)" : ""}. Calculated from day passes; the official shop gives the exact multi-day price.`,
+    de: (ad, days, tot, kids) => `Richtwert für Ihren Aufenthalt: ${ad} Erwachsene × ${days} Skitage = ca. ${tot}${kids ? " (Kinder und Jugendliche ermäßigt, an der Kasse)" : ""}. Berechnet aus den Tageskarten: für Mehrtagespässe gibt es Vorzugspreise im offiziellen Shop.`,
+    it: (ad, days, tot, kids) => `Prezzo indicativo per il vostro soggiorno: ${ad} adulti × ${days} giorni di sci = circa ${tot}${kids ? " (bambini e ragazzi ridotti, alla cassa)" : ""}. Calcolato dai giornalieri: per i plurigiornalieri ci sono prezzi privilegiati nello shop ufficiale.`,
+    en: (ad, days, tot, kids) => `Indicative price for your stay: ${ad} adults × ${days} ski days = about ${tot}${kids ? " (reduced for children and teenagers, at the ticket office)" : ""}. Calculated from day passes: multi-day passes come at preferential prices in the official shop.`,
 };
 function passLine(i, a, d, l) {
     const ps = PASSES[i], r = passRange(ps, a, d);
@@ -611,8 +611,9 @@ function render(p, l, isSample, invalid) {
           <div class="lvl" role="group">${w.lvl.map((x, i) => `<button type="button" data-lvl="${i}" aria-pressed="false">${esc(x)}</button>`).join("")}</div>
           <p class="ski-rec" aria-live="polite"></p>
           <p class="ds-price" hidden></p>
+          <p class="ds-link">${link(LINKS.shop, w.skiShop)}</p>
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
-          <p>${link(LINKS.shop, w.skiShop)}</p></div>` : ""}
+          </div>` : ""}
         <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
         ${(() => {
             const ev = EVENTS.filter(e => e.from <= p.d && e.to >= p.a);
