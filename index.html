@@ -276,7 +276,8 @@ const S = {
         first: "Vorname", last: "Nachname", email: "E-Mail", phone: "Telefon", eta: "Voraussichtliche Ankunftszeit", wish: "Wünsche", optional: "optional",
         consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt direkt buchen", required: "Bitte füllen Sie die markierten Felder aus.",
         sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
-        mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "Guten Tag, ich möchte folgenden Aufenthalt direkt buchen:",
+        mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "gerne möchte ich folgenden Aufenthalt direkt bei Ihnen buchen:",
+        mailHello: "Guten Tag,", mailMine: "Meine Angaben", lName: "Name", lEta: "Ankunft ca.", mailPrice: "Preis laut Ihrem Angebot", mailClose: "Ich freue mich auf Ihre endgültige Bestätigung mit den Zahlungsbedingungen.", mailBye: "Viele Grüße",
         noAddr: "Bitte antworten Sie auf unsere E-Mail, um zu buchen.", change: "Andere Option wählen",
     },
     it: {
@@ -300,7 +301,8 @@ const S = {
         first: "Nome", last: "Cognome", email: "Email", phone: "Telefono", eta: "Orario di arrivo previsto", wish: "Desideri", optional: "facoltativo",
         consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora direttamente", required: "Compila i campi segnati.",
         sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
-        mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "Buongiorno, vorrei prenotare direttamente il seguente soggiorno:",
+        mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "vorrei prenotare direttamente da voi il seguente soggiorno:",
+        mailHello: "Buongiorno,", mailMine: "I miei dati", lName: "Nome", lEta: "Arrivo previsto", mailPrice: "Prezzo secondo la vostra offerta", mailClose: "Attendo la vostra conferma definitiva con le condizioni di pagamento.", mailBye: "Cordiali saluti",
         noAddr: "Per prenotare rispondi alla nostra email.", change: "Scegli un'altra opzione",
     },
     en: {
@@ -324,7 +326,8 @@ const S = {
         first: "First name", last: "Last name", email: "Email", phone: "Phone", eta: "Expected arrival time", wish: "Wishes", optional: "optional",
         consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book direct now", required: "Please fill in the marked fields.",
         sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
-        mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "Hello, I would like to book the following stay directly:",
+        mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "I would like to book the following stay directly with you:",
+        mailHello: "Hello,", mailMine: "My details", lName: "Name", lEta: "Arrival time", mailPrice: "Price as per your offer", mailClose: "I look forward to your final confirmation with the payment terms.", mailBye: "Kind regards",
         noAddr: "To book, please reply to our email.", change: "Choose another option",
     },
 };
@@ -552,7 +555,7 @@ function render(p, l, isSample, invalid) {
         (_a = reqBox.querySelector("[data-change]")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => { var _a; reqBox.hidden = true; (_a = app.querySelector(opts.length ? ".opts" : ".alts")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" }); });
         const form = reqBox.querySelector("form");
         form.addEventListener("submit", e => {
-            var _a, _b, _c;
+            var _a, _b;
             e.preventDefault();
             const f = new FormData(form), v = (k) => { var _a; return String((_a = f.get(k)) !== null && _a !== void 0 ? _a : "").replace(/[\r\n]+/g, " ").trim(); };
             const okMail = /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v("email"));
@@ -562,15 +565,21 @@ function render(p, l, isSample, invalid) {
                 return;
             }
             err.hidden = true;
-            const lines = [
-                `[${REQ_TAG}]`, `code: ${(_a = p.c) !== null && _a !== void 0 ? _a : ""}`, `house: ${c.o.h}`, `room: ${c.o.r}`, ...(c.o.r === "custom" && c.o.rc ? [`roomname: ${c.o.rc}`] : []),
-                `arr: ${c.a}`, `dep: ${c.d}`, `adults: ${p.ad}`, `kids: ${kn}`, `ages: ${p.k.join(", ")}`, `board: ${p.b}`,
-                `price: ${c.price != null ? c.price.toFixed(2) : ""}`, `special: ${c.special ? "1" : "0"}`, `lang: ${l}`,
-                `first: ${v("first")}`, `last: ${v("last")}`, `email: ${v("email")}`, `phone: ${v("phone")}`, `eta: ${v("eta")}`, `[/${REQ_TAG}]`,
-            ];
-            const wish = String((_b = f.get("wish")) !== null && _b !== void 0 ? _b : "").trim().slice(0, 800);
-            const body = `${t.mailIntro}\n\n${H.name}\n${dateRange({ ...p, a: c.a, d: c.d }, l)} · ${roomName(c.o, l)}${c.price ? ` · ${money(c.price, l, 2)} €` : ""}\n\n${lines.join("\n")}${wish ? `\n\n${t.wish}:\n${wish}` : ""}\n`;
-            const subject = `${t.mailSubject((_c = p.c) !== null && _c !== void 0 ? _c : "", H.name)} [${REQ_TAG}]`;
+            /* Testo naturale per l'ospite; in fondo un solo riferimento compatto che l'Offerta Studio sa leggere */
+            const nn2 = Math.max(0, Math.round((Date.parse(c.d) - Date.parse(c.a)) / 864e5));
+            const ref = [p.c || "-", c.o.h, c.o.r, c.a, c.d, p.ad, kn, p.k.length ? p.k.join(",") : "-", p.b, c.price != null ? c.price.toFixed(2) : "-", c.special ? 1 : 0, l]
+                .join("/") + (c.o.r === "custom" && c.o.rc ? `/rc=${encodeURIComponent(c.o.rc)}` : "");
+            const wish = String((_a = f.get("wish")) !== null && _a !== void 0 ? _a : "").replace(/\r/g, "").replace(/\n\s*\n+/g, "\n").trim().slice(0, 800);
+            const full = `${v("first")} ${v("last")}`;
+            const body = [
+                t.mailHello, "", t.mailIntro, "",
+                H.name, `${dateRange({ ...p, a: c.a, d: c.d }, l)} · ${t.nights(nn2)}`, `${roomName(c.o, l)} · ${t.board[p.b]}`, guestsLine,
+                ...(c.price ? [`${t.mailPrice}: ${money(c.price, l, 2)} €${c.special ? " (Special)" : ""}`] : []), "",
+                `${t.mailMine}:`, `${t.lName}: ${full}`, `${t.email}: ${v("email")}`, ...(v("phone") ? [`${t.phone}: ${v("phone")}`] : []), ...(v("eta") ? [`${t.lEta}: ${v("eta")}`] : []),
+                ...(wish ? ["", `${t.wish}:`, wish] : []), "",
+                t.mailClose, "", t.mailBye, full, "", `Ref. ${REQ_TAG} ${ref}`,
+            ].join("\n");
+            const subject = t.mailSubject((_b = p.c) !== null && _b !== void 0 ? _b : "", H.name);
             const href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             const sent = reqBox.querySelector(".req-sent");
             sent.hidden = false;
