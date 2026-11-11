@@ -107,6 +107,13 @@ button.btn{cursor:pointer}
 .extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
 .extras legend{font:400 11px var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink);padding:0 8px 0 0}
 .extras label.check{flex-wrap:wrap}
+.extras-box{border:1px solid var(--line,#E6E2DA);padding:0 14px;margin:4px 0}
+.extras-box>summary{cursor:pointer;padding:12px 0;font-size:14px;letter-spacing:.04em}
+.extras-box[open]{padding-bottom:12px}
+.extras-box .extras{border:0;padding:0;margin:0 0 10px}
+.extras-box label{display:block;margin:8px 0}
+.best{margin:6px 0 0;font-size:13px;color:var(--gold-ink,#7A5F35);display:block}
+.req-form .terms{font-size:13px;line-height:1.5}
 .extras .ins-cover{margin:-4px 0 6px 30px;font-size:12.5px;line-height:1.5;color:var(--muted,#6B6B67)}
 .extras .ins-cover a{color:inherit;text-decoration:underline}
 .extras i{display:block;flex-basis:100%;padding-left:26px;font-style:normal;font-size:12.5px;color:var(--muted)}
@@ -306,13 +313,14 @@ const S = {
         copy: "Kopieren", copied: "Kopiert", sample: "Beispielangebot", invalid: "Dieser Link ist unvollständig. Wir zeigen ein Beispielangebot.",
         altTitle: "Alternative Zeiträume", altNone: "Für Ihre Wunschdaten sind wir leider ausgebucht. Zu diesen Zeiträumen haben wir Zimmer für Sie frei:", altSome: "Für ein Haus sind Ihre Wunschdaten ausgebucht. Dort haben wir zu diesen Zeiträumen Zimmer frei:",
         special: (pct, until) => until ? `Special Sonntag bis Donnerstag: weitere ${pct} % Rabatt bei Buchung bis ${until}` : `Special Sonntag bis Donnerstag: weitere ${pct} % Rabatt bei Direktbuchung`, was: v => `statt ${v} €`,
-        formTitle: "Ihre Direktbuchung", formIntro: "Tragen Sie Ihre Daten ein. Unser Reservierungsteam prüft die Verfügbarkeit und sendet Ihnen die Bestätigung mit den Zahlungsdetails. Verbindlich wird die Buchung erst mit unserer schriftlichen Bestätigung; bis dahin gelten Preise und Verfügbarkeit ohne Gewähr.",
+        formTitle: "Ihre Direktbuchung", formIntro: "Nur 3 Angaben. Wir bestätigen Ihnen die Buchung per E-Mail, mit den Zahlungsdetails.",
         first: "Vorname", last: "Nachname", email: "E-Mail", phone: "Telefon", eta: "Voraussichtliche Ankunftszeit", wish: "Wünsche", optional: "optional",
+        best: "✓ Bestpreis: direkt günstiger als auf Buchungsportalen",
         terms: "Nicht erstattbar · Zahlung 5 Tage vor Anreise",
-        termsAccept: "Ich akzeptiere die Buchungsbedingungen: nicht erstattbarer Tarif (bei Stornierung, Änderung oder Nichtanreise wird der Gesamtbetrag fällig), Zahlung des Gesamtbetrags 5 Tage vor Anreise.",
+        termsAccept: "Ich akzeptiere die Buchungsbedingungen: nicht erstattbarer Tarif (bei Stornierung, Änderung oder Nichtanreise wird der Gesamtbetrag fällig), Zahlung 5 Tage vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
         mailTerms: "Buchungsbedingungen akzeptiert: nicht erstattbar, Zahlung des Gesamtbetrags 5 Tage vor Anreise.",
-        consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt direkt buchen", required: "Bitte füllen Sie die markierten Felder aus.",
-        sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
+        consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt buchen", required: "Bitte füllen Sie die markierten Felder aus.",
+        okTitle: "Danke – Ihre Buchung ist bei uns!", okText: "Unser Reservierungsteam meldet sich per E-Mail mit der Bestätigung und den Zahlungsdetails.", sending: "Wird gesendet…", sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
         mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "gerne möchte ich folgenden Aufenthalt direkt bei Ihnen buchen:",
         mailHello: "Guten Tag,", mailMine: "Meine Angaben", lName: "Name", lEta: "Ankunft ca.", mailPrice: "Preis laut Ihrem Angebot", mailClose: "Ich freue mich auf Ihre endgültige Bestätigung mit den Zahlungsbedingungen.", mailBye: "Viele Grüße",
         noAddr: "Bitte antworten Sie auf unsere E-Mail, um zu buchen.", change: "Andere Option wählen",
@@ -334,13 +342,14 @@ const S = {
         copy: "Copia", copied: "Copiato", sample: "Proposta d'esempio", invalid: "Questo link è incompleto. Mostriamo una proposta d'esempio.",
         altTitle: "Periodi alternativi", altNone: "Per le date richieste siamo purtroppo al completo. In questi periodi abbiamo camere libere per te:", altSome: "Per una delle case le date richieste sono al completo. Lì abbiamo camere libere in questi periodi:",
         special: (pct, until) => until ? `Special domenica–giovedì: un ulteriore ${pct}% di sconto se prenoti entro ${until}` : `Special domenica–giovedì: un ulteriore ${pct}% di sconto prenotando diretto`, was: v => `invece di ${v} €`,
-        formTitle: "La tua prenotazione diretta", formIntro: "Inserisci i tuoi dati. Il nostro ufficio prenotazioni verifica la disponibilità e ti invia la conferma con i dettagli per il pagamento. La prenotazione diventa definitiva solo con la nostra conferma scritta; fino ad allora prezzi e disponibilità non sono garantiti.",
+        formTitle: "La tua prenotazione diretta", formIntro: "Bastano 3 dati. Ti confermiamo la prenotazione via email, con i dettagli per il pagamento.",
         first: "Nome", last: "Cognome", email: "Email", phone: "Telefono", eta: "Orario di arrivo previsto", wish: "Desideri", optional: "facoltativo",
+        best: "✓ Miglior prezzo: diretto costa meno che sui portali",
         terms: "Non rimborsabile · pagamento 5 giorni prima dell'arrivo",
-        termsAccept: "Accetto le condizioni di prenotazione: tariffa non rimborsabile (in caso di cancellazione, modifica o mancato arrivo è dovuto l'importo totale), pagamento dell'intero importo 5 giorni prima dell'arrivo.",
+        termsAccept: "Accetto le condizioni: tariffa non rimborsabile (in caso di cancellazione, modifica o mancato arrivo è dovuto l'importo totale), pagamento 5 giorni prima dell'arrivo. Definitiva con la conferma di Alpstay.",
         mailTerms: "Condizioni accettate: non rimborsabile, pagamento dell'intero importo 5 giorni prima dell'arrivo.",
-        consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora direttamente", required: "Compila i campi segnati.",
-        sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
+        consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora", required: "Compila i campi segnati.",
+        okTitle: "Grazie – la tua prenotazione è arrivata!", okText: "Il nostro ufficio prenotazioni ti scrive via email con la conferma e i dettagli per il pagamento.", sending: "Invio in corso…", sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
         mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "vorrei prenotare direttamente da voi il seguente soggiorno:",
         mailHello: "Buongiorno,", mailMine: "I miei dati", lName: "Nome", lEta: "Arrivo previsto", mailPrice: "Prezzo secondo la vostra offerta", mailClose: "Attendo la vostra conferma definitiva con le condizioni di pagamento.", mailBye: "Cordiali saluti",
         noAddr: "Per prenotare rispondi alla nostra email.", change: "Scegli un'altra opzione",
@@ -362,19 +371,22 @@ const S = {
         copy: "Copy", copied: "Copied", sample: "Sample offer", invalid: "This link is incomplete. We are showing a sample offer.",
         altTitle: "Alternative dates", altNone: "Unfortunately we are fully booked for your dates. We have rooms available for you in these periods:", altSome: "One of the houses is fully booked for your dates. There we have rooms available in these periods:",
         special: (pct, until) => until ? `Sunday–Thursday special: a further ${pct}% off if you book by ${until}` : `Sunday–Thursday special: a further ${pct}% off when you book direct`, was: v => `instead of €${v}`,
-        formTitle: "Your direct booking", formIntro: "Enter your details. Our reservations team checks availability and sends you the confirmation with the payment details. The booking is only binding once we confirm it in writing; until then prices and availability are not guaranteed.",
+        formTitle: "Your direct booking", formIntro: "Just 3 details. We confirm your booking by email, with the payment details.",
         first: "First name", last: "Last name", email: "Email", phone: "Phone", eta: "Expected arrival time", wish: "Wishes", optional: "optional",
+        best: "✓ Best price: cheaper direct than on booking portals",
         terms: "Non-refundable · payment 5 days before arrival",
-        termsAccept: "I accept the booking conditions: non-refundable rate (in case of cancellation, change or no-show the full amount is due), payment of the full amount 5 days before arrival.",
+        termsAccept: "I accept the conditions: non-refundable rate (in case of cancellation, change or no-show the full amount is due), payment 5 days before arrival. Binding once Alpstay confirms.",
         mailTerms: "Booking conditions accepted: non-refundable, payment of the full amount 5 days before arrival.",
-        consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book direct now", required: "Please fill in the marked fields.",
-        sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
+        consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book now", required: "Please fill in the marked fields.",
+        okTitle: "Thank you – your booking has reached us!", okText: "Our reservations team will email you the confirmation and the payment details.", sending: "Sending…", sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
         mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "I would like to book the following stay directly with you:",
         mailHello: "Hello,", mailMine: "My details", lName: "Name", lEta: "Arrival time", mailPrice: "Price as per your offer", mailClose: "I look forward to your final confirmation with the payment terms.", mailBye: "Kind regards",
         noAddr: "To book, please reply to our email.", change: "Choose another option",
     },
 };
 /* Assicurazione annullamento: condizioni ufficiali su alpstay.eu (testo fornito dall'ufficio il 10/11/2026) */
+/* Servizio che riceve le prenotazioni (Cloudflare). Vuoto = email precompilata come ripiego. */
+const BOOK_ENDPOINT = "";
 const INS_URL = { de: "https://www.alpstay.eu/de/versicherung.asp", it: "https://www.alpstay.eu/it/assicurazione.asp", en: "https://www.alpstay.eu/en/insurance.asp" };
 const W = {
     de: {
@@ -386,7 +398,7 @@ const W = {
         eventsTitle: "Veranstaltungen", eventsText: "Was in Gröden während Ihres Aufenthalts los ist:", eventsLink: "Zum Veranstaltungskalender",
         arrivalTitle: "Ihre Ankunft", arrival: { hartmann: "Chalet Hartmann: Check-in an der Rezeption von 14 bis 18 Uhr; später Self-Check-in, den PIN erhalten Sie am Anreisetag per WhatsApp.", saslong: "Smart Hotel Saslong: Self-Check-in am Kiosk." },
         expTitle: "Erlebnisse", expText: "Ausgewählte Erlebnisse in den Dolomiten, für Sie zusammengestellt.", expLink: "Erlebnisse entdecken",
-        extrasTitle: "Ihr Aufenthalt nach Maß", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Zimmer wie im Angebot", breakfast: v => `Frühstück dazubuchen (${v} € pro Person und Nacht)`,
+        extrasTitle: "Extras und Wünsche hinzufügen", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Zimmer wie im Angebot", breakfast: v => `Frühstück dazubuchen (${v} € pro Person und Nacht)`,
         transfer: "Transfer mit Limousine Service Dolomiti", transferNote: "Preis auf Anfrage: der Fahrer bestätigt Ihnen den Endpreis.", ins: "Reiserücktrittsversicherung", insNote: "Wir empfehlen sie immer: Wir senden Ihnen das Angebot mit der Bestätigung.", insCover: "Versichert u. a. bei plötzlicher schwerer Krankheit, Unfall oder Todesfall der Versicherten oder naher Angehöriger, Verschlechterung einer bestehenden Krankheit, Schwangerschaft, unerwarteter Kündigung, schweren Sachschäden oder Einbruch zu Hause. Gilt für bis zu 6 gemeinsam gebuchte und versicherte Personen. Im Schadensfall ist immer eine Bescheinigung nötig (z. B. ärztliches Attest).", insMore: "Alle Bedingungen", insMail: "Reiserücktrittsversicherung (bitte Angebot senden)", totalSel: "Gesamt mit Ihrer Auswahl", extrasMail: "Extras", totalMail: "Gesamtpreis mit Extras", onRequest: "Preis auf Anfrage",
     },
     it: {
@@ -398,7 +410,7 @@ const W = {
         eventsTitle: "Eventi", eventsText: "Cosa succede in Val Gardena durante il vostro soggiorno:", eventsLink: "Al calendario degli eventi",
         arrivalTitle: "Il vostro arrivo", arrival: { hartmann: "Chalet Hartmann: check-in in reception dalle 14 alle 18; più tardi self check-in, il PIN arriva su WhatsApp il giorno dell'arrivo.", saslong: "Smart Hotel Saslong: self check-in al chiosco." },
         expTitle: "Esperienze", expText: "Esperienze nelle Dolomiti selezionate per voi.", expLink: "Scopri le esperienze",
-        extrasTitle: "Il vostro soggiorno su misura", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Camera come da offerta", breakfast: v => `Aggiungi la colazione (${v} € a persona e notte)`,
+        extrasTitle: "Aggiungi extra e desideri", upgrade: (n, v) => `Upgrade: ${n} (+ ${v} €)`, keepRoom: "Camera come da offerta", breakfast: v => `Aggiungi la colazione (${v} € a persona e notte)`,
         transfer: "Transfer con Limousine Service Dolomiti", transferNote: "Prezzo su richiesta: l'autista vi conferma il prezzo finale.", ins: "Assicurazione contro l'annullamento del viaggio", insNote: "La consigliamo sempre: ti inviamo il preventivo insieme alla conferma.", insCover: "Copre tra l'altro improvvisa grave malattia, incidente o morte degli assicurati o di familiari stretti, peggioramento di una malattia già esistente, gravidanza, licenziamento inaspettato, danni materiali gravi o furto con scasso nella propria abitazione. Vale fino a 6 persone che hanno prenotato insieme e sono assicurate. In caso di danno serve sempre un certificato (medico, di un'autorità ecc.).", insMore: "Tutte le condizioni", insMail: "Assicurazione annullamento viaggio (inviatemi il preventivo)", totalSel: "Totale con la vostra scelta", extrasMail: "Extra", totalMail: "Prezzo totale con extra", onRequest: "prezzo su richiesta",
     },
     en: {
@@ -410,7 +422,7 @@ const W = {
         eventsTitle: "Events", eventsText: "What's on in Val Gardena during your stay:", eventsLink: "Go to the events calendar",
         arrivalTitle: "Your arrival", arrival: { hartmann: "Chalet Hartmann: check-in at reception from 2 to 6 pm; later self check-in, your PIN arrives by WhatsApp on the day of arrival.", saslong: "Smart Hotel Saslong: self check-in at the kiosk." },
         expTitle: "Experiences", expText: "Experiences in the Dolomites, selected for you.", expLink: "Discover experiences",
-        extrasTitle: "Your stay, your way", upgrade: (n, v) => `Upgrade: ${n} (+ €${v})`, keepRoom: "Room as offered", breakfast: v => `Add breakfast (€${v} per person per night)`,
+        extrasTitle: "Add extras and wishes", upgrade: (n, v) => `Upgrade: ${n} (+ €${v})`, keepRoom: "Room as offered", breakfast: v => `Add breakfast (€${v} per person per night)`,
         transfer: "Transfer with Limousine Service Dolomiti", transferNote: "Price on request: the driver confirms the final price.", ins: "Travel cancellation insurance", insNote: "We always recommend it: we will send you the quote with the confirmation.", insCover: "Covers, among other things, sudden serious illness, accident or death of the insured or close relatives, worsening of an existing illness, pregnancy, unexpected dismissal, serious property damage or burglary at home. Valid for up to 6 people who booked together and are insured. In case of a claim a certificate is always required (medical certificate, official document etc.).", insMore: "All conditions", insMail: "Travel cancellation insurance (please send me a quote)", totalSel: "Total with your selection", extrasMail: "Extras", totalMail: "Total price with extras", onRequest: "price on request",
     },
 };
@@ -564,7 +576,7 @@ function render(p, l, isSample, invalid) {
         const price = c.price, pp = price && nn ? (kn ? price / nn : persons ? price / (nn * persons) : null) : null; /* famiglie: prezzo a notte; solo adulti: a persona */
         return price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
       ${c.special && (alt === null || alt === void 0 ? void 0 : alt.p0) ? `<p class="was">${esc(t.was(money(alt.p0, l, 2)))}</p>` : ""}
-      ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p><p class="tax terms">${esc(t.terms)}</p>` : `<p class="lbl">${t.forDates}</p>`;
+      ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p><p class="best">${esc(t.best)}</p><p class="tax terms">${esc(t.terms)}</p>` : `<p class="lbl">${t.forDates}</p>`;
     };
     const card = (o, i) => {
         const H = HOUSES[o.h], isRec = i === 0 && opts.length > 1;
@@ -716,27 +728,28 @@ function render(p, l, isSample, invalid) {
         reqBox.innerHTML = `
       <h3>${t.formTitle}</h3>
       <div class="req-sum"><strong>${esc(H.name)}</strong><span>${esc(dateRange({ ...p, a: c.a, d: c.d }, l))} · ${esc(t.nights(nn))} · ${esc(roomName(c.o, l))} · ${esc(t.board[p.b])}</span>
-        ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span>` : ""}
+        ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span><span class="best">${esc(t.best)}</span>` : ""}
         ${choices.length > 1 ? `<button type="button" class="linkbtn" data-change>${t.change}</button>` : ""}</div>
       <form class="req-form" novalidate>
-        <fieldset class="extras wide"><legend>${esc(w.extrasTitle)}</legend>
+        <p class="req-intro wide">${esc(t.formIntro)}</p>
+        <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
+        <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
+        <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
+        <label><span class="lt">${t.phone} <i>(${t.optional})</i></span><input name="phone" type="tel" autocomplete="tel"></label>
+        <details class="extras-box wide"><summary>${esc(w.extrasTitle)}</summary>
+        <fieldset class="extras">
           ${c.o.up && c.o.up.p > 0 && c.o.up.n ? `<label class="check"><input type="radio" name="up" value="0" checked> ${esc(w.keepRoom)}</label>
             <label class="check"><input type="radio" name="up" value="1"> ${esc(w.upgrade(c.o.up.n, money(c.o.up.p, l, 0)))}</label>` : ""}
           ${p.b === "ro" && typeof p.bf === "number" && p.bf > 0 ? `<label class="check"><input type="checkbox" name="bf"> ${esc(w.breakfast(money(p.bf, l, 0)))}</label>` : ""}
           <label class="check"><input type="checkbox" name="tr"> ${esc(w.transfer)} <i>${esc(w.transferNote)}</i></label>
           <label class="check"><input type="checkbox" name="ins"> ${esc(w.ins)} <i>${esc(w.insNote)}</i></label>
           <p class="ins-cover">${esc(w.insCover)} <a href="${INS_URL[l]}" target="_blank" rel="noopener">${esc(w.insMore)} →</a></p>
-          ${c.price ? `<p class="sel-total">${esc(w.totalSel)}: <b data-total>${money(c.price, l, 2)} €</b></p>` : ""}
         </fieldset>
-        <p class="req-intro wide">${esc(t.formIntro)}</p>
-        <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
-        <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
-        <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
-        <label><span class="lt">${t.phone} <i>(${t.optional})</i></span><input name="phone" type="tel" autocomplete="tel"></label>
         <label><span class="lt">${t.eta} <i>(${t.optional})</i></span><input name="eta"></label>
-        <label class="wide"><span class="lt">${t.wish} <i>(${t.optional})</i></span><textarea name="wish" rows="3" maxlength="800"></textarea></label>
-        <label class="check wide"><input type="checkbox" name="terms" required> ${esc(t.termsAccept)}</label>
-        <label class="check wide"><input type="checkbox" name="consent" required> ${esc(t.consent)}</label>
+        <label><span class="lt">${t.wish} <i>(${t.optional})</i></span><textarea name="wish" rows="3" maxlength="800"></textarea></label>
+        </details>
+        ${c.price ? `<p class="sel-total wide">${esc(w.totalSel)}: <b data-total>${money(c.price, l, 2)} €</b></p>` : ""}
+        <label class="check wide terms"><input type="checkbox" name="terms" required> ${esc(t.termsAccept)}</label>
         <p class="req-err wide" hidden>${esc(t.required)}</p>
         <button type="submit" class="btn wide">${t.send} →</button>
       </form>
@@ -760,7 +773,7 @@ function render(p, l, isSample, invalid) {
             const f = new FormData(form), v = (k) => { var _a; return String((_a = f.get(k)) !== null && _a !== void 0 ? _a : "").replace(/[\r\n]+/g, " ").trim(); };
             const okMail = /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v("email"));
             const err = reqBox.querySelector(".req-err");
-            if (!v("first") || !v("last") || !okMail || !f.get("consent") || !f.get("terms")) {
+            if (!v("first") || !v("last") || !okMail || !f.get("terms")) {
                 err.hidden = false;
                 return;
             }
@@ -792,13 +805,33 @@ function render(p, l, isSample, invalid) {
             const subject = t.mailSubject((_b = p.c) !== null && _b !== void 0 ? _b : "", H.name);
             const href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             const sent = reqBox.querySelector(".req-sent");
-            sent.hidden = false;
-            sent.innerHTML = `<h4>${t.sentTitle}</h4><p>${esc(t.sentText)}</p>
+            const mailtoFallback = () => {
+                sent.hidden = false;
+                sent.innerHTML = `<h4>${t.sentTitle}</h4><p>${esc(t.sentText)}</p>
         <p class="line"><span class="val">${esc(addr)}</span><button type="button" class="copy" data-copy="${esc(addr)}">${t.copy}</button></p>
         <p class="lbl">${esc(subject)}</p><pre class="req-text">${esc(body)}</pre>
         <button type="button" class="copy" data-copy="${esc(subject + "\n\n" + body)}">${t.copy}</button>`;
-            bindCopy(sent);
-            location.href = href;
+                bindCopy(sent);
+                location.href = href;
+            };
+            /* Invio diretto al servizio prenotazioni (se configurato); se non risponde, ripiego sull'email precompilata */
+            if (!BOOK_ENDPOINT) {
+                mailtoFallback();
+                return;
+            }
+            const btn = form.querySelector("button[type=submit]");
+            btn.disabled = true;
+            btn.textContent = t.sending;
+            fetch(BOOK_ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ v: 1, to: addr, subject, body, ref: `${REQ_TAG} ${ref}`, email: v("email") }) })
+                .then(r => { if (!r.ok)
+                throw new Error(String(r.status)); return r.json(); })
+                .then(() => {
+                form.hidden = true;
+                sent.hidden = false;
+                sent.innerHTML = `<h4>${esc(t.okTitle)}</h4><p>${esc(t.okText)}</p>`;
+                sent.scrollIntoView({ behavior: "smooth", block: "center" });
+            })
+                .catch(() => { btn.disabled = false; btn.textContent = `${t.send} →`; mailtoFallback(); });
         });
     };
     app.querySelectorAll("[data-choose]").forEach(b => b.addEventListener("click", () => openForm(Number(b.dataset.choose))));
