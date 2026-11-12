@@ -113,6 +113,9 @@ button.btn{cursor:pointer}
 .extras-box .extras{border:0;padding:0;margin:0 0 10px}
 .extras-box label{display:block;margin:8px 0}
 .best{margin:6px 0 0;font-size:13px;color:var(--gold-ink,#7A5F35);display:block}
+.tel-row{display:flex;gap:6px;margin-top:6px}
+.tel-row select{flex:0 0 auto;max-width:46%;padding:0 8px;border:1px solid var(--line,#E6E2DA);border-radius:0;background:#fff;font:inherit;font-size:14px;color:inherit;min-height:44px}
+.tel-row input{flex:1 1 auto;min-width:0;margin-top:0}
 .req-form .terms{font-size:13px;line-height:1.5}
 .extras .ins-cover{margin:-4px 0 6px 30px;font-size:12.5px;line-height:1.5;color:var(--muted,#6B6B67)}
 .extras .ins-cover a{color:inherit;text-decoration:underline}
@@ -319,7 +322,7 @@ const S = {
         terms: "Nicht erstattbar · Zahlung 5 Tage vor Anreise",
         termsAccept: "Ich akzeptiere die Buchungsbedingungen: nicht erstattbarer Tarif (bei Stornierung, Änderung oder Nichtanreise wird der Gesamtbetrag fällig), Zahlung 5 Tage vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
         mailTerms: "Buchungsbedingungen akzeptiert: nicht erstattbar, Zahlung des Gesamtbetrags 5 Tage vor Anreise.",
-        consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt buchen", required: "Bitte füllen Sie die markierten Felder aus.",
+        consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt buchen", country: "Land", required: "Bitte füllen Sie die markierten Felder aus.",
         okTitle: "Danke – Ihre Buchung ist bei uns!", okText: "Unser Reservierungsteam meldet sich per E-Mail mit der Bestätigung und den Zahlungsdetails.", sending: "Wird gesendet…", sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
         mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "gerne möchte ich folgenden Aufenthalt direkt bei Ihnen buchen:",
         mailHello: "Guten Tag,", mailMine: "Meine Angaben", lName: "Name", lEta: "Ankunft ca.", mailPrice: "Preis laut Ihrem Angebot", mailClose: "Ich freue mich auf Ihre endgültige Bestätigung mit den Zahlungsbedingungen.", mailBye: "Viele Grüße",
@@ -348,7 +351,7 @@ const S = {
         terms: "Non rimborsabile · pagamento 5 giorni prima dell'arrivo",
         termsAccept: "Accetto le condizioni: tariffa non rimborsabile (in caso di cancellazione, modifica o mancato arrivo è dovuto l'importo totale), pagamento 5 giorni prima dell'arrivo. Definitiva con la conferma di Alpstay.",
         mailTerms: "Condizioni accettate: non rimborsabile, pagamento dell'intero importo 5 giorni prima dell'arrivo.",
-        consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora", required: "Compila i campi segnati.",
+        consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora", country: "Paese", required: "Compila i campi segnati.",
         okTitle: "Grazie – la tua prenotazione è arrivata!", okText: "Il nostro ufficio prenotazioni ti scrive via email con la conferma e i dettagli per il pagamento.", sending: "Invio in corso…", sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
         mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "vorrei prenotare direttamente da voi il seguente soggiorno:",
         mailHello: "Buongiorno,", mailMine: "I miei dati", lName: "Nome", lEta: "Arrivo previsto", mailPrice: "Prezzo secondo la vostra offerta", mailClose: "Attendo la vostra conferma definitiva con le condizioni di pagamento.", mailBye: "Cordiali saluti",
@@ -377,7 +380,7 @@ const S = {
         terms: "Non-refundable · payment 5 days before arrival",
         termsAccept: "I accept the conditions: non-refundable rate (in case of cancellation, change or no-show the full amount is due), payment 5 days before arrival. Binding once Alpstay confirms.",
         mailTerms: "Booking conditions accepted: non-refundable, payment of the full amount 5 days before arrival.",
-        consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book now", required: "Please fill in the marked fields.",
+        consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book now", country: "Country", required: "Please fill in the marked fields.",
         okTitle: "Thank you – your booking has reached us!", okText: "Our reservations team will email you the confirmation and the payment details.", sending: "Sending…", sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
         mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "I would like to book the following stay directly with you:",
         mailHello: "Hello,", mailMine: "My details", lName: "Name", lEta: "Arrival time", mailPrice: "Price as per your offer", mailClose: "I look forward to your final confirmation with the payment terms.", mailBye: "Kind regards",
@@ -387,6 +390,49 @@ const S = {
 /* Assicurazione annullamento: condizioni ufficiali su alpstay.eu (testo fornito dall'ufficio il 10/11/2026) */
 /* Servizio che riceve le prenotazioni (Cloudflare). Vuoto = email precompilata come ripiego. */
 const BOOK_ENDPOINT = "";
+/* Prefissi internazionali: mercati principali di Alpstay per primi */
+const DIAL = [
+    ["DE", "+49", { de: "Deutschland", it: "Germania", en: "Germany" }],
+    ["AT", "+43", { de: "Österreich", it: "Austria", en: "Austria" }],
+    ["CH", "+41", { de: "Schweiz", it: "Svizzera", en: "Switzerland" }],
+    ["IT", "+39", { de: "Italien", it: "Italia", en: "Italy" }],
+    ["NL", "+31", { de: "Niederlande", it: "Paesi Bassi", en: "Netherlands" }],
+    ["BE", "+32", { de: "Belgien", it: "Belgio", en: "Belgium" }],
+    ["LU", "+352", { de: "Luxemburg", it: "Lussemburgo", en: "Luxembourg" }],
+    ["FR", "+33", { de: "Frankreich", it: "Francia", en: "France" }],
+    ["GB", "+44", { de: "Vereinigtes Königreich", it: "Regno Unito", en: "United Kingdom" }],
+    ["IE", "+353", { de: "Irland", it: "Irlanda", en: "Ireland" }],
+    ["DK", "+45", { de: "Dänemark", it: "Danimarca", en: "Denmark" }],
+    ["SE", "+46", { de: "Schweden", it: "Svezia", en: "Sweden" }],
+    ["NO", "+47", { de: "Norwegen", it: "Norvegia", en: "Norway" }],
+    ["FI", "+358", { de: "Finnland", it: "Finlandia", en: "Finland" }],
+    ["PL", "+48", { de: "Polen", it: "Polonia", en: "Poland" }],
+    ["CZ", "+420", { de: "Tschechien", it: "Repubblica Ceca", en: "Czechia" }],
+    ["SK", "+421", { de: "Slowakei", it: "Slovacchia", en: "Slovakia" }],
+    ["HU", "+36", { de: "Ungarn", it: "Ungheria", en: "Hungary" }],
+    ["SI", "+386", { de: "Slowenien", it: "Slovenia", en: "Slovenia" }],
+    ["HR", "+385", { de: "Kroatien", it: "Croazia", en: "Croatia" }],
+    ["ES", "+34", { de: "Spanien", it: "Spagna", en: "Spain" }],
+    ["PT", "+351", { de: "Portugal", it: "Portogallo", en: "Portugal" }],
+    ["US", "+1", { de: "USA / Kanada", it: "USA / Canada", en: "USA / Canada" }],
+    ["IL", "+972", { de: "Israel", it: "Israele", en: "Israel" }],
+    ["AU", "+61", { de: "Australien", it: "Australia", en: "Australia" }],
+];
+const flag = (iso) => iso.replace(/./g, ch => String.fromCodePoint(0x1F1E6 - 65 + ch.charCodeAt(0)));
+/* Numero completo: prefisso + numero senza lo 0 iniziale (in Italia lo 0 resta: fa parte del numero) */
+function fullPhone(cc, num) {
+    const n = num.replace(/[^\d]/g, "");
+    if (!n)
+        return "";
+    /* numero scritto già con prefisso (+43… o 0043…): vale quello, non la tendina */
+    const t = num.trim();
+    if (t.startsWith("+") || t.startsWith("00")) {
+        const d = t.startsWith("+") ? n : n.slice(2);
+        const hit = [...DIAL].sort((x, y) => y[1].length - x[1].length).find(x => d.startsWith(x[1].slice(1)));
+        return hit ? `${hit[1]} ${d.slice(hit[1].length - 1)}` : `+${d}`;
+    }
+    return `${cc} ${cc === "+39" ? n : n.replace(/^0+/, "")}`;
+}
 const INS_URL = { de: "https://www.alpstay.eu/de/versicherung.asp", it: "https://www.alpstay.eu/it/assicurazione.asp", en: "https://www.alpstay.eu/en/insurance.asp" };
 const W = {
     de: {
@@ -735,7 +781,7 @@ function render(p, l, isSample, invalid) {
         <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
         <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
         <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
-        <label>${t.phone} *<input name="phone" type="tel" autocomplete="tel" required></label>
+        <label>${t.phone} *<span class="tel-row"><select name="cc" aria-label="${esc(t.country)}">${DIAL.map(([iso, code, name]) => `<option value="${code}" data-iso="${iso}">${flag(iso)} ${code} ${esc(name[l])}</option>`).join("")}</select><input name="phone" type="tel" autocomplete="tel-national" required></span></label>
         <details class="extras-box wide"><summary>${esc(w.extrasTitle)}</summary>
         <fieldset class="extras">
           ${c.o.up && c.o.up.p > 0 && c.o.up.n ? `<label class="check"><input type="radio" name="up" value="0" checked> ${esc(w.keepRoom)}</label>
@@ -761,6 +807,18 @@ function render(p, l, isSample, invalid) {
         const pre = [["first", (_c = p.g) === null || _c === void 0 ? void 0 : _c.f], ["last", (_d = p.g) === null || _d === void 0 ? void 0 : _d.l], ["email", (_e = p.g) === null || _e === void 0 ? void 0 : _e.e], ["phone", (_f = p.g) === null || _f === void 0 ? void 0 : _f.t]];
         pre.forEach(([k, val]) => { const el = form.querySelector(`input[name=${k}]`); if (el && val)
             el.value = String(val).slice(0, 120); });
+        /* Prefisso: dal numero della richiesta se ha +xx, altrimenti dalla lingua (de → Germania, it → Italia, en → Regno Unito) */
+        const ccSel = form.querySelector("select[name=cc]"), telIn = form.querySelector("input[name=phone]");
+        if (ccSel && telIn) {
+            const raw = telIn.value.replace(/\s+/g, " ").trim(), intl = raw.replace(/^00/, "+");
+            const hit = intl.startsWith("+") ? [...DIAL].sort((a, b) => b[1].length - a[1].length).find(d => intl.replace(/[\s()./-]/g, "").startsWith(d[1])) : undefined;
+            if (hit) {
+                ccSel.value = hit[1];
+                telIn.value = intl.replace(/[\s()./-]/g, "").slice(hit[1].length);
+            }
+            else
+                ccSel.value = l === "it" ? "+39" : l === "en" ? "+44" : "+49";
+        }
         /* Extra scelti e totale aggiornato (solo voci con prezzo; il transfer resta su richiesta) */
         const persons2 = p.ad + kn;
         const sel = () => {
@@ -772,12 +830,13 @@ function render(p, l, isSample, invalid) {
         form.addEventListener("change", () => { const x = sel(), el = form.querySelector("[data-total]"); if (el && x.total != null)
             el.textContent = `${money(x.total, l, 2)} €`; });
         form.addEventListener("submit", e => {
-            var _a, _b;
+            var _a, _b, _c;
             e.preventDefault();
             const f = new FormData(form), v = (k) => { var _a; return String((_a = f.get(k)) !== null && _a !== void 0 ? _a : "").replace(/[\r\n]+/g, " ").trim(); };
             const okMail = /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v("email"));
             const err = reqBox.querySelector(".req-err");
             const okTel = (v("phone").match(/\d/g) || []).length >= 6;
+            const tel = fullPhone(String((_a = f.get("cc")) !== null && _a !== void 0 ? _a : ""), v("phone"));
             if (!v("first") || !v("last") || !okMail || !okTel || !f.get("terms")) {
                 err.hidden = false;
                 return;
@@ -795,19 +854,19 @@ function render(p, l, isSample, invalid) {
                 ...(xs.tr ? [`${w.transfer} (${w.onRequest})`] : []),
                 ...(xs.ins ? [w.insMail] : []),
             ];
-            const wish = String((_a = f.get("wish")) !== null && _a !== void 0 ? _a : "").replace(/\r/g, "").replace(/\n\s*\n+/g, "\n").trim().slice(0, 800);
+            const wish = String((_b = f.get("wish")) !== null && _b !== void 0 ? _b : "").replace(/\r/g, "").replace(/\n\s*\n+/g, "\n").trim().slice(0, 800);
             const full = `${v("first")} ${v("last")}`;
             const body = [
                 t.mailHello, "", t.mailIntro, "",
                 H.name, `${dateRange({ ...p, a: c.a, d: c.d }, l)} · ${t.nights(nn2)}`, `${roomName(c.o, l)} · ${t.board[p.b]}`, guestsLine,
                 ...(c.price ? [`${t.mailPrice}: ${money(c.price, l, 2)} €${c.special ? " (Special)" : ""}`] : []),
                 ...(extraLines.length ? ["", `${w.extrasMail}:`, ...extraLines.map(x => `– ${x}`), ...(xs.total != null && xs.total !== c.price ? [`${w.totalMail}: ${money(xs.total, l, 2)} €`] : [])] : []), "",
-                `${t.mailMine}:`, `${t.lName}: ${full}`, `${t.email}: ${v("email")}`, ...(v("phone") ? [`${t.phone}: ${v("phone")}`] : []), ...(v("eta") ? [`${t.lEta}: ${v("eta")}`] : []),
+                `${t.mailMine}:`, `${t.lName}: ${full}`, `${t.email}: ${v("email")}`, ...(tel ? [`${t.phone}: ${tel}`] : []), ...(v("eta") ? [`${t.lEta}: ${v("eta")}`] : []),
                 ...(wish ? ["", `${t.wish}:`, wish] : []), "",
                 t.mailTerms, "",
                 t.mailClose, "", t.mailBye, full, "", `Ref. ${REQ_TAG} ${ref}`,
             ].join("\n");
-            const subject = t.mailSubject((_b = p.c) !== null && _b !== void 0 ? _b : "", H.name);
+            const subject = t.mailSubject((_c = p.c) !== null && _c !== void 0 ? _c : "", H.name);
             const href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             const sent = reqBox.querySelector(".req-sent");
             const mailtoFallback = () => {
