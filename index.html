@@ -118,6 +118,8 @@ button.btn{cursor:pointer}
 .tel-row input{flex:1 1 auto;min-width:0;margin-top:0}
 .alt-media{margin:0 0 12px;aspect-ratio:16/7;overflow:hidden;background:var(--soft,#F3F1EC)}
 .alt-media img{display:block;width:100%;height:100%;object-fit:cover}
+.req-room{margin:0 0 16px;aspect-ratio:16/9;overflow:hidden;background:var(--soft,#F3F1EC)}
+.req-room img{display:block;width:100%;height:100%;object-fit:cover}
 .req-form .terms{font-size:13px;line-height:1.5}
 .extras .ins-cover{margin:-4px 0 6px 30px;font-size:12.5px;line-height:1.5;color:var(--muted,#6B6B67)}
 .extras .ins-cover a{color:inherit;text-decoration:underline}
@@ -779,6 +781,7 @@ function render(p, l, isSample, invalid) {
         }
         reqBox.innerHTML = `
       <h3>${t.formTitle}</h3>
+      <figure class="req-room"><img src="img/zimmer-${c.o.h}.jpg" alt="${esc(roomName(c.o, l))} · ${esc(H.name)}"></figure>
       <div class="req-sum"><strong>${esc(H.name)}</strong><span>${esc(dateRange({ ...p, a: c.a, d: c.d }, l))} · ${esc(t.nights(nn))} · ${esc(roomName(c.o, l))} · ${esc(t.board[p.b])}</span>
         ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span><span class="best">${esc(t.best)}</span>` : ""}
         ${choices.length > 1 ? `<button type="button" class="linkbtn" data-change>${t.change}</button>` : ""}</div>
