@@ -222,6 +222,7 @@ const HOUSES = {
         },
         compare: {
             slope: { de: "Skibus vor der Tür, ca. 1 km zum nächsten Lift", it: "Skibus davanti alla porta, circa 1 km al primo impianto", en: "Ski bus at the door, about 1 km to the nearest lift" },
+            slopeS: { de: "Bushaltestelle vor der Tür: ohne Auto von Ort zu Ort", it: "Fermata dell'autobus davanti alla porta: da un paese all'altro senza auto", en: "Bus stop at the door: from village to village without a car" },
             mood: { de: "Modern und unkompliziert, 49 Zimmer", it: "Moderno e informale, 49 camere", en: "Modern and easy-going, 49 rooms" },
             ideal: { de: "Aktive Familien, die viel unterwegs sind", it: "Famiglie attive, sempre in movimento", en: "Active families who are out all day" },
         },
@@ -250,6 +251,7 @@ const HOUSES = {
         },
         compare: {
             slope: { de: "Privater Hotel-Shuttle zu den Pisten", it: "Shuttle privato dell'hotel per le piste", en: "Private hotel shuttle to the slopes" },
+            slopeS: { de: "Ruhige Panoramalage, Guest Pass für Bus und öffentliche Verkehrsmittel", it: "Posizione panoramica e tranquilla, Guest Pass per autobus e mezzi pubblici", en: "Quiet panoramic setting, Guest Pass for buses and public transport" },
             mood: { de: "Persönlich und ruhig, nur 9 Zimmer", it: "Personale e tranquillo, solo 9 camere", en: "Personal and quiet, only 9 rooms" },
             ideal: { de: "Wer Ruhe und persönliche Atmosphäre sucht", it: "Chi cerca calma e un'atmosfera personale", en: "Guests looking for calm and a personal touch" },
         },
@@ -278,6 +280,7 @@ const HOUSES = {
         },
         compare: {
             slope: { de: "Skilift Nives direkt zur Sellaronda", it: "Skilift Nives subito sul Sellaronda", en: "Nives lift straight to the Sellaronda" },
+            slopeS: { de: "Zentral in Wolkenstein: Ausgangspunkt für Wanderungen in den Dolomiten", it: "In centro a Selva: punto di partenza per le escursioni nelle Dolomiti", en: "Central in Selva: a base for hikes in the Dolomites" },
             mood: { de: "Zentral und elegant, 22 Zimmer", it: "Centrale ed elegante, 22 camere", en: "Central and elegant, 22 rooms" },
             ideal: { de: "Paare, die mitten im Ort wohnen möchten", it: "Coppie che vogliono stare in centro", en: "Couples who want to stay in the centre" },
         },
@@ -310,7 +313,7 @@ const S = {
         rec: "Unsere Empfehlung", alt: "Alternative", total: "Gesamtpreis", pp: v => `ca. ${v} € pro Person und Nacht`, pn: v => `ca. ${v} € pro Nacht`, tax: "zzgl. Ortstaxe und Umweltbeitrag", forDates: "Preis und Verfügbarkeit für Ihre Daten",
         board: { ro: "Übernachtung", bb: "Übernachtung mit Frühstück", hb: "Halbpension" },
         book: "Direkt mit Vorteilen buchen!", bookNote: "Direkt beim Hotel, ohne Vermittler – mit persönlicher Bestätigung durch unser Reservierungsteam.",
-        compareTitle: "Die Häuser im Vergleich", rows: { place: "Ort", rooms: "Zimmer", slope: "Weg zur Piste", mood: "Atmosphäre", ideal: "Ideal für" },
+        compareTitle: "Die Häuser im Vergleich", rows: { place: "Ort", rooms: "Zimmer", slope: "Weg zur Piste", slopeS: "Unterwegs im Sommer", mood: "Atmosphäre", ideal: "Ideal für" },
         galleryTitle: "Einblicke", close: "Schließen",
         helpTitle: "Lieber persönlich?", helpText: "Antworten Sie einfach auf unsere E-Mail oder rufen Sie uns an. Wir passen das Angebot gern für Sie an.",
         copy: "Kopieren", copied: "Kopiert", sample: "Beispielangebot", invalid: "Dieser Link ist unvollständig. Wir zeigen ein Beispielangebot.",
@@ -339,7 +342,7 @@ const S = {
         rec: "La nostra proposta", alt: "Alternativa", total: "Prezzo totale", pp: v => `circa ${v} € a persona per notte`, pn: v => `circa ${v} € a notte`, tax: "più imposta di soggiorno e contributo ecologico", forDates: "Prezzo e disponibilità per le tue date",
         board: { ro: "Solo pernottamento", bb: "Pernottamento e colazione", hb: "Mezza pensione" },
         book: "Prenota diretto con vantaggi!", bookNote: "Direttamente con l'hotel, senza intermediari – con la conferma personale del nostro ufficio prenotazioni.",
-        compareTitle: "Le case a confronto", rows: { place: "Località", rooms: "Camere", slope: "Verso le piste", mood: "Atmosfera", ideal: "Ideale per" },
+        compareTitle: "Le case a confronto", rows: { place: "Località", rooms: "Camere", slope: "Verso le piste", slopeS: "Muoversi d'estate", mood: "Atmosfera", ideal: "Ideale per" },
         galleryTitle: "Uno sguardo dentro", close: "Chiudi",
         helpTitle: "Preferisci parlarne?", helpText: "Rispondi alla nostra email o chiamaci: adattiamo volentieri la proposta per te.",
         copy: "Copia", copied: "Copiato", sample: "Proposta d'esempio", invalid: "Questo link è incompleto. Mostriamo una proposta d'esempio.",
@@ -368,7 +371,7 @@ const S = {
         rec: "Our recommendation", alt: "Alternative", total: "Total price", pp: v => `about €${v} per person per night`, pn: v => `about €${v} per night`, tax: "plus local tourist tax and eco contribution", forDates: "Price and availability for your dates",
         board: { ro: "Room only", bb: "Bed & breakfast", hb: "Half board" },
         book: "Book direct with benefits!", bookNote: "Directly with the hotel, no middlemen – with personal confirmation from our reservations team.",
-        compareTitle: "The houses compared", rows: { place: "Location", rooms: "Rooms", slope: "Getting to the slopes", mood: "Atmosphere", ideal: "Ideal for" },
+        compareTitle: "The houses compared", rows: { place: "Location", rooms: "Rooms", slope: "Getting to the slopes", slopeS: "Getting around in summer", mood: "Atmosphere", ideal: "Ideal for" },
         galleryTitle: "A look inside", close: "Close",
         helpTitle: "Prefer to talk?", helpText: "Simply reply to our email or call us. We will gladly adjust the offer for you.",
         copy: "Copy", copied: "Copied", sample: "Sample offer", invalid: "This link is incomplete. We are showing a sample offer.",
@@ -663,7 +666,7 @@ function render(p, l, isSample, invalid) {
     const rows = [
         [t.rows.place, o => HOUSES[o.h].place[l]],
         [t.rows.rooms, o => roomName(o, l)],
-        [t.rows.slope, o => HOUSES[o.h].compare.slope[l]],
+        [winter ? t.rows.slope : t.rows.slopeS, o => (winter ? HOUSES[o.h].compare.slope : HOUSES[o.h].compare.slopeS)[l]],
         [t.rows.mood, o => HOUSES[o.h].compare.mood[l]],
         [t.rows.ideal, o => HOUSES[o.h].compare.ideal[l]],
     ];
