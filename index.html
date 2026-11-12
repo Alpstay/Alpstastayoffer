@@ -440,7 +440,7 @@ const W = {
         skiTitle: "Der richtige Skipass", skiQ: "Wie fahren Sie Ski?", lvl: ["Anfänger · in Gröden bleiben", "Fortgeschritten · Sellaronda und mehr"],
         skiRec: ["Der Skipass Val Gardena / Seiser Alm: 175 km Pisten bis zum Sella- und Grödner Joch. Gilt nicht für die Sellaronda.", "Der Dolomiti Superski: 1.200 km in 12 Tälern, mit der Sellaronda."],
         skiShop: "Zum offiziellen Skipass-Shop", skiNote: "Online bis 2 Tage vorher 5 % günstiger, Abholung an den Pick-up-Boxen im Tal.", skiKids: "Ermäßigte Skipässe für Kinder und Jugendliche gibt es nicht online, sondern an der Skipass-Kasse.",
-        liveTitle: "Schnee & Wetter live", weather: "Wetter", webcams: "Webcams", slopes: "Offene Pisten",
+        liveTitle: "Schnee & Wetter live", liveTitleS: "Wetter live", weather: "Wetter", webcams: "Webcams", slopes: "Offene Pisten",
         eventsTitle: "Veranstaltungen", eventsText: "Was in Gröden während Ihres Aufenthalts los ist:", eventsLink: "Zum Veranstaltungskalender",
         arrivalTitle: "Ihre Ankunft", arrival: { hartmann: "Chalet Hartmann: Check-in an der Rezeption von 14 bis 18 Uhr; später Self-Check-in, den PIN erhalten Sie am Anreisetag per WhatsApp.", saslong: "Smart Hotel Saslong: Self-Check-in am Kiosk." },
         expTitle: "Erlebnisse", expText: "Ausgewählte Erlebnisse in den Dolomiten, für Sie zusammengestellt.", expLink: "Erlebnisse entdecken",
@@ -452,7 +452,7 @@ const W = {
         skiTitle: "Lo skipass giusto", skiQ: "Come sciate?", lvl: ["Principiante · resto in Val Gardena", "Esperto · Sellaronda e oltre"],
         skiRec: ["Lo skipass Val Gardena / Alpe di Siusi: 175 km di piste fino a Passo Sella e Passo Gardena. Non vale per il Sellaronda.", "Il Dolomiti Superski: 1.200 km in 12 valli, Sellaronda compreso."],
         skiShop: "Allo shop ufficiale degli skipass", skiNote: "Online fino a 2 giorni prima costa il 5% in meno; ritiro ai Pick-up Box in valle.", skiKids: "Gli skipass ridotti per bambini e ragazzi non si comprano online ma alla cassa skipass.",
-        liveTitle: "Neve e meteo in diretta", weather: "Meteo", webcams: "Webcam", slopes: "Piste aperte",
+        liveTitle: "Neve e meteo in diretta", liveTitleS: "Meteo in diretta", weather: "Meteo", webcams: "Webcam", slopes: "Piste aperte",
         eventsTitle: "Eventi", eventsText: "Cosa succede in Val Gardena durante il vostro soggiorno:", eventsLink: "Al calendario degli eventi",
         arrivalTitle: "Il vostro arrivo", arrival: { hartmann: "Chalet Hartmann: check-in in reception dalle 14 alle 18; più tardi self check-in, il PIN arriva su WhatsApp il giorno dell'arrivo.", saslong: "Smart Hotel Saslong: self check-in al chiosco." },
         expTitle: "Esperienze", expText: "Esperienze nelle Dolomiti selezionate per voi.", expLink: "Scopri le esperienze",
@@ -464,7 +464,7 @@ const W = {
         skiTitle: "The right ski pass", skiQ: "How do you ski?", lvl: ["Beginner · staying in Val Gardena", "Advanced · Sellaronda and beyond"],
         skiRec: ["The Val Gardena / Seiser Alm pass: 175 km of slopes up to Sella Pass and Gardena Pass. Not valid for the Sellaronda.", "The Dolomiti Superski: 1,200 km in 12 valleys, including the Sellaronda."],
         skiShop: "Go to the official ski pass shop", skiNote: "Online up to 2 days ahead it costs 5% less; pick-up at the Pick-up Boxes in the valley.", skiKids: "Reduced passes for children and teenagers are not sold online but at the ski pass office.",
-        liveTitle: "Snow & weather live", weather: "Weather", webcams: "Webcams", slopes: "Open slopes",
+        liveTitle: "Snow & weather live", liveTitleS: "Weather live", weather: "Weather", webcams: "Webcams", slopes: "Open slopes",
         eventsTitle: "Events", eventsText: "What's on in Val Gardena during your stay:", eventsLink: "Go to the events calendar",
         arrivalTitle: "Your arrival", arrival: { hartmann: "Chalet Hartmann: check-in at reception from 2 to 6 pm; later self check-in, your PIN arrives by WhatsApp on the day of arrival.", saslong: "Smart Hotel Saslong: self check-in at the kiosk." },
         expTitle: "Experiences", expText: "Experiences in the Dolomites, selected for you.", expLink: "Discover experiences",
@@ -686,7 +686,7 @@ function render(p, l, isSample, invalid) {
           <p class="ds-link">${link(LINKS.shop, w.skiShop)}</p>
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
           </div>` : ""}
-        <div class="wk"><p class="wk-t">${esc(w.liveTitle)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
+        <div class="wk"><p class="wk-t">${esc(winter ? w.liveTitle : w.liveTitleS)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
         ${(() => {
             const ev = EVENTS.filter(e => e.from <= p.d && e.to >= p.a);
             return `<div class="wk${ev.length ? " hot" : ""}"><p class="wk-t">${esc(w.eventsTitle)}</p>
