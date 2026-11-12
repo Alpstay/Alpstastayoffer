@@ -313,7 +313,7 @@ const S = {
         copy: "Kopieren", copied: "Kopiert", sample: "Beispielangebot", invalid: "Dieser Link ist unvollständig. Wir zeigen ein Beispielangebot.",
         altTitle: "Alternative Zeiträume", altNone: "Für Ihre Wunschdaten sind wir leider ausgebucht. Zu diesen Zeiträumen haben wir Zimmer für Sie frei:", altSome: "Für ein Haus sind Ihre Wunschdaten ausgebucht. Dort haben wir zu diesen Zeiträumen Zimmer frei:",
         special: (pct, until) => until ? `Special Sonntag bis Donnerstag: weitere ${pct} % Rabatt bei Buchung bis ${until}` : `Special Sonntag bis Donnerstag: weitere ${pct} % Rabatt bei Direktbuchung`, was: v => `statt ${v} €`,
-        formTitle: "Ihre Direktbuchung", formIntro: "Nur 3 Angaben. Wir bestätigen Ihnen die Buchung per E-Mail, mit den Zahlungsdetails.",
+        formTitle: "Ihre Direktbuchung", formIntro: "Nur 3 Angaben. Wir bestätigen Ihnen die Buchung per E-Mail, mit den Zahlungsdetails.", formIntroPre: "Ihre Daten sind schon eingetragen – bitte kurz prüfen. Wir bestätigen Ihnen die Buchung per E-Mail, mit den Zahlungsdetails.",
         first: "Vorname", last: "Nachname", email: "E-Mail", phone: "Telefon", eta: "Voraussichtliche Ankunftszeit", wish: "Wünsche", optional: "optional",
         best: "✓ Bestpreis: direkt günstiger als auf Buchungsportalen",
         terms: "Nicht erstattbar · Zahlung 5 Tage vor Anreise",
@@ -342,7 +342,7 @@ const S = {
         copy: "Copia", copied: "Copiato", sample: "Proposta d'esempio", invalid: "Questo link è incompleto. Mostriamo una proposta d'esempio.",
         altTitle: "Periodi alternativi", altNone: "Per le date richieste siamo purtroppo al completo. In questi periodi abbiamo camere libere per te:", altSome: "Per una delle case le date richieste sono al completo. Lì abbiamo camere libere in questi periodi:",
         special: (pct, until) => until ? `Special domenica–giovedì: un ulteriore ${pct}% di sconto se prenoti entro ${until}` : `Special domenica–giovedì: un ulteriore ${pct}% di sconto prenotando diretto`, was: v => `invece di ${v} €`,
-        formTitle: "La tua prenotazione diretta", formIntro: "Bastano 3 dati. Ti confermiamo la prenotazione via email, con i dettagli per il pagamento.",
+        formTitle: "La tua prenotazione diretta", formIntro: "Bastano 3 dati. Ti confermiamo la prenotazione via email, con i dettagli per il pagamento.", formIntroPre: "I tuoi dati sono già inseriti: controllali un attimo. Ti confermiamo la prenotazione via email, con i dettagli per il pagamento.",
         first: "Nome", last: "Cognome", email: "Email", phone: "Telefono", eta: "Orario di arrivo previsto", wish: "Desideri", optional: "facoltativo",
         best: "✓ Miglior prezzo: diretto costa meno che sui portali",
         terms: "Non rimborsabile · pagamento 5 giorni prima dell'arrivo",
@@ -371,7 +371,7 @@ const S = {
         copy: "Copy", copied: "Copied", sample: "Sample offer", invalid: "This link is incomplete. We are showing a sample offer.",
         altTitle: "Alternative dates", altNone: "Unfortunately we are fully booked for your dates. We have rooms available for you in these periods:", altSome: "One of the houses is fully booked for your dates. There we have rooms available in these periods:",
         special: (pct, until) => until ? `Sunday–Thursday special: a further ${pct}% off if you book by ${until}` : `Sunday–Thursday special: a further ${pct}% off when you book direct`, was: v => `instead of €${v}`,
-        formTitle: "Your direct booking", formIntro: "Just 3 details. We confirm your booking by email, with the payment details.",
+        formTitle: "Your direct booking", formIntro: "Just 3 details. We confirm your booking by email, with the payment details.", formIntroPre: "Your details are already filled in – please check them. We confirm your booking by email, with the payment details.",
         first: "First name", last: "Last name", email: "Email", phone: "Phone", eta: "Expected arrival time", wish: "Wishes", optional: "optional",
         best: "✓ Best price: cheaper direct than on booking portals",
         terms: "Non-refundable · payment 5 days before arrival",
@@ -714,7 +714,7 @@ function render(p, l, isSample, invalid) {
   <footer class="foot"><div class="inner"><span class="tag">BE FREE. STAY TRUE</span><span>Alpstay Hotels · Val Gardena · Dolomites</span><a href="https://www.alpstay.eu" target="_blank" rel="noopener">www.alpstay.eu</a></div></footer>`;
     const reqBox = app.querySelector("#anfrage");
     const openForm = (idx) => {
-        var _a;
+        var _a, _b, _c, _d, _e, _f;
         const c = choices[idx];
         if (!c)
             return;
@@ -731,7 +731,7 @@ function render(p, l, isSample, invalid) {
         ${c.price ? `<span class="req-price">${t.total}: ${money(c.price, l, 2)} €${c.special ? " · Special" : ""}</span><span class="best">${esc(t.best)}</span>` : ""}
         ${choices.length > 1 ? `<button type="button" class="linkbtn" data-change>${t.change}</button>` : ""}</div>
       <form class="req-form" novalidate>
-        <p class="req-intro wide">${esc(t.formIntro)}</p>
+        <p class="req-intro wide">${esc(((_a = p.g) === null || _a === void 0 ? void 0 : _a.e) ? t.formIntroPre : t.formIntro)}</p>
         <label>${t.first} *<input name="first" autocomplete="given-name" required></label>
         <label>${t.last} *<input name="last" autocomplete="family-name" required></label>
         <label>${t.email} *<input name="email" type="email" autocomplete="email" required></label>
@@ -755,8 +755,12 @@ function render(p, l, isSample, invalid) {
       </form>
       <div class="req-sent" hidden></div>`;
         reqBox.scrollIntoView({ behavior: "smooth", block: "start" });
-        (_a = reqBox.querySelector("[data-change]")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => { var _a; reqBox.hidden = true; (_a = app.querySelector(opts.length ? ".opts" : ".alts")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" }); });
+        (_b = reqBox.querySelector("[data-change]")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => { var _a; reqBox.hidden = true; (_a = app.querySelector(opts.length ? ".opts" : ".alts")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" }); });
         const form = reqBox.querySelector("form");
+        /* Precompila con i dati della richiesta: l'ospite controlla e conferma */
+        const pre = [["first", (_c = p.g) === null || _c === void 0 ? void 0 : _c.f], ["last", (_d = p.g) === null || _d === void 0 ? void 0 : _d.l], ["email", (_e = p.g) === null || _e === void 0 ? void 0 : _e.e], ["phone", (_f = p.g) === null || _f === void 0 ? void 0 : _f.t]];
+        pre.forEach(([k, val]) => { const el = form.querySelector(`input[name=${k}]`); if (el && val)
+            el.value = String(val).slice(0, 120); });
         /* Extra scelti e totale aggiornato (solo voci con prezzo; il transfer resta su richiesta) */
         const persons2 = p.ad + kn;
         const sel = () => {
