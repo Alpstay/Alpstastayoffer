@@ -1,0 +1,8 @@
+name = "offerclick"
+main = "worker.ts"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "alpstay-offerte-click"
+database_id = "c4ba9aa7-1476-4bc0-94de-af8afea640fd"
