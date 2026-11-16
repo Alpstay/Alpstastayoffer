@@ -16,7 +16,7 @@
   --f-title:"Belleza","Century Gothic","Avenir Next",Arial,sans-serif; --f-body:"Lato","Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
-body{background:var(--white);color:var(--ink);font:16px/1.65 var(--f-body);margin:0}
+body{background:var(--white);color:var(--ink);font:16px/1.65 var(--f-body);margin:0;overflow-x:clip}
 .inner{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .ribbon{margin:0;background:var(--panel);color:var(--muted);text-align:center;font-size:13px;padding-block:6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .bar{background:var(--white);border-bottom:1px solid var(--line)}
@@ -86,26 +86,52 @@ button.btn{cursor:pointer}
 .alt-dates{margin:6px 0 4px;font-size:16px}
 .alt-card .opt-price{margin-top:14px}
 .sp-badge{margin:0 0 12px;padding:8px 12px;background:var(--panel);border-left:2px solid var(--gold);color:var(--gold-ink);font-size:13.5px;line-height:1.45}
-.week h3{margin:0 0 6px;font:400 26px var(--f-title)}
-.week-intro{margin:0 0 20px;font-weight:300;max-width:62ch}
-.week-grid{display:grid;gap:26px 40px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
-.wk{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:300}
+.week{background:var(--panel);margin-inline:calc(50% - 50vw);padding-block:52px;padding-inline:max(16px,env(safe-area-inset-left,0px),calc(50vw - 524px))}
+.week-head{margin-bottom:26px}
+.week h3{margin:0 0 6px;font:400 clamp(24px,3vw,30px) var(--f-title)}
+.week-intro{margin:0;font-weight:300;max-width:62ch;color:var(--muted)}
+.week-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+@media (min-width:960px){.week-grid:not(.s){grid-template-columns:1.15fr 1fr 1fr}.week-grid:not(.s) .wk.ski{grid-row:span 2}.week-grid.s{grid-template-columns:1fr 1fr}}
+.wk{background:#fff;border:1px solid var(--line);border-top:2px solid var(--line);padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;font-size:15px;font-weight:300;min-width:0}
 .wk p{margin:0}
-.wk.ski{border-top-color:var(--gold)}
-.wk-t{font:400 11px var(--f-body)!important;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink)}
-.wk a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;margin-right:16px}
-.wk .small{font-size:13px;color:var(--muted)}
-.lvl{display:flex;flex-wrap:wrap;gap:6px}
-.lvl button{font:400 13px var(--f-body);border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 12px;cursor:pointer;border-radius:0}
-.lvl button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.wk.ski,.wk.hot{border-top-color:var(--gold)}
+.wk-h{display:flex;align-items:center;gap:10px;padding-bottom:12px;margin-bottom:2px;border-bottom:1px solid var(--line)}
+.wk-i{flex:none;color:var(--gold)}
+.wk-t{font:400 11px var(--f-body)!important;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-ink)}
+.wk-q{font-family:var(--f-title);font-size:19px;color:var(--ink)}
+.wk-sub{color:var(--muted);font-size:14px}
+.wk .small{font-size:13px;color:var(--muted);line-height:1.5}
+.wk-foot{margin-top:auto;padding-top:6px}
+.wk-cta{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;font-weight:400;font-size:14px;letter-spacing:.03em;border-bottom:1px solid var(--gold);padding-bottom:2px}
+.wk-cta:hover,.wk-cta:focus-visible{color:var(--gold-ink)}
+.wk-rows{display:flex;flex-direction:column}
+.wk-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:400}
+.wk-row:last-child{border-bottom:0}
+.wk-row .arr{color:var(--gold);transition:transform .15s}
+.wk-row:hover .arr,.wk-row:focus-visible .arr{transform:translate(2px,-2px)}
+.lvl{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ink)}
+.lvl button{font:400 13px/1.3 var(--f-body);border:0;background:#fff;color:var(--ink);padding:11px 10px;cursor:pointer;border-radius:0;text-align:center}
+.lvl button+button{border-left:1px solid var(--ink)}
+.lvl button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.lvl button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ski-rec{min-height:1.4em;font-weight:400;line-height:1.5}
+.ski-rec:empty{display:none}
+.ds-price{font-size:14px;padding:10px 12px;background:var(--panel);border-left:2px solid var(--gold);line-height:1.5}
+.wk-ev,.wk-exp{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.wk-ev li{display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid var(--line);font-weight:400}
+.wk-ev li:first-child{padding-top:2px}
+.wk-ev li:last-child{border-bottom:0}
+.chip{align-self:flex-start;font-size:11.5px;letter-spacing:.06em;color:var(--gold-ink);background:var(--panel);padding:2px 8px;border-radius:2px}
+.wk-exp li{padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.wk-exp li:first-child{padding-top:2px}
+.wk-exp li:last-child{border-bottom:0}
+.exp-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.exp-top b{font-weight:700}
+.exp .from{color:var(--gold-ink);white-space:nowrap;font-size:13px}
+.exp-d{color:var(--muted);font-size:14px;line-height:1.5}
 .ev{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 .ev li{padding-left:18px;position:relative;font-weight:400}
 .ev li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:1px;background:var(--gold)}
-.wk.hot{border-top-color:var(--gold)}
-.exp .ev li{font-weight:300}
-.exp .from{color:var(--gold-ink);white-space:nowrap}
-.ds-price{font-size:14px;padding:8px 10px;background:var(--panel);border-left:2px solid var(--gold)}
-.ski-rec{min-height:1.4em;font-weight:400}
 .extras{border:0;border-top:1px solid var(--gold);padding:14px 0 4px;margin:0;display:flex;flex-direction:column;gap:10px}
 .extras legend{font:400 11px var(--f-body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink);padding:0 8px 0 0}
 .extras label.check{flex-wrap:wrap}
@@ -403,7 +429,8 @@ const BOOK_ENDPOINT = "";
    Si inviano solo id offerta, tipo di evento, pulsante e lingua: nessun dato dell'ospite. */
 const CLICK_ENDPOINT = "";
 function clickUrl(p) {
-    if (CLICK_ENDPOINT) return CLICK_ENDPOINT;
+    if (CLICK_ENDPOINT)
+        return CLICK_ENDPOINT;
     return typeof p.t === "string" && /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.workers\.dev\/?$/.test(p.t) ? p.t.replace(/\/?$/, "/hit") : "";
 }
 function track(p, k, g) {
@@ -543,6 +570,14 @@ function passLine(i, a, d, l) {
     const ps = PASSES[i], r = passRange(ps, a, d);
     return r ? DS_TXT[l](ps.name, r.min === r.max ? `${r.min} €` : `${r.min}–${r.max} €`) : "";
 }
+const svg = (d) => `<svg class="wk-i" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const WK_ICON = {
+    ski: svg('<path d="M3 19 9.5 8l3.5 5 2.5-3.5L21 19z"/><path d="M8.2 10.2 9.5 8l1.6 2.3"/>'),
+    sun: svg('<circle cx="9" cy="9" r="3.2"/><path d="M9 2.5v1.6M9 13.9v1.6M2.5 9h1.6M3.9 3.9l1.1 1.1M12.9 5l1.1-1.1"/><path d="M10 20h8.5a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.4 1.3A2.9 2.9 0 0 0 10 20z"/>'),
+    cal: svg('<rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M8 13.5h2M14 13.5h2M8 16.5h2"/>'),
+    key: svg('<circle cx="8" cy="15" r="4"/><path d="m10.9 12.1 8.6-8.6M16.5 6.5l2.5 2.5M14.5 8.5l2 2"/>'),
+    star: svg('<path d="M12 3.5l2.4 5.2 5.6.6-4.2 3.8 1.2 5.5L12 15.8l-5 2.8 1.2-5.5L4 9.3l5.6-.6z"/>'),
+};
 const EVENTS = [
     { from: "2026-11-28", to: "2027-01-06", t: { de: "Weihnachtsmarkt in St. Ulrich (28.11.–6.1.)", it: "Mercatino di Natale a Ortisei (28/11–6/1)", en: "Christmas market in Ortisei (28 Nov – 6 Jan)" } },
     { from: "2026-11-29", to: "2027-01-03", t: { de: "Weihnachtsmarkt in Wolkenstein (29.11.–3.1.)", it: "Mercatino di Natale a Selva (29/11–3/1)", en: "Christmas market in Selva (29 Nov – 3 Jan)" } },
@@ -706,29 +741,35 @@ function render(p, l, isSample, invalid) {
         const houses = [...new Set([...opts, ...alts].map(o => o.h))];
         const arr = houses.map(h => w.arrival[h]).filter(Boolean);
         const link = (href, txt) => `<a href="${href}" target="_blank" rel="noopener">${esc(txt)} ↗</a>`;
+        const row = (href, txt) => `<a class="wk-row" href="${href}" target="_blank" rel="noopener"><span>${esc(txt)}</span><span class="arr" aria-hidden="true">↗</span></a>`;
+        const cta = (href, txt) => `<a class="wk-cta" href="${href}" target="_blank" rel="noopener">${esc(txt)} <span aria-hidden="true">→</span></a>`;
+        const head = (icon, title) => `<div class="wk-h">${WK_ICON[icon]}<p class="wk-t">${esc(title)}</p></div>`;
+        /* Le date degli eventi stanno tra parentesi nel testo: le mostriamo a parte come etichetta */
+        const splitDate = (txt) => { const m = txt.match(/^(.*?)\s*\(([^)]+)\)\s*$/); return m ? [m[1], m[2]] : [txt, ""]; };
+        const ev = EVENTS.filter(e => e.from <= p.d && e.to >= p.a);
         return `<section class="week">
-      <h3>${esc(w.title)}</h3><p class="week-intro">${esc(w.intro)}</p>
-      <div class="week-grid">
-        ${winter ? `<div class="wk ski"><p class="wk-t">${esc(w.skiTitle)}</p><p>${esc(w.skiQ)}</p>
+      <div class="week-head"><h3>${esc(w.title)}</h3><p class="week-intro">${esc(w.intro)}</p></div>
+      <div class="week-grid${winter ? "" : " s"}">
+        ${winter ? `<div class="wk ski">${head("ski", w.skiTitle)}
+          <p class="wk-q">${esc(w.skiQ)}</p>
           <div class="lvl" role="group">${w.lvl.map((x, i) => `<button type="button" data-lvl="${i}" aria-pressed="false">${esc(x)}</button>`).join("")}</div>
           <p class="ski-rec" aria-live="polite"></p>
           <p class="ds-price" hidden></p>
-          <p class="ds-link">${link(LINKS.shop, w.skiShop)}</p>
           <p class="small">${esc(w.skiNote)}${kn ? " " + esc(w.skiKids) : ""}</p>
+          <div class="wk-foot">${cta(LINKS.shop, w.skiShop)}</div>
           </div>` : ""}
-        <div class="wk"><p class="wk-t">${esc(winter ? w.liveTitle : w.liveTitleS)}</p><p class="links">${link(LINKS.weather, w.weather)}${link(LINKS.webcams, w.webcams)}${winter ? link(LINKS.slopes, w.slopes) : ""}</p></div>
-        ${(() => {
-            const ev = EVENTS.filter(e => e.from <= p.d && e.to >= p.a);
-            return `<div class="wk${ev.length ? " hot" : ""}"><p class="wk-t">${esc(w.eventsTitle)}</p>
-          ${ev.length ? `<p>${esc(EV_DURING[l])}</p><ul class="ev">${ev.map(e => `<li>${esc(e.t[l])}</li>`).join("")}</ul>` : `<p>${esc(w.eventsText)} <b>${esc(dateRange(p, l))}</b></p>`}
-          <p>${link(LINKS.events[l], w.eventsLink)}</p></div>`;
-        })()}
-        ${arr.length ? `<div class="wk"><p class="wk-t">${esc(w.arrivalTitle)}</p>${arr.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
-        <div class="wk exp"><p class="wk-t">${esc(EXP_TITLE[l])}</p>
-          <ul class="ev">${EXPS.filter(x => !x.summer || !winter).map(x => `<li><b>${esc(x.name === "Besonderer Anlass" ? EXP_NAME_SPECIAL[l] : x.name)}</b> · ${esc(x.t[l])}${x.from ? ` <span class="from">${esc(EXP_FROM[l](x.from))}</span>` : ""}</li>`).join("")}</ul>
-          <p>${link(EXP_URL, EXP_BOOK[l])}</p></div>
+        <div class="wk">${head("sun", winter ? w.liveTitle : w.liveTitleS)}
+          <div class="wk-rows">${row(LINKS.weather, w.weather)}${row(LINKS.webcams, w.webcams)}${winter ? row(LINKS.slopes, w.slopes) : ""}</div></div>
+        <div class="wk${ev.length ? " hot" : ""}">${head("cal", w.eventsTitle)}
+          ${ev.length ? `<p class="wk-sub">${esc(EV_DURING[l])}</p><ul class="wk-ev">${ev.map(e => { const [txt, dt] = splitDate(e.t[l]); return `<li>${dt ? `<span class="chip">${esc(dt)}</span>` : ""}<span>${esc(txt)}</span></li>`; }).join("")}</ul>` : `<p>${esc(w.eventsText)} <b>${esc(dateRange(p, l))}</b></p>`}
+          <div class="wk-foot">${cta(LINKS.events[l], w.eventsLink)}</div></div>
+        ${arr.length ? `<div class="wk">${head("key", w.arrivalTitle)}${arr.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
+        <div class="wk exp">${head("star", EXP_TITLE[l])}
+          <ul class="wk-exp">${EXPS.filter(x => !x.summer || !winter).map(x => `<li><div class="exp-top"><b>${esc(x.name === "Besonderer Anlass" ? EXP_NAME_SPECIAL[l] : x.name)}</b>${x.from ? `<span class="from">${esc(EXP_FROM[l](x.from))}</span>` : ""}</div><span class="exp-d">${esc(x.t[l])}</span></li>`).join("")}</ul>
+          <div class="wk-foot">${cta(EXP_URL, EXP_BOOK[l])}</div></div>
       </div>
     </section>`;
+        void link;
     }
     const app = document.getElementById("app");
     app.innerHTML = `
