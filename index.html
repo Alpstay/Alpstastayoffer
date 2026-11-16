@@ -399,6 +399,26 @@ const S = {
 /* Assicurazione annullamento: condizioni ufficiali su alpstay.eu (testo fornito dall'ufficio il 10/11/2026) */
 /* Servizio che riceve le prenotazioni (Cloudflare). Vuoto = email precompilata come ripiego. */
 const BOOK_ENDPOINT = "";
+/* Conteggio aperture (16/11/2026): l'Offerta Studio mette nel link l'indirizzo del servizio (campo t).
+   Si inviano solo id offerta, tipo di evento, pulsante e lingua: nessun dato dell'ospite. */
+const CLICK_ENDPOINT = "";
+function clickUrl(p) {
+    if (CLICK_ENDPOINT) return CLICK_ENDPOINT;
+    return typeof p.t === "string" && /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.workers\.dev\/?$/.test(p.t) ? p.t.replace(/\/?$/, "/hit") : "";
+}
+function track(p, k, g) {
+    try {
+        const url = clickUrl(p);
+        if (!url || !p.c || !/^\d{3,9}$/.test(String(p.c)))
+            return;
+        const slot = String(g || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 30);
+        const body = JSON.stringify({ o: `r${p.c}-${p.a}`, k, g: slot || undefined, l: p.l });
+        if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: "text/plain" })))
+            return;
+        fetch(url, { method: "POST", body, mode: "no-cors", keepalive: true }).catch(() => { });
+    }
+    catch { /* il conteggio non deve mai bloccare la pagina */ }
+}
 /* Prefissi internazionali: mercati principali di Alpstay per primi */
 const DIAL = [
     ["DE", "+49", { de: "Deutschland", it: "Germania", en: "Germany" }],
@@ -769,11 +789,13 @@ function render(p, l, isSample, invalid) {
   </main>
   <footer class="foot"><div class="inner"><span class="tag">BE FREE. STAY TRUE</span><span>Alpstay Hotels · Val Gardena · Dolomites</span><a href="https://www.alpstay.eu" target="_blank" rel="noopener">www.alpstay.eu</a></div></footer>`;
     const reqBox = app.querySelector("#anfrage");
-    const openForm = (idx) => {
+    const openForm = (idx, auto = false) => {
         var _a, _b, _c, _d, _e, _f;
         const c = choices[idx];
         if (!c)
             return;
+        if (!auto)
+            track(p, "choose", idx < opts.length ? `o-${c.o.h}` : `alt-${idx - opts.length}`);
         const addr = requestAddr(p), H = HOUSES[c.o.h], nn = Math.max(0, Math.round((Date.parse(c.d) - Date.parse(c.a)) / 864e5));
         reqBox.hidden = false;
         if (!addr) {
@@ -878,6 +900,7 @@ function render(p, l, isSample, invalid) {
                 t.mailClose, "", t.mailBye, full, "", `Ref. ${REQ_TAG} ${ref}`,
             ].join("\n");
             const subject = t.mailSubject((_c = p.c) !== null && _c !== void 0 ? _c : "", H.name);
+            track(p, "book", c.o.h);
             const href = `mailto:${addr}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             const sent = reqBox.querySelector(".req-sent");
             const mailtoFallback = () => {
@@ -914,7 +937,7 @@ function render(p, l, isSample, invalid) {
     if (hash.startsWith("prenota-")) {
         const i = opts.findIndex(o => o.h === hash.slice(8));
         if (i >= 0)
-            openForm(i);
+            openForm(i, true); /* aperto dal link dell'email: già contato come apertura */
     }
     else if (hash === "alternativen")
         (_c = app.querySelector("#alternativen")) === null || _c === void 0 ? void 0 : _c.scrollIntoView();
@@ -986,6 +1009,8 @@ function decodePacked(raw) {
     const decoded = z ? decodePacked(z) : raw ? decodePayload(raw) : null;
     const payload = decoded !== null && decoded !== void 0 ? decoded : SAMPLE;
     render(payload, payload.l, !decoded, !!raw && !decoded);
+    if (decoded)
+        track(payload, "open", q.get("g") || "");
 })();
 
 </script>
