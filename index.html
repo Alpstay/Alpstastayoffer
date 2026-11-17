@@ -670,8 +670,32 @@ function dateRange(p, l) {
     return same ? `${day(a)}–${day(d)} ${mon(d)} ${d.getFullYear()}` : `${day(a)} ${mon(a)} – ${day(d)} ${mon(d)} ${d.getFullYear()}`;
 }
 function roomName(o, l) {
-    var _a;
-    return o.r === "custom" ? ((_a = o.rc) !== null && _a !== void 0 ? _a : "") : ROOMS[o.r][l];
+    var _a, _b, _c;
+    if (o.r === "custom")
+        return (_a = o.rc) !== null && _a !== void 0 ? _a : "";
+    const x = String(o.r).match(/^x(\d)(\d)$/);
+    if (!x)
+        return (_c = (_b = ROOMS[o.r]) === null || _b === void 0 ? void 0 : _b[l]) !== null && _c !== void 0 ? _c : "";
+    const d = Number(x[1]), t = Number(x[2]), parts = [];
+    if (l === "de") {
+        if (d)
+            parts.push(`${d} Doppelzimmer`);
+        if (t)
+            parts.push(`${t} Dreibettzimmer`);
+        return parts.join(" und ") + (d + t > 1 ? " nebeneinander" : "");
+    }
+    if (l === "it") {
+        if (d)
+            parts.push(`${d} ${d === 1 ? "camera doppia" : "camere doppie"}`);
+        if (t)
+            parts.push(`${t} ${t === 1 ? "camera tripla" : "camere triple"}`);
+        return parts.join(" e ") + (d + t > 1 ? " adiacenti" : "");
+    }
+    if (d)
+        parts.push(`${d} double room${d === 1 ? "" : "s"}`);
+    if (t)
+        parts.push(`${t} triple room${t === 1 ? "" : "s"}`);
+    return parts.join(" and ") + (d + t > 1 ? " next to each other" : "");
 }
 function money(n, l, dec) {
     return n.toLocaleString(LOCALE[l], { minimumFractionDigits: dec, maximumFractionDigits: dec });
