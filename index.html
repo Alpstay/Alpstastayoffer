@@ -302,20 +302,20 @@ const HOUSES = {
         },
         facts: {
             winter: {
-                de: ["Skilift Nives: direkt auf die Sellaronda, in beide Richtungen", "Zentrale Lage in Wolkenstein", "Nur 22 Zimmer, Adults only"],
-                it: ["Skilift Nives: subito sul Sellaronda, in entrambe le direzioni", "Posizione centrale a Selva", "Solo 22 camere, adults only"],
-                en: ["Nives ski lift: straight onto the Sellaronda, both directions", "Central location in Selva", "Only 22 rooms, adults only"],
+                de: ["Skilift Nives: direkt auf die Sellaronda, in beide Richtungen", "Zentrale Lage in Wolkenstein", "Nur 21 Zimmer, Adults only"],
+                it: ["Skilift Nives: subito sul Sellaronda, in entrambe le direzioni", "Posizione centrale a Selva", "Solo 21 camere, adults only"],
+                en: ["Nives ski lift: straight onto the Sellaronda, both directions", "Central location in Selva", "Only 21 rooms, adults only"],
             },
             summer: {
-                de: ["Zentrale Lage in Wolkenstein", "Ausgangspunkt für Wanderungen in den Dolomiten", "Nur 22 Zimmer, Adults only"],
-                it: ["Posizione centrale a Selva", "Punto di partenza per escursioni nelle Dolomiti", "Solo 22 camere, adults only"],
-                en: ["Central location in Selva", "A base for hiking in the Dolomites", "Only 22 rooms, adults only"],
+                de: ["Zentrale Lage in Wolkenstein", "Ausgangspunkt für Wanderungen in den Dolomiten", "Nur 21 Zimmer, Adults only"],
+                it: ["Posizione centrale a Selva", "Punto di partenza per escursioni nelle Dolomiti", "Solo 21 camere, adults only"],
+                en: ["Central location in Selva", "A base for hiking in the Dolomites", "Only 21 rooms, adults only"],
             },
         },
         compare: {
             slope: { de: "Skilift Nives direkt zur Sellaronda", it: "Skilift Nives subito sul Sellaronda", en: "Nives lift straight to the Sellaronda" },
             slopeS: { de: "Zentral in Wolkenstein, Guest Pass: alle öffentlichen Verkehrsmittel gratis", it: "In centro a Selva, Guest Pass: tutti i mezzi pubblici gratis", en: "Central in Selva, Guest Pass: all public transport free" },
-            mood: { de: "Zentral und elegant, 22 Zimmer", it: "Centrale ed elegante, 22 camere", en: "Central and elegant, 22 rooms" },
+            mood: { de: "Zentral und elegant, 21 Zimmer", it: "Centrale ed elegante, 21 camere", en: "Central and elegant, 21 rooms" },
             ideal: { de: "Paare, die mitten im Ort wohnen möchten", it: "Coppie che vogliono stare in centro", en: "Couples who want to stay in the centre" },
         },
         photo: PHOTO.acadia,
@@ -323,9 +323,11 @@ const HOUSES = {
 };
 /* Galleria: si mostrano le foto delle case proposte più quelle del gruppo */
 const GALLERY = [
-    { src: "img/galleria-acadia.jpg", house: "acadia", alt: { de: "Lounge mit Blick auf die verschneite Terrasse", it: "Lounge con vista sulla terrazza innevata", en: "Lounge overlooking the snowy terrace" } },
+    { src: "img/galleria-acadia.jpg", house: "acadia", season: "winter", alt: { de: "Lounge mit Blick auf die verschneite Terrasse", it: "Lounge con vista sulla terrazza innevata", en: "Lounge overlooking the snowy terrace" } },
+    { src: "img/zimmer-acadia.jpg", house: "acadia", season: "summer", alt: { de: "Zimmer im Acadia Mountain Home", it: "Camera dell'Acadia Mountain Home", en: "Room at Acadia Mountain Home" } },
     { src: "img/galleria-saslong.jpg", house: "saslong", alt: { de: "Blue Restaurant mit Service-Roboter", it: "Blue Restaurant con robot di servizio", en: "Blue Restaurant with service robot" } },
-    { src: "img/galleria-hartmann.jpg", house: "hartmann", alt: { de: "Frühstücksecke", it: "Angolo colazione", en: "Breakfast corner" } },
+    { src: "img/galleria-hartmann.jpg", house: "hartmann", season: "winter", alt: { de: "Frühstücksecke", it: "Angolo colazione", en: "Breakfast corner" } },
+    { src: "img/zimmer-hartmann.jpg", house: "hartmann", season: "summer", alt: { de: "Zimmer im Chalet Hotel Hartmann", it: "Camera dello Chalet Hotel Hartmann", en: "Room at Chalet Hotel Hartmann" } },
     { src: "img/galleria-alpstay.jpg", house: "alpstay", alt: { de: "Kuchenbuffet", it: "Buffet di dolci", en: "Cake buffet" } },
 ];
 const ROOMS = {
@@ -783,7 +785,7 @@ function render(p, l, isSample, invalid) {
         [t.rows.ideal, o => HOUSES[o.h].compare.ideal[l]],
     ];
     const inOffer = new Set([...opts, ...alts].map(o => o.h));
-    const gallery = GALLERY.filter(g => g.house === "alpstay" || inOffer.has(g.house))
+    const gallery = GALLERY.filter(g => (g.house === "alpstay" || inOffer.has(g.house)) && (!g.season || (g.season === "winter") === winter))
         .sort((a, b) => order(a.house) - order(b.house));
     function order(h) { return h === "alpstay" ? 99 : [...opts, ...alts].findIndex(o => o.h === h); }
     const w = W[l];
