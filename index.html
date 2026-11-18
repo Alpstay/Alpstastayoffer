@@ -201,6 +201,8 @@ tbody th{font:400 12px var(--f-body);color:var(--muted);letter-spacing:.1em;text
 .contact{display:flex;flex-direction:column;gap:8px}
 .who{font:400 21px var(--f-title)}
 .who span{display:block;font:400 13px var(--f-body);color:var(--muted)}
+.who-row{display:flex;align-items:center;gap:14px;margin-bottom:6px}.who-row .who{margin:0}
+.who-pic{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none}
 .line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .val{font-variant-numeric:tabular-nums;user-select:all;overflow-wrap:anywhere}
 .copy{font:400 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--white);border-radius:2px;padding:4px 9px;cursor:pointer;color:var(--ink)}
@@ -870,7 +872,7 @@ function render(p, l, isSample, invalid) {
     <section class="help">
       <div><h3>${t.helpTitle}</h3><p>${t.helpText}</p></div>
       <div class="contact">
-        ${p.sn ? `<p class="who">${esc(p.sn)}<span>Reservation Office · Alpstay Hotels</span></p>` : ""}
+        ${p.sn ? `<div class="who-row">${/^isabel\b/i.test(p.sn) ? `<img class="who-pic" src="img/isabel.jpg" alt="${esc(p.sn)}" width="64" height="64">` : ""}<p class="who">${esc(p.sn)}<span>Reservation Office · Alpstay Hotels</span></p></div>` : ""}
         ${p.sp ? `<p class="line"><span class="val">${esc(p.sp)}</span><button type="button" class="copy" data-copy="${esc(p.sp)}">${t.copy}</button></p>` : ""}
         ${p.se ? `<p class="line"><span class="val">${esc(p.se)}</span><button type="button" class="copy" data-copy="${esc(p.se)}">${t.copy}</button></p>` : ""}
       </div>
