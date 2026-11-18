@@ -359,6 +359,9 @@ const S = {
         terms: "Nicht erstattbar · Zahlung 5 Tage vor Anreise",
         termsAccept: "Ich akzeptiere die Buchungsbedingungen: nicht erstattbarer Tarif (bei Stornierung, Änderung oder Nichtanreise wird der Gesamtbetrag fällig), Zahlung 5 Tage vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
         mailTerms: "Buchungsbedingungen akzeptiert: nicht erstattbar, Zahlung des Gesamtbetrags 5 Tage vor Anreise.",
+        termsG: "Gruppe ab 5 Zimmern · nicht erstattbare Anzahlung 2 Monate vor Anreise",
+        termsAcceptG: "Ich akzeptiere die Bedingungen für Gruppen (ab 5 Zimmern): nicht erstattbare Anzahlung, fällig 2 Monate vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
+        mailTermsG: "Bedingungen für Gruppen akzeptiert (ab 5 Zimmern): nicht erstattbare Anzahlung, fällig 2 Monate vor Anreise.",
         consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt buchen", country: "Land", required: "Bitte füllen Sie die markierten Felder aus.",
         okTitle: "Danke – Ihre Buchung ist bei uns!", okText: "Unser Reservierungsteam meldet sich per E-Mail mit der Bestätigung und den Zahlungsdetails.", sending: "Wird gesendet…", sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
         mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "gerne möchte ich folgenden Aufenthalt direkt bei Ihnen buchen:",
@@ -388,6 +391,9 @@ const S = {
         terms: "Non rimborsabile · pagamento 5 giorni prima dell'arrivo",
         termsAccept: "Accetto le condizioni: tariffa non rimborsabile (in caso di cancellazione, modifica o mancato arrivo è dovuto l'importo totale), pagamento 5 giorni prima dell'arrivo. Definitiva con la conferma di Alpstay.",
         mailTerms: "Condizioni accettate: non rimborsabile, pagamento dell'intero importo 5 giorni prima dell'arrivo.",
+        termsG: "Gruppo da 5 camere · caparra non rimborsabile 2 mesi prima dell'arrivo",
+        termsAcceptG: "Accetto le condizioni per gruppi (da 5 camere): caparra non rimborsabile, da versare 2 mesi prima dell'arrivo. Definitiva con la conferma di Alpstay.",
+        mailTermsG: "Condizioni per gruppi accettate (da 5 camere): caparra non rimborsabile, da versare 2 mesi prima dell'arrivo.",
         consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora", country: "Paese", required: "Compila i campi segnati.",
         okTitle: "Grazie – la tua prenotazione è arrivata!", okText: "Il nostro ufficio prenotazioni ti scrive via email con la conferma e i dettagli per il pagamento.", sending: "Invio in corso…", sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
         mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "vorrei prenotare direttamente da voi il seguente soggiorno:",
@@ -417,6 +423,9 @@ const S = {
         terms: "Non-refundable · payment 5 days before arrival",
         termsAccept: "I accept the conditions: non-refundable rate (in case of cancellation, change or no-show the full amount is due), payment 5 days before arrival. Binding once Alpstay confirms.",
         mailTerms: "Booking conditions accepted: non-refundable, payment of the full amount 5 days before arrival.",
+        termsG: "Group of 5 rooms or more · non-refundable deposit 2 months before arrival",
+        termsAcceptG: "I accept the group conditions (5 rooms or more): non-refundable deposit, due 2 months before arrival. Binding once Alpstay confirms.",
+        mailTermsG: "Group conditions accepted (5 rooms or more): non-refundable deposit, due 2 months before arrival.",
         consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book now", country: "Country", required: "Please fill in the marked fields.",
         okTitle: "Thank you – your booking has reached us!", okText: "Our reservations team will email you the confirmation and the payment details.", sending: "Sending…", sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
         mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "I would like to book the following stay directly with you:",
@@ -669,11 +678,15 @@ function dateRange(p, l) {
         return same ? `${day(a)}–${day(d)} ${mon(d)} ${d.getFullYear()}` : `${day(a)} ${mon(a)} – ${day(d)} ${mon(d)} ${d.getFullYear()}`;
     return same ? `${day(a)}–${day(d)} ${mon(d)} ${d.getFullYear()}` : `${day(a)} ${mon(a)} – ${day(d)} ${mon(d)} ${d.getFullYear()}`;
 }
+/* Camere dell'opzione: xDT = D doppie + T triple (D anche a più cifre, fino a 10 camere — preventivi di gruppo 18/11/2026) */
+function roomCount(r) { const x = String(r).match(/^x(\d+)(\d)$/); return x ? Number(x[1]) + Number(x[2]) : r === "d3" ? 3 : r === "d2" || r === "td" || r === "tt" ? 2 : 1; }
+const GROUP_ROOMS = 5; /* da 5 camere: condizioni per gruppi */
+const isGroup = (o) => roomCount(o.r) >= GROUP_ROOMS;
 function roomName(o, l) {
     var _a, _b, _c;
     if (o.r === "custom")
         return (_a = o.rc) !== null && _a !== void 0 ? _a : "";
-    const x = String(o.r).match(/^x(\d)(\d)$/);
+    const x = String(o.r).match(/^x(\d+)(\d)$/);
     if (!x)
         return (_c = (_b = ROOMS[o.r]) === null || _b === void 0 ? void 0 : _b[l]) !== null && _c !== void 0 ? _c : "";
     const d = Number(x[1]), t = Number(x[2]), parts = [];
@@ -682,20 +695,20 @@ function roomName(o, l) {
             parts.push(`${d} Doppelzimmer`);
         if (t)
             parts.push(`${t} Dreibettzimmer`);
-        return parts.join(" und ") + (d + t > 1 ? " nebeneinander" : "");
+        return parts.join(" und ") + (d + t > 1 && d + t <= 5 ? " nebeneinander" : "");
     }
     if (l === "it") {
         if (d)
             parts.push(`${d} ${d === 1 ? "camera doppia" : "camere doppie"}`);
         if (t)
             parts.push(`${t} ${t === 1 ? "camera tripla" : "camere triple"}`);
-        return parts.join(" e ") + (d + t > 1 ? " adiacenti" : "");
+        return parts.join(" e ") + (d + t > 1 && d + t <= 5 ? " adiacenti" : "");
     }
     if (d)
         parts.push(`${d} double room${d === 1 ? "" : "s"}`);
     if (t)
         parts.push(`${t} triple room${t === 1 ? "" : "s"}`);
-    return parts.join(" and ") + (d + t > 1 ? " next to each other" : "");
+    return parts.join(" and ") + (d + t > 1 && d + t <= 5 ? " next to each other" : "");
 }
 function money(n, l, dec) {
     return n.toLocaleString(LOCALE[l], { minimumFractionDigits: dec, maximumFractionDigits: dec });
@@ -721,7 +734,7 @@ function render(p, l, isSample, invalid) {
         const price = c.price, pp = price && nn ? (kn ? price / nn : persons ? price / (nn * persons) : null) : null; /* famiglie: prezzo a notte; solo adulti: a persona */
         return price ? `<p class="lbl">${t.total}</p><p class="amount">${money(price, l, 2)} €</p>
       ${c.special && (alt === null || alt === void 0 ? void 0 : alt.p0) ? `<p class="was">${esc(t.was(money(alt.p0, l, 2)))}</p>` : ""}
-      ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p><p class="best">${esc(t.best)}</p><p class="tax terms">${esc(t.terms)}</p>` : `<p class="lbl">${t.forDates}</p>`;
+      ${pp ? `<p class="pp">${esc((kn ? t.pn : t.pp)(money(pp, l, 0)))}</p>` : ""}<p class="tax">${t.tax}</p><p class="best">${esc(t.best)}</p><p class="tax terms">${esc(isGroup(c.o) ? t.termsG : t.terms)}</p>` : `<p class="lbl">${t.forDates}</p>`;
     };
     const card = (o, i) => {
         const H = HOUSES[o.h], isRec = i === 0 && opts.length > 1;
@@ -906,7 +919,7 @@ function render(p, l, isSample, invalid) {
         <label><span class="lt">${t.wish} <i>(${t.optional})</i></span><textarea name="wish" rows="3" maxlength="800"></textarea></label>
         </details>
         ${c.price ? `<p class="sel-total wide">${esc(w.totalSel)}: <b data-total>${money(c.price, l, 2)} €</b></p>` : ""}
-        <label class="check wide terms"><input type="checkbox" name="terms" required> ${esc(t.termsAccept)}</label>
+        <label class="check wide terms"><input type="checkbox" name="terms" required> ${esc(isGroup(c.o) ? t.termsAcceptG : t.termsAccept)}</label>
         <p class="req-err wide" hidden>${esc(t.required)}</p>
         <button type="submit" class="btn wide">${t.send} →</button>
       </form>
@@ -977,7 +990,7 @@ function render(p, l, isSample, invalid) {
                 ...(extraLines.length ? ["", `${w.extrasMail}:`, ...extraLines.map(x => `– ${x}`), ...(xs.total != null && xs.total !== c.price ? [`${w.totalMail}: ${money(xs.total, l, 2)} €`] : [])] : []), "",
                 `${t.mailMine}:`, `${t.lName}: ${full}`, `${t.email}: ${v("email")}`, ...(tel ? [`${t.phone}: ${tel}`] : []), ...(v("eta") ? [`${t.lEta}: ${v("eta")}`] : []),
                 ...(wish ? ["", `${t.wish}:`, wish] : []), "",
-                t.mailTerms, "",
+                isGroup(c.o) ? t.mailTermsG : t.mailTerms, "",
                 t.mailClose, "", t.mailBye, full, "", `Ref. ${REQ_TAG} ${ref}`,
             ].join("\n");
             const subject = t.mailSubject((_c = p.c) !== null && _c !== void 0 ? _c : "", H.name);
