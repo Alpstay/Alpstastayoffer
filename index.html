@@ -359,9 +359,9 @@ const S = {
         terms: "Nicht erstattbar · Zahlung 5 Tage vor Anreise",
         termsAccept: "Ich akzeptiere die Buchungsbedingungen: nicht erstattbarer Tarif (bei Stornierung, Änderung oder Nichtanreise wird der Gesamtbetrag fällig), Zahlung 5 Tage vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
         mailTerms: "Buchungsbedingungen akzeptiert: nicht erstattbar, Zahlung des Gesamtbetrags 5 Tage vor Anreise.",
-        termsG: "Gruppe ab 5 Zimmern · nicht erstattbare Anzahlung 2 Monate vor Anreise",
-        termsAcceptG: "Ich akzeptiere die Bedingungen für Gruppen (ab 5 Zimmern): nicht erstattbare Anzahlung, fällig 2 Monate vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
-        mailTermsG: "Bedingungen für Gruppen akzeptiert (ab 5 Zimmern): nicht erstattbare Anzahlung, fällig 2 Monate vor Anreise.",
+        termsG: "Gruppe ab 5 Zimmern · nicht erstattbare Anzahlung 30 % 2 Monate vor Anreise",
+        termsAcceptG: "Ich akzeptiere die Bedingungen für Gruppen (ab 5 Zimmern): nicht erstattbare Anzahlung von 30 % des Gesamtbetrags, fällig 2 Monate vor Anreise. Verbindlich mit der Bestätigung von Alpstay.",
+        mailTermsG: "Bedingungen für Gruppen akzeptiert (ab 5 Zimmern): nicht erstattbare Anzahlung von 30 % des Gesamtbetrags, fällig 2 Monate vor Anreise.",
         consent: "Mir ist bewusst: Die Buchung wird mit der Bestätigung von Alpstay verbindlich.", send: "Jetzt buchen", country: "Land", required: "Bitte füllen Sie die markierten Felder aus.",
         okTitle: "Danke – Ihre Buchung ist bei uns!", okText: "Unser Reservierungsteam meldet sich per E-Mail mit der Bestätigung und den Zahlungsdetails.", sending: "Wird gesendet…", sentTitle: "Fast geschafft", sentText: "Ihr E-Mail-Programm hat sich mit Ihrer fertigen Buchung geöffnet. Bitte senden Sie die Nachricht dort ab. Falls sich nichts geöffnet hat, kopieren Sie den Text und senden Sie ihn an:",
         mailSubject: (c, h) => `Direktbuchung ${c} – ${h}`, mailIntro: "gerne möchte ich folgenden Aufenthalt direkt bei Ihnen buchen:",
@@ -391,9 +391,9 @@ const S = {
         terms: "Non rimborsabile · pagamento 5 giorni prima dell'arrivo",
         termsAccept: "Accetto le condizioni: tariffa non rimborsabile (in caso di cancellazione, modifica o mancato arrivo è dovuto l'importo totale), pagamento 5 giorni prima dell'arrivo. Definitiva con la conferma di Alpstay.",
         mailTerms: "Condizioni accettate: non rimborsabile, pagamento dell'intero importo 5 giorni prima dell'arrivo.",
-        termsG: "Gruppo da 5 camere · caparra non rimborsabile 2 mesi prima dell'arrivo",
-        termsAcceptG: "Accetto le condizioni per gruppi (da 5 camere): caparra non rimborsabile, da versare 2 mesi prima dell'arrivo. Definitiva con la conferma di Alpstay.",
-        mailTermsG: "Condizioni per gruppi accettate (da 5 camere): caparra non rimborsabile, da versare 2 mesi prima dell'arrivo.",
+        termsG: "Gruppo da 5 camere · caparra non rimborsabile del 30% 2 mesi prima dell'arrivo",
+        termsAcceptG: "Accetto le condizioni per gruppi (da 5 camere): caparra non rimborsabile del 30% del totale, da versare 2 mesi prima dell'arrivo. Definitiva con la conferma di Alpstay.",
+        mailTermsG: "Condizioni per gruppi accettate (da 5 camere): caparra non rimborsabile del 30% del totale, da versare 2 mesi prima dell'arrivo.",
         consent: "Ho capito: la prenotazione diventa definitiva con la conferma di Alpstay.", send: "Prenota ora", country: "Paese", required: "Compila i campi segnati.",
         okTitle: "Grazie – la tua prenotazione è arrivata!", okText: "Il nostro ufficio prenotazioni ti scrive via email con la conferma e i dettagli per il pagamento.", sending: "Invio in corso…", sentTitle: "Quasi fatto", sentText: "Il tuo programma di posta si è aperto con la prenotazione pronta. Invia il messaggio da lì. Se non si è aperto nulla, copia il testo e invialo a:",
         mailSubject: (c, h) => `Prenotazione diretta ${c} – ${h}`, mailIntro: "vorrei prenotare direttamente da voi il seguente soggiorno:",
@@ -423,9 +423,9 @@ const S = {
         terms: "Non-refundable · payment 5 days before arrival",
         termsAccept: "I accept the conditions: non-refundable rate (in case of cancellation, change or no-show the full amount is due), payment 5 days before arrival. Binding once Alpstay confirms.",
         mailTerms: "Booking conditions accepted: non-refundable, payment of the full amount 5 days before arrival.",
-        termsG: "Group of 5 rooms or more · non-refundable deposit 2 months before arrival",
-        termsAcceptG: "I accept the group conditions (5 rooms or more): non-refundable deposit, due 2 months before arrival. Binding once Alpstay confirms.",
-        mailTermsG: "Group conditions accepted (5 rooms or more): non-refundable deposit, due 2 months before arrival.",
+        termsG: "Group of 5 rooms or more · non-refundable 30% deposit 2 months before arrival",
+        termsAcceptG: "I accept the group conditions (5 rooms or more): non-refundable deposit of 30% of the total, due 2 months before arrival. Binding once Alpstay confirms.",
+        mailTermsG: "Group conditions accepted (5 rooms or more): non-refundable deposit of 30% of the total, due 2 months before arrival.",
         consent: "I understand: the booking becomes final once Alpstay confirms it.", send: "Book now", country: "Country", required: "Please fill in the marked fields.",
         okTitle: "Thank you – your booking has reached us!", okText: "Our reservations team will email you the confirmation and the payment details.", sending: "Sending…", sentTitle: "Almost done", sentText: "Your email program has opened with your booking ready. Please send the message from there. If nothing opened, copy the text and send it to:",
         mailSubject: (c, h) => `Direct booking ${c} – ${h}`, mailIntro: "I would like to book the following stay directly with you:",
@@ -695,20 +695,20 @@ function roomName(o, l) {
             parts.push(`${d} Doppelzimmer`);
         if (t)
             parts.push(`${t} Dreibettzimmer`);
-        return parts.join(" und ") + (d + t > 1 && d + t <= 5 ? " nebeneinander" : "");
+        return parts.join(" und ") + (d + t > 1 && d + t < 5 ? " nebeneinander" : "");
     }
     if (l === "it") {
         if (d)
             parts.push(`${d} ${d === 1 ? "camera doppia" : "camere doppie"}`);
         if (t)
             parts.push(`${t} ${t === 1 ? "camera tripla" : "camere triple"}`);
-        return parts.join(" e ") + (d + t > 1 && d + t <= 5 ? " adiacenti" : "");
+        return parts.join(" e ") + (d + t > 1 && d + t < 5 ? " adiacenti" : "");
     }
     if (d)
         parts.push(`${d} double room${d === 1 ? "" : "s"}`);
     if (t)
         parts.push(`${t} triple room${t === 1 ? "" : "s"}`);
-    return parts.join(" and ") + (d + t > 1 && d + t <= 5 ? " next to each other" : "");
+    return parts.join(" and ") + (d + t > 1 && d + t < 5 ? " next to each other" : "");
 }
 function money(n, l, dec) {
     return n.toLocaleString(LOCALE[l], { minimumFractionDigits: dec, maximumFractionDigits: dec });
